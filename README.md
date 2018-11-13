@@ -6,4 +6,4 @@
 * [Sprint 1 Backlog](https://github.com/gotonode/ohtu/projects/1)
 * [Travis](https://travis-ci.org/gotonode/ohtu)
 
-Please view our [Definition of Done](https://github.com/gotonode/ohtu/wiki/Definition-of-Done)
+Please view our [Definition of Done](https://github.com/gotonode/ohtu/wiki/Definition-of-Done) and [Code Style](https://github.com/gotonode/ohtu/wiki/Code-Style) documents.
