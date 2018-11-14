@@ -10,7 +10,7 @@ public abstract class Bookmark {
 	private int id;
 	private String title;
 	private Date addDate;
-	private int type;
+	private char type;
 	// We'll add "isRead" property later.
 
 	/**
@@ -19,7 +19,7 @@ public abstract class Bookmark {
 	 * @param title Title for the object.
 	 * @param addDate When it was added to the database (convert this to Java's Date).
 	 */
-	Bookmark(int id, String title, Date addDate, int type) {
+	Bookmark(int id, String title, Date addDate, char type) {
 		this.id = id;
 		this.title = title;
 		this.addDate = addDate;
@@ -64,7 +64,7 @@ public abstract class Bookmark {
 		return type;
 	}
 
-	public void setType(int type) {
+	public void setType(char type) {
 		this.type = type;
 	}
 }
