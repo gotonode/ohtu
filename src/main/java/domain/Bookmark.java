@@ -26,9 +26,15 @@ public abstract class Bookmark {
 		this.addDate = addDate;
 	}
 
+	/**
+	 * We can check if this instance of Bookmark is a Blogpost.
+	 * @return True if it's a Blogpost, false otherwise.
+	 */
 	public boolean isBlogpost() {
 		return this instanceof Blogpost;
 	}
+
+	// We'll add the rest later (video, article, book, podcast).
 
 	public int getId() {
 		return id;
