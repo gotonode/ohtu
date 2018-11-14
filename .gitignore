@@ -1,3 +1,10 @@
+# Project
+.gradle
+.idea
+.vscode
+nbproject
+/gradle/
+
 # Compiled class file
 *.class
 
