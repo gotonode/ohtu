@@ -10,8 +10,8 @@ public class Blogpost extends Bookmark {
 	private String author;
 	private String url;
 
-	public Blogpost(int id, String title, Date addDate, String author, String url) {
-		super(id, title, addDate);
+	public Blogpost(int id, String title, Date addDate, int type, String author, String url) {
+		super(id, title, addDate, type);
 		this.author = author;
 		this.url = url;
 	}

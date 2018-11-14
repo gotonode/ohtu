@@ -15,7 +15,7 @@ public class BlogpostTest {
 
 	@Before
 	public void initialize() {
-		blogpost = new Blogpost(0, "TITLE", Date.from(Instant.now()), "AUTHOR", "URL");
+		blogpost = new Blogpost(0, "TITLE", Date.from(Instant.now()),1,  "AUTHOR", "URL");
 	}
 
 	@Test

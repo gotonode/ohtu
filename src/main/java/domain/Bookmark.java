@@ -10,9 +10,8 @@ public abstract class Bookmark {
 	private int id;
 	private String title;
 	private Date addDate;
+	private int type;
 	// We'll add "isRead" property later.
-
-	// Actually we don't need a "type" property here since that is inferred from the database (1-to-1 relation).
 
 	/**
 	 * Create a new bookmark indirectly by calling the super.
@@ -20,10 +19,11 @@ public abstract class Bookmark {
 	 * @param title Title for the object.
 	 * @param addDate When it was added to the database (convert this to Java's Date).
 	 */
-	Bookmark(int id, String title, Date addDate) {
+	Bookmark(int id, String title, Date addDate, int type) {
 		this.id = id;
 		this.title = title;
 		this.addDate = addDate;
+		this.type = type;
 	}
 
 	/**
@@ -58,5 +58,13 @@ public abstract class Bookmark {
 
 	public void setAddDate(Date addDate) {
 		this.addDate = addDate;
+	}
+
+	public int getType() {
+		return type;
+	}
+
+	public void setType(int type) {
+		this.type = type;
 	}
 }
