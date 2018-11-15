@@ -18,3 +18,9 @@ mainClassName = 'ohtu.main.Main'
 run {
     standardInput = System.in
 }
+
+jar {
+    manifest {
+		attributes 'Main-Class': 'ohtu.main.Main'
+    }
+}
