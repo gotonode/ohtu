@@ -75,14 +75,14 @@ public class UiController {
 
 		while (true) {
 
-			System.out.print("Your choice (type 'X' to list all available commands): ");
+			System.out.print("Your choice: ");
 
-			while (scanner.hasNextLine()) {
+			if (scanner.hasNextLine()) {
 
 				String next = scanner.nextLine();
 
 				if (next.isEmpty()) {
-					System.out.println("Please enter something.");
+					System.out.println("Please enter something. For a list of available commands, type 'X'.");
 					continue;
 				}
 
