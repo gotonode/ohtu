@@ -1,6 +1,6 @@
 # Ohjelmistotuotanto 2018
 
-[![Build Status](https://travis-ci.org/gotonode/ohtu.svg?branch=master)](https://travis-ci.org/gotonode/ohtu)
+[![Build Status](https://travis-ci.org/gotonode/ohtu.svg?branch=master)](https://travis-ci.org/gotonode/ohtu) [![codecov](https://codecov.io/gh/gotonode/ohtu/branch/master/graph/badge.svg)](https://codecov.io/gh/gotonode/ohtu)
 
 * [Product Backlog](https://github.com/gotonode/ohtu/projects/3)
 * [Sprint 1 Backlog](https://github.com/gotonode/ohtu/projects/1)
