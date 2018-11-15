@@ -2,8 +2,9 @@
 .gradle
 .idea
 .vscode
-nbproject
+/nbproject/
 /gradle/
+/build/
 
 # Compiled class file
 *.class

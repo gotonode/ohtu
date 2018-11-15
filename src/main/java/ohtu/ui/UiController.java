@@ -77,9 +77,14 @@ public class UiController {
 
 			System.out.print("Your choice (type 'X' to list all available commands): ");
 
-			if (scanner.hasNext()) {
+			while (scanner.hasNextLine()) {
 
-				String next = scanner.next();
+				String next = scanner.nextLine();
+
+				if (next.isEmpty()) {
+					System.out.println("Please enter something.");
+					continue;
+				}
 
 				if (next.length() > 1) {
 					System.out.println("Please only enter 1 character.");
