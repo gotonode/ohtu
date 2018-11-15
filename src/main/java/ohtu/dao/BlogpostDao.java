@@ -1,9 +1,9 @@
 package ohtu.dao;
 
-import ohtu.domain.Bookmark;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+
 import ohtu.database.Database;
 import ohtu.domain.Blogpost;
 

@@ -1,6 +1,5 @@
 package ohtu.main;
 
-import ohtu.enums.Commands;
 import ohtu.ui.UiController;
 
 import java.util.Scanner;

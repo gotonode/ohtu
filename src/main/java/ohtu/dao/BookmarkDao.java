@@ -1,10 +1,28 @@
 package ohtu.dao;
 
+import ohtu.domain.Bookmark;
 
-public class BookmarkDao {
+import java.sql.SQLException;
+import java.util.List;
 
-	// Should this class handle things like getting every bookmark, no matter the type?
-	// Or should we get all bookmarks individually by combining
-	// the findAll results from all DAO's that inherit from the Bookmark-class?
+public class BookmarkDao implements ObjectDao<Bookmark, Integer> {
+
 	// If possible, this class could return all results, when we don't want to get e.g. just the blog posts.
+
+	@Override
+	public List<Bookmark> findAll() throws SQLException {
+		return null;
+	}
+
+	@Override
+	public Bookmark findById(Integer id) throws SQLException {
+		return null;
+	}
+
+	@Override
+	public Bookmark findByTitle(String title) throws SQLException {
+		return null;
+	}
+
+
 }
