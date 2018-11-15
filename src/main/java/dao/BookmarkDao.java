@@ -1,5 +1,6 @@
 package dao;
 
+
 public class BookmarkDao {
 
 	// Should this class handle things like getting every bookmark, no matter the type?

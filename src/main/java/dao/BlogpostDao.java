@@ -3,12 +3,13 @@ package dao;
 import database.Database;
 import domain.Blogpost;
 
+import java.sql.SQLException;
 import java.util.List;
 
 /**
  * A DAO object for the Blogposts. This class talks with the database and creates (or updates/deletes) Blogpost objects.
  */
-public class BlogpostDao {
+public class BlogpostDao implements ObjectDao<Blogpost, Integer> {
 
 	private final Database database;
 
@@ -18,15 +19,18 @@ public class BlogpostDao {
 
 	// TODO: Implement findById, findByTitle, findAll etc.
 
-	public Blogpost findById(int id) {
+	@Override
+	public Blogpost findByTitle(String title) throws SQLException {
 		return null;
 	}
 
-	public Blogpost findByTitle(String title) {
+	@Override
+	public List<Blogpost> findAll() throws SQLException {
 		return null;
 	}
 
-	public List<Blogpost> findAll() {
+	@Override
+	public Blogpost findById(Integer id) throws SQLException {
 		return null;
 	}
 
