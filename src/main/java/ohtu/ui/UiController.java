@@ -29,11 +29,13 @@ public class UiController {
 
 	public Blogpost addBlogpost() {
 		// Construction of a new Blogpost most likely should not be in this class.
+		// Why? Because that creates a dependency that is perhaps unnecessary.
 		System.out.println("Adding a new blogpost.");
 		String title = askForString("Title:", false);
 		String author = askForString("Author:", false);
 		String url = askForString("URL:", false);
 		Date date = Date.from(Instant.now());
+		// The new Bookmark is created with an ID of -1 indicating it's not been added to the database yet.
 		Blogpost output = new Blogpost(-1, title, date, author, url);
 		System.out.println("A new blogpost has been created and added to the database.");
 		return output;

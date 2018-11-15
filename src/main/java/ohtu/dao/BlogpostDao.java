@@ -45,6 +45,12 @@ public class BlogpostDao implements ObjectDao<Blogpost, Integer> {
 	}
 
 	@Override
+	public boolean create(Blogpost blogpost) throws SQLException {
+		// TODO: Implement this. Should return true if the add is successful, false otherwise.
+		return false;
+	}
+
+	@Override
 	public List<Blogpost> findAll() throws SQLException, ParseException {
 		Connection conn = database.getConnection();
 		PreparedStatement stmt = conn.prepareStatement("SELECT*FROM bookmark,blogpost WHERE bookmark.id=blogpost.id");
