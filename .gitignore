@@ -3,7 +3,6 @@
 .idea
 .vscode
 /nbproject/
-/gradle/
 /build/
 
 # Compiled class file
