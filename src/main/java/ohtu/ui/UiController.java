@@ -1,6 +1,10 @@
 package ohtu.ui;
 
+import ohtu.domain.Blogpost;
+
+import java.time.Instant;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.Scanner;
 
 public class UiController {
@@ -23,11 +27,16 @@ public class UiController {
 		System.out.println("Thanks for using " + APP_NAME + ".");
 	}
 
-	public void addBlogpost() {
+	public Blogpost addBlogpost() {
+		// Construction of a new Blogpost most likely should not be in this class.
 		System.out.println("Adding a new blogpost.");
 		String title = askForString("Title:", false);
 		String author = askForString("Author:", false);
 		String url = askForString("URL:", false);
+		Date date = Date.from(Instant.now());
+		Blogpost output = new Blogpost(-1, title, date, author, url);
+		System.out.println("A new blogpost has been created and added to the database.");
+		return output;
 	}
 
 	/**
@@ -43,7 +52,7 @@ public class UiController {
 		while (true) {
 			System.out.print(prompt.trim() + " ");
 			data = scanner.nextLine();
-			if (data.length() == 0) {
+			if (data.isEmpty()) {
 				if (allowEmpty) {
 					break;
 				} else {
