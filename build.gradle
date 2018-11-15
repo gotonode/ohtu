@@ -12,5 +12,5 @@ dependencies {
     testCompile 'junit:junit:4.12'
 }
 
-mainClassName = 'Main'
+mainClassName = 'ohtu.main.Main'
 

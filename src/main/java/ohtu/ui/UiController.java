@@ -1,4 +1,4 @@
-package ui;
+package ohtu.ui;
 
 import java.util.Scanner;
 

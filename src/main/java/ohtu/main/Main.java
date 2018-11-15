@@ -1,4 +1,6 @@
-import ui.UiController;
+package ohtu.main;
+
+import ohtu.ui.UiController;
 
 import java.util.Scanner;
 

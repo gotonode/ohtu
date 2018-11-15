@@ -1,4 +1,4 @@
-package dao;
+package ohtu.dao;
 
 
 public class BookmarkDao {

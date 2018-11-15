@@ -1,4 +1,4 @@
-package domain;
+package ohtu.domain;
 
 import java.util.Date;
 
@@ -15,9 +15,9 @@ public abstract class Bookmark {
 
 	/**
 	 * Create a new bookmark indirectly by calling the super.
-	 * @param id ID for the object (from the database).
+	 * @param id ID for the object (from the ohtu.database).
 	 * @param title Title for the object.
-	 * @param addDate When it was added to the database (convert this to Java's Date).
+	 * @param addDate When it was added to the ohtu.database (convert this to Java's Date).
 	 */
 	Bookmark(int id, String title, Date addDate, char type) {
 		this.id = id;

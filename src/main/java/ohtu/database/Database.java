@@ -1,4 +1,4 @@
-package database;
+package ohtu.database;
 
 import java.io.File;
 import java.sql.Connection;
@@ -11,8 +11,8 @@ public class Database {
 	private String databaseAddress;
 
 	/**
-	 * Creates a new Database-object with the given File, which points to the actual SQLite database.
-	 * @param file Where the SQLite database file is located.
+	 * Creates a new Database-object with the given File, which points to the actual SQLite ohtu.database.
+	 * @param file Where the SQLite ohtu.database file is located.
 	 */
 	public Database(File file) {
 		this.databaseFile = file;
