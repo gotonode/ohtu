@@ -7,7 +7,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 /**
- * A DAO object for the Blogposts. This class talks with the ohtu.database and creates (or updates/deletes) Blogpost objects.
+ * A DAO object for the Blogposts. This class talks with the database and creates (or updates/deletes) Blogpost objects.
  */
 public class BlogpostDao implements ObjectDao<Blogpost, Integer> {
 
