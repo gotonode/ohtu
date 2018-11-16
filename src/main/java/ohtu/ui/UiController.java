@@ -1,43 +1,40 @@
 package ohtu.ui;
 
 import ohtu.domain.Blogpost;
+import ohtu.io.IO;
 
 import java.time.Instant;
 import java.util.Arrays;
 import java.util.Date;
-import java.util.Scanner;
 
 public class UiController {
 
-	// I'll implement the mock UI component later (Riku).
+	private IO io;
 
-	private static final String APP_NAME = "Bookmarks Database";
-
-	private Scanner scanner;
-
-	public UiController(Scanner scanner) {
-		this.scanner = scanner;
+	public UiController(IO io) {
+		this.io = io;
 	}
 
 	public void printGreeting() {
-		System.out.println("Welcome to " + APP_NAME + "!\n");
+		io.println("Welcome to " + ohtu.main.Main.APP_NAME + "!\n");
 	}
 
 	public void printGoodbye() {
-		System.out.println("Thanks for using " + APP_NAME + ".");
+		io.println("Thanks for using " + ohtu.main.Main.APP_NAME + ".");
 	}
 
 	public Blogpost addBlogpost() {
 		// Construction of a new Blogpost most likely should not be in this class.
 		// Why? Because that creates a dependency that is perhaps unnecessary.
-		System.out.println("Adding a new blogpost.");
+		io.println("Adding a new blogpost.");
 		String title = askForString("Title:", false);
 		String author = askForString("Author:", false);
 		String url = askForString("URL:", false);
 		Date date = Date.from(Instant.now());
 		// The new Bookmark is created with an ID of -1 indicating it's not been added to the database yet.
 		Blogpost output = new Blogpost(-1, title, date, author, url);
-		System.out.println("A new blogpost has been created and added to the database.");
+		io.println("A new blogpost has been created and added to the database.");
+		io.println("");
 		return output;
 	}
 
@@ -52,13 +49,12 @@ public class UiController {
 		String data = "";
 
 		while (true) {
-			System.out.print(prompt.trim() + " ");
-			data = scanner.nextLine();
+			data = io.readLine(prompt);
 			if (data.isEmpty()) {
 				if (allowEmpty) {
 					break;
 				} else {
-					System.out.println("Please write something.");
+					io.println("Please write something.");
 				}
 			} else {
 				break;
@@ -68,13 +64,13 @@ public class UiController {
 	}
 
 	/**
-	 * Prints all the available instructions for the user.
+	 * printlns all the available instructions for the user.
 	 */
 	public void printInstructions() {
-		System.out.println("L: List all blogposts");
-		System.out.println("A: Add a new blogpost");
-		System.out.println("E: Exit from the app");
-		System.out.println();
+		io.println("L: List all blogposts");
+		io.println("A: Add a new blogpost");
+		io.println("E: Exit from the app");
+		io.println("");
 	}
 
 	/**
@@ -86,39 +82,35 @@ public class UiController {
 
 		while (true) {
 
-			System.out.print("Your choice: ");
+			String next = io.readLine("Your choice:");
 
-			if (scanner.hasNextLine()) {
+			if (next.isEmpty()) {
+				io.println("Please enter something. For a list of available commands, type 'X'.");
+				continue;
+			}
 
-				String next = scanner.nextLine();
+			if (next.length() > 1) {
+				io.println("Please only enter 1 character.");
+				continue;
+			}
 
-				if (next.isEmpty()) {
-					System.out.println("Please enter something. For a list of available commands, type 'X'.");
-					continue;
-				}
+			char input = next.toUpperCase().charAt(0);
 
-				if (next.length() > 1) {
-					System.out.println("Please only enter 1 character.");
-					continue;
-				}
+			boolean found = false;
 
-				char input = next.toUpperCase().charAt(0);
-
-				boolean found = false;
-
-				for (char c : allowedChars) {
-					if (input == c || input == 'X') {
-						found = true;
-						break;
-					}
-				}
-
-				if (!found) {
-					System.out.println("Please enter a character from the following: " + Arrays.toString(allowedChars));
-				} else {
-					return input;
+			for (char c : allowedChars) {
+				if (input == c || input == 'X') {
+					found = true;
+					break;
 				}
 			}
+
+			if (!found) {
+				io.println("Please enter a character from the following: " + Arrays.toString(allowedChars));
+			} else {
+				return input;
+			}
 		}
+
 	}
 }

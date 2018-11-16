@@ -1,46 +1,32 @@
 package ohtu.main;
 
-import ohtu.ui.UiController;
+import ohtu.io.ConsoleIO;
 
 import java.util.Scanner;
 
+/**
+ * The program starts here. Program logic is handled in App-object. This class is ignored in code coverage.
+ */
 public class Main {
 
-	private static UiController uiController;
+	// Declare final variables here.
+	public static final String APP_NAME = "Bookmarks Database";
+	public static final int SPRINT = 1; // For each sprint, assign the sprint's number here.
+	public static final boolean DEBUG = true; // Will cause StubIO to print its contents, useful for tests.
 
-	private static boolean appRunning = true;
+	private static App app;
 
     public static void main(String[] args) {
 
-		Scanner scanner = new Scanner(System.in);
-
-    	uiController = new UiController(scanner);
-
-    	uiController.printGreeting();
-    	uiController.printInstructions();
-
-    	while (appRunning) {
-
-    		char command = uiController.askForCharacter(new char[]{'A', 'L', 'E'});
-
-    		if (command == 'X') {
-    			uiController.printInstructions();
-    			continue;
-			}
-
-    		// I'll be using the enums from enums.Commands-package soon.
-			switch (command) {
-				case 'A':
-					uiController.addBlogpost();
-					break;
-				case 'E':
-					appRunning = false;
-					break;
-			}
+    	if (DEBUG) {
+			System.out.println("# App started in DEBUG mode");
 		}
 
-		// The main loop has exited, so the program will terminate with error code 0 (success).
-		uiController.printGoodbye();
-		System.exit(0);
+    	Scanner scanner = new Scanner(System.in);
+
+    	ConsoleIO consoleIo = new ConsoleIO(scanner);
+
+    	app = new App(consoleIo); // Dependency injection. For tests, pass a StubIO.
+		app.run(); // Run the app. It contains a loop, and once it breaks, the app will terminate.
     }
 }
