@@ -1,7 +1,6 @@
-package io;
+package ohtu.main;
 
 import ohtu.io.StubIO;
-import ohtu.main.App;
 import ohtu.ui.UiController;
 import org.junit.Before;
 import org.junit.Test;
@@ -10,24 +9,27 @@ import java.util.ArrayList;
 
 import static org.junit.Assert.assertTrue;
 
-public class StubIOTest {
+public class AppTest {
 
 	private App app;
 	private StubIO stubIo;
 	private ArrayList<String> lines;
 
 	@Before
-	public void initialize() {
+	public void beforeClass() {
 		lines = new ArrayList<>();
 		stubIo = new StubIO(lines);
+		UiController uiController = new UiController(stubIo);
 	}
 
 	/**
 	 * A sample test which creates a new App with the StubIO, and issues an exit command ('E').
+	 * The app should exit the goodbye message.
+	 *
 	 * @throws AssertionError
 	 */
 	@Test
-	public void appExitsWhenExitCommandGiven() throws AssertionError  {
+	public void appExitsWhenExitCommandGiven() throws AssertionError {
 
 		lines.add("E");
 
@@ -38,5 +40,4 @@ public class StubIOTest {
 
 		assertTrue(prints.contains("Thanks for using " + ohtu.main.Main.APP_NAME + ".\n"));
 	}
-
 }
