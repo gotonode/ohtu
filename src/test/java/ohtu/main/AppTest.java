@@ -37,6 +37,6 @@ public class AppTest {
 
 		ArrayList<String> prints = stubIo.getPrints(); // When debugging tests, this is an interesting variable to read.
 
-		assertTrue(prints.contains("Thanks for using " + ohtu.main.Main.APP_NAME + ".\n"));
+		assertTrue(prints.contains("Thanks for using " + ohtu.main.Main.APP_NAME + "."));
 	}
 }

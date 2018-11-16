@@ -20,15 +20,15 @@ public class StubIO implements IO {
 		if (ohtu.main.Main.DEBUG) {
 			System.out.print(input);
 		}
-		prints.add(input);
+		prints.add(input.trim()); // Trim trailing newline ("\n").
 	}
 
 	@Override
 	public void println(String input) {
 		if (ohtu.main.Main.DEBUG) {
-			System.out.println(input.trim());
+			System.out.println(input);
 		}
-		prints.add(input + "\n");
+		prints.add(input.trim()); // Trim trailing newline ("\n").
 	}
 
 	public ArrayList<String> getPrints() {
