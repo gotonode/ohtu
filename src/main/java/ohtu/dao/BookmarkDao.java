@@ -4,6 +4,7 @@ import ohtu.domain.Bookmark;
 
 import java.sql.SQLException;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class BookmarkDao implements ObjectDao<Bookmark, Integer> {
@@ -12,7 +13,7 @@ public class BookmarkDao implements ObjectDao<Bookmark, Integer> {
 
 	@Override
 	public List<Bookmark> findAll() throws SQLException, ParseException {
-		return null;
+		return new ArrayList<>(); // An empty list.
 	}
 
 	@Override
