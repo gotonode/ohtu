@@ -1,6 +1,5 @@
 package ohtu.ui;
 
-import ohtu.domain.Blogpost;
 import ohtu.io.IO;
 
 import java.time.Instant;
@@ -15,6 +14,14 @@ public class UiController {
 		this.io = io;
 	}
 
+	public void addSuccess(String type) {
+		io.println("A new " + type.trim() + " has been created and saved to the database.");
+	}
+
+	public void addFailure() {
+		io.println("Could not add your new bookmark to the database. Please try again.");
+	}
+
 	public void printGreeting() {
 		io.println("Welcome to " + ohtu.main.Main.APP_NAME + "!\n");
 	}
@@ -23,19 +30,17 @@ public class UiController {
 		io.println("Thanks for using " + ohtu.main.Main.APP_NAME + ".");
 	}
 
-	public Blogpost addBlogpost() {
-		// Construction of a new Blogpost most likely should not be in this class.
-		// Why? Because that creates a dependency that is perhaps unnecessary.
+	public Object[] askBlogpostData() {
+
 		io.println("Adding a new blogpost.");
+
 		String title = askForString("Title:", false);
 		String author = askForString("Author:", false);
 		String url = askForString("URL:", false);
+
 		Date date = Date.from(Instant.now());
-		// The new Bookmark is created with an ID of -1 indicating it's not been added to the database yet.
-		Blogpost output = new Blogpost(-1, title, date, author, url);
-		io.println("A new blogpost has been created and added to the database.");
-		io.println("");
-		return output;
+
+		return new Object[]{title, author, url, date};
 	}
 
 	/**

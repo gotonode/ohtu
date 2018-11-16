@@ -1,16 +1,28 @@
 package ohtu.main;
 
+import ohtu.dao.BlogpostDao;
+import ohtu.database.Database;
+import ohtu.domain.Blogpost;
 import ohtu.io.IO;
+import ohtu.tools.Builder;
 import ohtu.ui.UiController;
+
+import java.io.File;
+import java.sql.SQLException;
+import java.util.Date;
 
 public class App {
 
 	private boolean appRunning;
 
+	private BlogpostDao blogpostDao;
+
 	private IO io;
 
 	public App(IO io) {
 		this.io = io;
+		Database database = new Database(new File(""));
+		blogpostDao = new BlogpostDao(database);
 	}
 
 	public void run() {
@@ -34,7 +46,22 @@ public class App {
 			// I'll be using the enums from enums.Commands-package soon.
 			switch (command) {
 				case 'A':
-					uiController.addBlogpost();
+					Object[] values = uiController.askBlogpostData();
+					String title = values[0].toString();
+					String author = values[1].toString();
+					String url = values[2].toString();
+					Date date = (Date)values[3];
+					Blogpost newBlogpost = Builder.buildBlogpost(-1, title, author, url, date);
+					try {
+						final boolean success = blogpostDao.create(newBlogpost);
+						if (success) {
+							uiController.addSuccess(newBlogpost.getClass().getSimpleName());
+						} else {
+							uiController.addFailure();
+						}
+					} catch (SQLException e) {
+						System.out.println(e);
+					}
 					break;
 				case 'E':
 					appRunning = false;

@@ -23,7 +23,7 @@ public class AppTest {
 
 	/**
 	 * A sample test which creates a new App with the StubIO, and issues an exit command ('E').
-	 * The app should exit the goodbye message.
+	 * The app should exit with the goodbye message.
 	 *
 	 * @throws AssertionError
 	 */
