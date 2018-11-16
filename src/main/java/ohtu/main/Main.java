@@ -11,7 +11,6 @@ public class Main {
 
 	// Declare final variables here.
 	public static final String APP_NAME = "Bookmarks Database";
-	public static final int SPRINT = 1; // For each sprint, assign the sprint's number here.
 	public static final boolean DEBUG = true; // Will cause StubIO to print its contents, useful for tests.
 
 	private static App app;
