@@ -19,7 +19,6 @@ public class AppTest {
 	public void beforeClass() {
 		lines = new ArrayList<>();
 		stubIo = new StubIO(lines);
-		UiController uiController = new UiController(stubIo);
 	}
 
 	/**
