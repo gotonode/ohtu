@@ -1,8 +1,8 @@
 
-CREATE TABLE Bookmark( 
+CREATE TABLE Bookmark ( 
     id INTEGER PRIMARY KEY, 
     title varchar(100),
-    addDate Date,
+    addDate datetime default current_timestamp,
     type varchar(1)
 );  
 
