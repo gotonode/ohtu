@@ -20,76 +20,120 @@ import java.util.List;
  */
 public class BlogpostDao implements ObjectDao<Blogpost, Integer> {
 
-	private final Database database;
+    private final Database database;
 
-	public BlogpostDao(Database database) {
-		this.database = database;
-	}
+    public BlogpostDao(Database database) {
+        this.database = database;
+    }
 
-	// TODO: Implement findById, findByTitle, findAll etc.
-	@Override
-	public Blogpost findByTitle(String title) throws SQLException, ParseException {
-		Connection conn = database.getConnection();
-		PreparedStatement stmt = conn
-				.prepareStatement("SELECT*FROM bookmark,blogpost WHERE bookmark.title=? AND bookmark.id=blogpost.id");
-		stmt.setString(1, title);
-		ResultSet rs = stmt.executeQuery();
-		if (rs.next()) {
-			Blogpost output = constructBlogpostFromResultSet(rs);
-			rs.close();
-			stmt.close();
-			conn.close();
-			return output;
-		}
-		return null;
-	}
+    // TODO: Implement findById, findByTitle, findAll etc.
+    @Override
+    public Blogpost findByTitle(String title) throws SQLException, ParseException {
+        Connection conn = database.getConnection();
+        PreparedStatement stmt = conn
+                .prepareStatement("SELECT*FROM bookmark,blogpost WHERE bookmark.title=? AND bookmark.id=blogpost.id");
+        stmt.setString(1, title);
+        ResultSet rs = stmt.executeQuery();
+        if (rs.next()) {
+            Blogpost output = constructBlogpostFromResultSet(rs);
+            rs.close();
+            stmt.close();
+            conn.close();
+            return output;
+        }
+        return null;
+    }
 
-	@Override
-	public boolean create(Blogpost blogpost) throws SQLException {
-		// TODO: Implement this. Should return true if the add is successful, false otherwise.
-		return false;
-	}
+    @Override
+    public boolean create(Blogpost blogpost) throws SQLException, ParseException {
+        createToBookmarkTable(blogpost.getTitle());
+        int id = getLatestId();
+        if (id == -1) {
+            return false; //method createToBookmarkTable didn't work successfully and as a result blogpost cannot be added
+        }
+        createToBlogpostTable(id, blogpost.getAuthor(), blogpost.getUrl());
 
-	@Override
-	public List<Blogpost> findAll() throws SQLException, ParseException {
-		Connection conn = database.getConnection();
-		PreparedStatement stmt = conn.prepareStatement("SELECT*FROM bookmark,blogpost WHERE bookmark.id=blogpost.id");
-		ResultSet rs = stmt.executeQuery();
-		List<Blogpost> outputs = new ArrayList<>();
-		while (rs.next()) {
-			Blogpost blogpost = constructBlogpostFromResultSet(rs);
-			outputs.add(blogpost);
-		}
-		rs.close();
-		stmt.close();
-		conn.close();
-		return outputs;
-	}
+        // make sure that blogpost-object is added to database
+        Blogpost added = findByTitle(blogpost.getTitle());
+        return added.equals(blogpost);
+    }
 
-	@Override
-	public Blogpost findById(Integer id) throws SQLException, ParseException {
-		Connection conn = database.getConnection();
-		PreparedStatement stmt = conn
-				.prepareStatement("SELECT*FROM bookmark,blogpost WHERE bookmark.id=? AND bookmark.id=blogpost.id");
-		stmt.setInt(1, id);
-		ResultSet rs = stmt.executeQuery();
-		if (rs.next()) {
-			Blogpost output = constructBlogpostFromResultSet(rs);
-			rs.close();
-			stmt.close();
-			conn.close();
-			return output;
-		}
-		return null;
-	}
+    @Override
+    public List<Blogpost> findAll() throws SQLException, ParseException {
+        Connection conn = database.getConnection();
+        PreparedStatement stmt = conn.prepareStatement("SELECT*FROM bookmark,blogpost WHERE bookmark.id=blogpost.id");
+        ResultSet rs = stmt.executeQuery();
+        List<Blogpost> outputs = new ArrayList<>();
+        while (rs.next()) {
+            Blogpost blogpost = constructBlogpostFromResultSet(rs);
+            outputs.add(blogpost);
+        }
+        rs.close();
+        stmt.close();
+        conn.close();
+        return outputs;
+    }
 
-	private Blogpost constructBlogpostFromResultSet(ResultSet rs) throws SQLException, ParseException {
-		String dateString = rs.getString("addDate");
-		Date dateUtil = new SimpleDateFormat("yyyy-MM-dd").parse(dateString);
-		java.sql.Date date = new java.sql.Date(dateUtil.getTime());
-		Blogpost blogpost = new Blogpost(rs.getInt("id"), rs.getString("title"), date, rs.getString("author"),
-				rs.getString("url"));
-		return blogpost;
-	}
+    @Override
+    public Blogpost findById(Integer id) throws SQLException, ParseException {
+        Connection conn = database.getConnection();
+        PreparedStatement stmt = conn
+                .prepareStatement("SELECT*FROM bookmark,blogpost WHERE bookmark.id=? AND bookmark.id=blogpost.id");
+        stmt.setInt(1, id);
+        ResultSet rs = stmt.executeQuery();
+        if (rs.next()) {
+            Blogpost output = constructBlogpostFromResultSet(rs);
+            rs.close();
+            stmt.close();
+            conn.close();
+            return output;
+        }
+        return null;
+    }
+
+    private Blogpost constructBlogpostFromResultSet(ResultSet rs) throws SQLException, ParseException {
+        String dateString = rs.getString("addDate");
+        Date dateUtil = new SimpleDateFormat("yyyy-MM-dd").parse(dateString);
+        java.sql.Date date = new java.sql.Date(dateUtil.getTime());
+        Blogpost blogpost = new Blogpost(rs.getInt("id"), rs.getString("title"), date, rs.getString("author"),
+                rs.getString("url"));
+        return blogpost;
+    }
+
+    private void createToBookmarkTable(String title) throws SQLException {
+        Connection conn = database.getConnection();
+        // insert into bookmark-table
+        PreparedStatement stmtBookmark = conn.prepareStatement("INSERT INTO bookmark(title,addDate,type) VALUES(?,date('now'),'B')");
+        stmtBookmark.setString(1, title);
+        stmtBookmark.execute();
+        stmtBookmark.close();
+        conn.close();
+    }
+
+    private void createToBlogpostTable(int id, String author, String url) throws SQLException {
+        Connection conn = database.getConnection();
+        PreparedStatement stmtBlogpost = conn.prepareStatement("INSERT INTO blogpost(id,author,url) VALUES(?,?,?)");
+
+        stmtBlogpost.setInt(1, id);
+        stmtBlogpost.setString(2, author);
+        stmtBlogpost.setString(3, url);
+        stmtBlogpost.execute();
+        stmtBlogpost.close();
+    }
+
+    // get the id of the bookmark that was just added to database
+    private int getLatestId() throws SQLException {
+        Connection conn = database.getConnection();
+        PreparedStatement stmt = conn.prepareStatement("SELECT MAX(id) from bookmark");
+        ResultSet rs = stmt.executeQuery();
+        if (rs.next()) {
+            int id = rs.getInt("MAX(id)");
+            rs.close();
+            stmt.close();
+            conn.close();
+            return id;
+        }
+        return -1;
+    }
 
 }
