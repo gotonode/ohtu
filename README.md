@@ -1,10 +1,26 @@
-# Ohjelmistotuotanto 2018
+# Bookmarks Database
+> A student project done in a team of 3 members
 
-[![Build Status](https://travis-ci.org/gotonode/ohtu.svg?branch=master)](https://travis-ci.org/gotonode/ohtu) [![codecov](https://codecov.io/gh/gotonode/ohtu/branch/master/graph/badge.svg)](https://codecov.io/gh/gotonode/ohtu)
+Course: *Ohjelmistotuotanto 2018*
 
-* [Product Backlog](https://github.com/gotonode/ohtu/projects/3)
-* [Sprint 1 Backlog](https://github.com/gotonode/ohtu/projects/1)
-* [Travis](https://travis-ci.org/gotonode/ohtu)
+***
+
+| Travis CI | Codecov |
+| :-: | :-: |
+|[![Build Status](https://travis-ci.org/gotonode/ohtu.svg?branch=master)](https://travis-ci.org/gotonode/ohtu) | [![codecov](https://codecov.io/gh/gotonode/ohtu/branch/master/graph/badge.svg)](https://codecov.io/gh/gotonode/ohtu) |
+
+### Links
+
+From our wiki:
+* [Definition of Done](https://github.com/gotonode/ohtu/wiki/Definition-of-Done)
+* [Code Style](https://github.com/gotonode/ohtu/wiki/Code-Style)
 * [Database](https://github.com/gotonode/ohtu/wiki/Database)
 
-Please view our [Definition of Done](https://github.com/gotonode/ohtu/wiki/Definition-of-Done) and [Code Style](https://github.com/gotonode/ohtu/wiki/Code-Style) documents.
+Backlogs (GitHub Projects):
+* [Product Backlog](https://github.com/gotonode/ohtu/projects/3)
+* [Sprint 1 Backlog](https://github.com/gotonode/ohtu/projects/1)
+
+External resources:
+* [Travis](https://travis-ci.org/gotonode/ohtu) (continuous integration & tests)
+* [Codecov](https://codecov.io/gh/gotonode/ohtu) (test coverage reports)
+
