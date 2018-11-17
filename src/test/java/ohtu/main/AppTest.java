@@ -1,5 +1,6 @@
 package ohtu.main;
 
+import java.text.ParseException;
 import ohtu.io.StubIO;
 import ohtu.ui.UiController;
 import org.junit.Before;
@@ -28,7 +29,7 @@ public class AppTest {
 	 * @throws AssertionError
 	 */
 	@Test
-	public void appExitsWhenExitCommandGiven() throws AssertionError {
+	public void appExitsWhenExitCommandGiven() throws AssertionError, ParseException {
 
 		lines.add("E");
 
