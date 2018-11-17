@@ -4,6 +4,7 @@
 .vscode
 /nbproject/
 /build/
+/.nb-gradle/
 
 # Compiled class file
 *.class
