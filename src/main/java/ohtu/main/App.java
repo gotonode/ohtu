@@ -6,26 +6,32 @@ import ohtu.domain.Blogpost;
 import ohtu.io.IO;
 import ohtu.tools.Builder;
 import ohtu.ui.UiController;
-
 import java.io.File;
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.util.Date;
 
 public class App {
 
 	private boolean appRunning;
-
 	private BlogpostDao blogpostDao;
-
 	private IO io;
+        private Database database;
 
-	public App(IO io) {
+        // TODO: Remove/fix this constructor later. Now here for the sake of Test files continuing to work.
+        public App(IO io) {
+            this.io = io;
+            this.database = new Database(new File(""));
+            blogpostDao = new BlogpostDao(database);
+        }
+
+	public App(IO io, Database db) {
 		this.io = io;
-		Database database = new Database(new File(""));
+		this.database = db;
 		blogpostDao = new BlogpostDao(database);
 	}
 
-	public void run() {
+	public void run() throws ParseException {
 
 		appRunning = true;
 
