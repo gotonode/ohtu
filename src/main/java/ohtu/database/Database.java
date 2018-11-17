@@ -48,6 +48,13 @@ public class Database {
             }
         }
         
+        /**
+         * Reads and executes the SQL-statements in the file that is found through the
+         * given filepath.
+         * 
+         * @param filepath the location of the .sql file containing the required SQL-statements
+         * @throws SQLException 
+         */
         private void runSQLScript(String filepath) throws SQLException {
             try(Connection conn = getConnection(); Statement s = conn.createStatement()) {
                 BufferedReader reader = new BufferedReader(new FileReader(filepath));
