@@ -22,3 +22,11 @@ External resources:
 * [Travis](https://travis-ci.org/gotonode/ohtu) (continuous integration & tests)
 * [Codecov](https://codecov.io/gh/gotonode/ohtu) (test coverage)
 * [Codacy](https://www.codacy.com/app/gotonode/ohtu) (static code analysis)
+
+### Instructions
+
+| What | Command | Explanation |
+| :- | :- | :- |
+| Launch this app | `gradle run` | Gradle will build the app first if necessary |
+| Start the build process | `gradle build` | All dependencies will be downloaded |
+| Clean the project | `gradle clean` | Sometimes this may fix errors |
