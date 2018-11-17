@@ -1,13 +1,11 @@
 # Bookmarks Database
-> A student project done in a team of 3 members
+A student project done in a team of 3 members
 
 Course: *Ohjelmistotuotanto 2018*
 
-***
-
-| Travis CI | Codecov |
-| :-: | :-: |
-|[![Build Status](https://travis-ci.org/gotonode/ohtu.svg?branch=master)](https://travis-ci.org/gotonode/ohtu) | [![codecov](https://codecov.io/gh/gotonode/ohtu/branch/master/graph/badge.svg)](https://codecov.io/gh/gotonode/ohtu) |
+| Travis CI | Codecov | Codacy |
+| :-: | :-: | :-: |
+|[![Build Status](https://travis-ci.org/gotonode/ohtu.svg?branch=master)](https://travis-ci.org/gotonode/ohtu) | [![codecov](https://codecov.io/gh/gotonode/ohtu/branch/master/graph/badge.svg)](https://codecov.io/gh/gotonode/ohtu) | [![Codacy Badge](https://api.codacy.com/project/badge/Grade/2d0bf2d457bf498696afd4075722bf3a)](https://www.codacy.com/app/gotonode/ohtu?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=gotonode/ohtu&amp;utm_campaign=Badge_Grade)
 
 ### Links
 
@@ -22,5 +20,5 @@ Backlogs (GitHub Projects):
 
 External resources:
 * [Travis](https://travis-ci.org/gotonode/ohtu) (continuous integration & tests)
-* [Codecov](https://codecov.io/gh/gotonode/ohtu) (test coverage reports)
-
+* [Codecov](https://codecov.io/gh/gotonode/ohtu) (test coverage)
+* [Codacy](https://www.codacy.com/app/gotonode/ohtu) (static code analysis)
