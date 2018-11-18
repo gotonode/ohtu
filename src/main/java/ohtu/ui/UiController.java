@@ -30,7 +30,11 @@ public class UiController {
 		io.println("Thanks for using " + ohtu.main.Main.APP_NAME + ".");
 	}
 
-	public Object[] askBlogpostData() {
+	/**
+	 * Prompts the user for a title, author and URL.
+	 * @return An array of Strings, e.g. "String[]". Index 0 contains title, index 1 contains author and index 2 contains url.
+	 */
+	public String[] askBlogpostData() {
 
 		io.println("Adding a new blogpost.");
 
@@ -38,9 +42,7 @@ public class UiController {
 		String author = askForString("Author:", false);
 		String url = askForString("URL:", false);
 
-		Date date = Date.from(Instant.now());
-
-		return new Object[]{title, author, url, date};
+		return new String[]{title, author, url};
 	}
 
 	/**

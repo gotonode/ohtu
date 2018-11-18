@@ -38,7 +38,8 @@ public interface ObjectDao<Bookmark, Integer> {
     Bookmark findByTitle(String title) throws SQLException, ParseException;
 
 	/**
-	 * Adds the Bookmark into the database. Ignores the Bookmark's ID (that is chosen by the database).
+	 * Adds the Bookmark into the database. Ignores the Bookmark's ID and addDate, those are assigned by the database.
+	 * When creating a new Bookmark from user input (not from database), assign -1 as the ID and null as addDate.
 	 * @param bookmark The Bookmark in question. Cannot pass Bookmark here directly.
 	 * @return True if successful, false otherwise.
 	 * @throws SQLException Database failure.

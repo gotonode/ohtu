@@ -101,13 +101,22 @@ public class App {
 
 	}
 
+	/**
+	 * Asks the user for title, author and url, and creates a new Blogpost by using Builder.
+	 * Then tries to add the new Blogpost into the database. Tells the user if the operation succeeded or not.
+	 */
 	private void addBlogpost() {
-		Object[] values = uiController.askBlogpostData();
-		String title = values[0].toString();
-		String author = values[1].toString();
-		String url = values[2].toString();
-		Date date = (Date) values[3];
-		Blogpost newBlogpost = Builder.buildBlogpost(-1, title, author, url, date);
+
+		String[] values = uiController.askBlogpostData();
+		String title = values[0];
+		String author = values[1];
+		String url = values[2];
+
+		// Database will handle assigning correct ID to the object, and decides the addDate value.
+		Date date = null; // This is here just as a reference that it is null.
+		int id = -1; // When creating new Bookmarks from user input, assign -1 as the ID.
+
+		Blogpost newBlogpost = Builder.buildBlogpost(id, title, author, url, date);
 		try {
 			final boolean success = blogpostDao.create(newBlogpost);
 			if (success) {
