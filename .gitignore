@@ -6,6 +6,7 @@
 /build/
 /.nb-gradle/
 /bookmarks.db
+/out/
 
 # Compiled class file
 *.class

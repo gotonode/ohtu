@@ -45,7 +45,7 @@ public class UiController {
 
 	/**
 	 * Asks the user for a string. Optionally doesn't allow empty strings.
-	 * @param prompt What to ask (prompt) for the user.
+	 * @param prompt What to ask (prompt) from the user.
 	 * @param allowEmpty If true, the string can be empty. Otherwise it cannot.
 	 * @return The string the user typed in.
 	 */
@@ -69,7 +69,7 @@ public class UiController {
 	}
 
 	/**
-	 * printlns all the available instructions for the user.
+	 * prints all the available instructions for the user.
 	 */
 	public void printInstructions() {
 		io.println("L: List all blogposts");
