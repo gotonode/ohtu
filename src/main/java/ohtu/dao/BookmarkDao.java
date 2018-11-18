@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import ohtu.database.Database;
 
-public class BookmarkDao implements ObjectDao<Bookmark, Integer> {
+public class BookmarkDao {
 
     // If possible, this class could return all results, when we don't want to get e.g. just the blog posts.
     private final Database database;
@@ -22,7 +22,6 @@ public class BookmarkDao implements ObjectDao<Bookmark, Integer> {
         this.blogpostDao = blogpostDao;
     }
 
-    @Override
     public List<Bookmark> findAll() throws SQLException, ParseException {
         ArrayList<Bookmark> bookmarks = new ArrayList<>();
         Connection conn = database.getConnection();
@@ -33,13 +32,11 @@ public class BookmarkDao implements ObjectDao<Bookmark, Integer> {
         while (rs.next()) {
             bookmarks.add(findCertainBookmarkByType(rs));
         }
-        rs.close();
-        stmt.close();
-        conn.close();
+        close(rs,stmt,conn);
         return bookmarks;
     }
 
-    @Override
+ 
     public Bookmark findById(Integer id) throws SQLException, ParseException {
         Connection conn = database.getConnection();
 
@@ -49,15 +46,14 @@ public class BookmarkDao implements ObjectDao<Bookmark, Integer> {
         ResultSet rs = stmt.executeQuery();
         if (rs.next()) {
             Bookmark found = findCertainBookmarkByType(rs);
-            rs.close();
-            stmt.close();
-            conn.close();
+            close(rs,stmt,conn);
             return found;
         }
+        close(rs,stmt,conn);
         return null;
     }
 
-    @Override
+   
     public Bookmark findByTitle(String title) throws SQLException, ParseException {
         Connection conn = database.getConnection();
 
@@ -67,17 +63,11 @@ public class BookmarkDao implements ObjectDao<Bookmark, Integer> {
         ResultSet rs = stmt.executeQuery();
         if (rs.next()) {
             Bookmark found = findCertainBookmarkByType(rs);
-            rs.close();
-            stmt.close();
-            conn.close();
+            close(rs,stmt,conn);
             return found;
         }
+        close(rs,stmt,conn);
         return null;
-    }
-
-    @Override
-    public boolean create(Bookmark bookmark) throws SQLException, ParseException {
-        return false;
     }
 
     private Bookmark findCertainBookmarkByType(ResultSet rs) throws SQLException, ParseException {
@@ -87,6 +77,13 @@ public class BookmarkDao implements ObjectDao<Bookmark, Integer> {
 
         // other types will be added later
         return null;
+    }
+    
+    //method to close connection to database,PreparesStatement and ResultSet
+    private void close(ResultSet rs, PreparedStatement stmt, Connection conn) throws SQLException {
+        rs.close();
+        stmt.close();
+        conn.close();
     }
 
 }

@@ -36,11 +36,10 @@ public class BlogpostDao implements ObjectDao<Blogpost, Integer> {
         ResultSet rs = stmt.executeQuery();
         if (rs.next()) {
             Blogpost output = constructBlogpostFromResultSet(rs);
-            rs.close();
-            stmt.close();
-            conn.close();
+            close(rs, stmt, conn);
             return output;
         }
+        close(rs, stmt, conn);
         return null;
     }
 
@@ -68,9 +67,7 @@ public class BlogpostDao implements ObjectDao<Blogpost, Integer> {
             Blogpost blogpost = constructBlogpostFromResultSet(rs);
             outputs.add(blogpost);
         }
-        rs.close();
-        stmt.close();
-        conn.close();
+        close(rs, stmt, conn);
         return outputs;
     }
 
@@ -83,11 +80,10 @@ public class BlogpostDao implements ObjectDao<Blogpost, Integer> {
         ResultSet rs = stmt.executeQuery();
         if (rs.next()) {
             Blogpost output = constructBlogpostFromResultSet(rs);
-            rs.close();
-            stmt.close();
-            conn.close();
+            close(rs, stmt, conn);
             return output;
         }
+        close(rs, stmt, conn);
         return null;
     }
 
@@ -128,12 +124,18 @@ public class BlogpostDao implements ObjectDao<Blogpost, Integer> {
         ResultSet rs = stmt.executeQuery();
         if (rs.next()) {
             int id = rs.getInt("MAX(id)");
-            rs.close();
-            stmt.close();
-            conn.close();
+            close(rs, stmt, conn);
             return id;
         }
+        close(rs, stmt, conn);
         return -1;
+    }
+
+    //method to close connection to database,PreparesStatement and ResultSet
+    private void close(ResultSet rs, PreparedStatement stmt, Connection conn) throws SQLException {
+        rs.close();
+        stmt.close();
+        conn.close();
     }
 
 }
