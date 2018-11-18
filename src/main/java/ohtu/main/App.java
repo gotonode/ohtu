@@ -80,18 +80,23 @@ public class App {
 
 	private void listAll() {
 		io.println("Listing all bookmarks...");
+		io.println(""); // Tidy.
 		try {
 			List<Bookmark> bookmarks = bookmarkDao.findAll();
 			for (Bookmark bookmark : bookmarks) {
 				if (bookmark instanceof Blogpost) {
 					Blogpost blogpost = (Blogpost) bookmark;
-					io.println(blogpost.getClass().getSimpleName()
-							+ " "
-							+ blogpost.getAddDate()
-							+ ": "
-							+ blogpost.getTitle()
-							+ " (" + blogpost.getAuthor()
-							+ ") " + blogpost.getUrl());
+
+					// Create an ArrayList of Strings that contains the printable data IN ORDER.
+					ArrayList<String> printableData = new ArrayList<>();
+					printableData.add(blogpost.getClass().getSimpleName());
+					printableData.add(blogpost.getAddDate().toString());
+					printableData.add(blogpost.getTitle());
+					printableData.add(blogpost.getAuthor());
+					printableData.add(blogpost.getUrl());
+
+					// Ask the controller to print the Bookmark's data to console.
+					uiController.printBlogpost(printableData);
 				}
 
 			}
@@ -108,7 +113,7 @@ public class App {
 	private void addBlogpost() {
 
 		String[] values = uiController.askBlogpostData();
-		String title = values[0];
+		String title = values[0]; // Care should be taken so as not to mix these indices up.
 		String author = values[1];
 		String url = values[2];
 
