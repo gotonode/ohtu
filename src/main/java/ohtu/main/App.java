@@ -123,8 +123,8 @@ public class App {
 
 		Blogpost newBlogpost = Builder.buildBlogpost(id, title, author, url, date);
 		try {
-			final boolean success = blogpostDao.create(newBlogpost);
-			if (success) {
+			final Blogpost success = blogpostDao.create(newBlogpost);
+			if (success!=null) {
 				uiController.addSuccess(newBlogpost.getClass().getSimpleName());
 			} else {
 				uiController.addFailure();
