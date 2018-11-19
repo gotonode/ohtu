@@ -18,7 +18,7 @@ public class Stepdefs {
     Database db = new Database(databaseFile);
     List<String> inputs = new ArrayList<>();
 
-    @Given("^command A is selected$")
+    @Given("^command adding a blogpost is selected$")
     public void command_A_selected() throws Throwable {
         inputs.add("A");
     }
@@ -56,7 +56,7 @@ public class Stepdefs {
         assertTrue(io.getPrints().contains(expectedOutput));
     }
 
-    @Given("^command L is selected$")
+    @Given("^command listing all bookmarks is selected$")
     public void command_L_is_selected() throws Throwable {
         inputs.add("L");
         inputs.add("E");
