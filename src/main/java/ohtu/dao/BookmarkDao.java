@@ -54,7 +54,8 @@ public class BookmarkDao {
     }
 
    
-    public Bookmark findByTitle(String title) throws SQLException, ParseException {
+    public List<Bookmark> findByTitle(String title) throws SQLException, ParseException {
+        List<Bookmark>bookmarks=new ArrayList<>();
         Connection conn = database.getConnection();
 
         PreparedStatement stmt = conn
@@ -63,11 +64,11 @@ public class BookmarkDao {
         ResultSet rs = stmt.executeQuery();
         if (rs.next()) {
             Bookmark found = findCertainBookmarkByType(rs);
-            close(rs,stmt,conn);
-            return found;
+            //close(rs,stmt,conn);
+            bookmarks.add(found);
         }
         close(rs,stmt,conn);
-        return null;
+        return bookmarks;
     }
 
     private Bookmark findCertainBookmarkByType(ResultSet rs) throws SQLException, ParseException {
