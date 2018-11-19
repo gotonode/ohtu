@@ -3,6 +3,11 @@ apply plugin: 'application'
 apply plugin: 'checkstyle'
 apply plugin: 'jacoco'
 
+project.ext {
+    cucumberVersion = '1.2.5'
+    junitVersion = '4.12'
+}
+
 repositories {
 	jcenter()
 }
@@ -12,6 +17,9 @@ dependencies {
 	compile group: 'org.xerial', name: 'sqlite-jdbc', version: '3.25.2'
 
 	testCompile 'junit:junit:4.12'
+        testCompile 'info.cukes:cucumber-java:' + cucumberVersion
+        testCompile 'info.cukes:cucumber-junit:' + cucumberVersion
+
 }
 
 mainClassName = 'ohtu.main.Main'
@@ -37,6 +45,12 @@ jacocoTestReport {
 		})
 	}
 }
+
+test {
+    testLogging.showStandardStreams = true
+    systemProperties System.getProperties()
+}
+
 
 // Currently, these are disabled. We'll discuss which rules to enabled later.
 tasks.withType(Checkstyle) {
