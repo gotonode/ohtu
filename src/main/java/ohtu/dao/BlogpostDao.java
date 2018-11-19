@@ -28,7 +28,8 @@ public class BlogpostDao implements ObjectDao<Blogpost, Integer> {
 
     // TODO: Implement findById, findByTitle, findAll etc.
     @Override
-    public Blogpost findByTitle(String title) throws SQLException, ParseException {
+    public List<Blogpost> findByTitle(String title) throws SQLException, ParseException {
+        List<Blogpost>blogposts=new ArrayList<>();
         Connection conn = database.getConnection();
         PreparedStatement stmt = conn
                 .prepareStatement("SELECT*FROM bookmark,blogpost WHERE bookmark.title=? AND bookmark.id=blogpost.id");
@@ -36,25 +37,29 @@ public class BlogpostDao implements ObjectDao<Blogpost, Integer> {
         ResultSet rs = stmt.executeQuery();
         if (rs.next()) {
             Blogpost output = constructBlogpostFromResultSet(rs);
-            close(rs, stmt, conn);
-            return output;
+            //close(rs, stmt, conn);
+            blogposts.add(output);
+            
         }
         close(rs, stmt, conn);
-        return null;
+        return blogposts;
     }
 
     @Override
-    public boolean create(Blogpost blogpost) throws SQLException, ParseException {
+    public Blogpost create(Blogpost blogpost) throws SQLException, ParseException {
         createToBookmarkTable(blogpost.getTitle());
         int id = getLatestId();
         if (id == -1) {
-            return false; //method createToBookmarkTable didn't work successfully and as a result blogpost cannot be added
+            return null; //method createToBookmarkTable didn't work successfully and as a result blogpost cannot be added
         }
         createToBlogpostTable(id, blogpost.getAuthor(), blogpost.getUrl());
 
         // make sure that blogpost-object is added to database
-        Blogpost added = findByTitle(blogpost.getTitle());
-        return added.equals(blogpost);
+        Blogpost added = findById(id);
+        if(added.equals(blogpost)){
+            return added;
+        }
+        return null;
     }
 
     @Override

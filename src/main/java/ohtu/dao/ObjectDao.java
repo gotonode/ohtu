@@ -35,7 +35,7 @@ public interface ObjectDao<Bookmark, Integer> {
 	 * @throws SQLException Database failure.
 	 * @throws ParseException Parse failure.
 	 */
-    Bookmark findByTitle(String title) throws SQLException, ParseException;
+    List<Bookmark> findByTitle(String title) throws SQLException, ParseException;
 
 	/**
 	 * Adds the Bookmark into the database. Ignores the Bookmark's ID and addDate, those are assigned by the database.
@@ -45,7 +45,7 @@ public interface ObjectDao<Bookmark, Integer> {
 	 * @throws SQLException Database failure.
 	 * @throws ParseException Parse failure.
 	 */
-    boolean create(Bookmark bookmark) throws SQLException, ParseException;
+    Bookmark create(Bookmark bookmark) throws SQLException, ParseException;
 
     // To be implemented later:
     //public boolean delete(Integer id) throws SQLException;
