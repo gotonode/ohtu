@@ -12,6 +12,7 @@ CREATE TABLE IF NOT EXISTS Blogpost (
     id integer NOT NULL,
     author varchar(100),
     url varchar(400),
+    PRIMARY KEY (id),
     FOREIGN KEY (id) REFERENCES Bookmark(id)
 );
 
