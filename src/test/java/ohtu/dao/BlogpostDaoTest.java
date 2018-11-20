@@ -70,7 +70,7 @@ public class BlogpostDaoTest {
     @Test
     public void canListBlogpostsWithSameTitle() throws SQLException, ParseException {
         List<Blogpost> blogposts = blogpostDao.findByTitle(b2.getTitle());
-        assertEquals(4, blogposts.size());
+        assertEquals(2, blogposts.size());
     }
 
     @Test
