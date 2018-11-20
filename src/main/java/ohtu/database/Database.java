@@ -1,5 +1,7 @@
 package ohtu.database;
 
+import ohtu.main.Main;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -43,8 +45,7 @@ public class Database {
 		try {
 			runSQLScript(System.getProperty("user.dir") + "/src/main/resources/sql/createstatements.sql");
 		} catch (SQLException e) {
-			// Later switch from printing in console to printing in log?
-			System.out.println("Error:" + e.toString());
+			Main.LOG.warning(e.getMessage());
 		}
 	}
 
@@ -77,8 +78,7 @@ public class Database {
 				}
 			}
 		} catch (Exception e) {
-			// Later switch from printing in console to printing in log?
-			System.out.println("Error: " + e.toString());
+			Main.LOG.warning(e.getMessage());
 		}
 	}
 }
