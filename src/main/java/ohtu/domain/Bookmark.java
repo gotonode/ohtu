@@ -7,64 +7,64 @@ import java.util.Date;
  */
 public abstract class Bookmark {
 
-	private int id;
-	private String title;
-	private Date addDate;
-	private char type;
-	// We'll add "isRead" property later.
+    private int id;
+    private String title;
+    private Date addDate;
+    private char type;
+    // We'll add "isRead" property later.
 
-	/**
-	 * Create a new bookmark indirectly by calling the super.
-	 * @param id ID for the object (from the ohtu.database).
-	 * @param title Title for the object.
-	 * @param addDate When it was added to the ohtu.database (convert this to Java's Date).
-	 */
-	Bookmark(int id, String title, Date addDate, char type) {
-		this.id = id;
-		this.title = title;
-		this.addDate = addDate;
-		this.type = type;
-	}
+    /**
+     * Create a new bookmark indirectly by calling the super.
+     * @param id ID for the object (from the ohtu.database).
+     * @param title Title for the object.
+     * @param addDate When it was added to the ohtu.database (convert this to Java's Date).
+     */
+    Bookmark(int id, String title, Date addDate, char type) {
+        this.id = id;
+        this.title = title;
+        this.addDate = addDate;
+        this.type = type;
+    }
 
-	/**
-	 * We can check if this instance of Bookmark is a Blogpost.
-	 * @return True if it's a Blogpost, false otherwise.
-	 */
-	public boolean isBlogpost() {
-		return this instanceof Blogpost;
-	}
+    /**
+     * We can check if this instance of Bookmark is a Blogpost.
+     * @return True if it's a Blogpost, false otherwise.
+     */
+    public boolean isBlogpost() {
+        return this instanceof Blogpost;
+    }
 
-	// We'll add the rest later (video, article, book, podcast).
+    // We'll add the rest later (video, article, book, podcast).
 
-	public int getId() {
-		return id;
-	}
+    public int getId() {
+        return id;
+    }
 
-	public Date getAddDate() {
-		return addDate;
-	}
+    public Date getAddDate() {
+        return addDate;
+    }
 
-	public String getTitle() {
-		return title;
-	}
+    public String getTitle() {
+        return title;
+    }
 
-	public void setId(int id) {
-		throw new IllegalStateException("This method should never be called?");
-	}
+    public void setId(int id) {
+        throw new IllegalStateException("This method should never be called?");
+    }
 
-	public void setTitle(String title) {
-		this.title = title;
-	}
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
-	public void setAddDate(Date addDate) {
-		this.addDate = addDate;
-	}
+    public void setAddDate(Date addDate) {
+        this.addDate = addDate;
+    }
 
-	public int getType() {
-		return type;
-	}
+    public int getType() {
+        return type;
+    }
 
-	public void setType(char type) {
-		this.type = type;
-	}
+    public void setType(char type) {
+        this.type = type;
+    }
 }

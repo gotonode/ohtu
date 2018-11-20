@@ -18,30 +18,30 @@ import static org.junit.Assert.*;
 
 public class BlogpostDaoTest {
 
-	private static TemporaryFolder tempFolder;
+    private static TemporaryFolder tempFolder;
 
-	private static Database database;
+    private static Database database;
 
-	private static File databaseFile;
-	private static BlogpostDao blogpostDao;
-	private static Blogpost b1, b2, b3;
+    private static File databaseFile;
+    private static BlogpostDao blogpostDao;
+    private static Blogpost b1, b2, b3;
 
     @BeforeClass
     public static void setUpClass() throws IOException {
     	tempFolder = new TemporaryFolder();
     	tempFolder.create();
 
-		// Assign a test database into the newly created temporary folder.
-		databaseFile = new File(tempFolder.getRoot() + "/test.db");
-		if (databaseFile.exists()) {
-			databaseFile.delete();
-		}
+        // Assign a test database into the newly created temporary folder.
+        databaseFile = new File(tempFolder.getRoot() + "/test.db");
+        if (databaseFile.exists()) {
+            databaseFile.delete();
+        }
     }
 
-	@AfterClass
-	public static void tearDownClass() {
-		databaseFile.delete();
-	}
+    @AfterClass
+    public static void tearDownClass() {
+            databaseFile.delete();
+    }
 
     @Before
     public void setUp() throws SQLException, ParseException {

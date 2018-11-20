@@ -5,9 +5,9 @@ import static org.junit.Assert.*;
 
 public class MainTest {
 
-	@Test
-	public void trueIsTrue() {
-        assertTrue(true);
+    @Test
+    public void trueIsTrue() {
+    assertTrue(true);
     }
 
 }
