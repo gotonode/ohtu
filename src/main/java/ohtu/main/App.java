@@ -24,14 +24,6 @@ public class App {
 	private Database database;
 	private UiController uiController;
 
-	// TODO: Remove/fix this constructor later. Now here for the sake of Test files continuing to work.
-	public App(IO io) {
-		this.io = io;
-		this.database = new Database(new File(""));
-		blogpostDao = new BlogpostDao(database);
-
-	}
-
 	public App(IO io, Database db) {
 		this.io = io;
 		this.database = db;
@@ -39,8 +31,7 @@ public class App {
 		bookmarkDao = new BookmarkDao(database, blogpostDao);
 	}
 
-
-	public void run() throws ParseException {
+	public void run() {
 
 		appRunning = true;
 
