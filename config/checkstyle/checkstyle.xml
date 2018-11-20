@@ -11,6 +11,5 @@
 		<module name="LeftCurly">
 			<property name="option" value="eol" />
 		</module>
-		<module name="MagicNumber" />
 	</module>
 </module>

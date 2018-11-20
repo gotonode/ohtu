@@ -52,8 +52,8 @@ test {
 }
 
 
-// Currently, these are disabled. We'll discuss which rules to enabled later.
-tasks.withType(Checkstyle) {
-    ignoreFailures true
-    exclude '**/**'
-}
+//// Currently, these are disabled. We'll discuss which rules to enabled later.
+//tasks.withType(Checkstyle) {
+//    ignoreFailures true
+//    exclude '**/**'
+//}

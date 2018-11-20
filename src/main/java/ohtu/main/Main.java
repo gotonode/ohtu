@@ -15,7 +15,9 @@ public class Main {
 
 	// Declare final variables here.
 	public static final String APP_NAME = "Bookmarks Database";
-	public static final boolean DEBUG = true; // Will cause StubIO to print its contents, useful for tests.
+
+	// Only enable the following temporarily if needed, and then disable it before committing.
+	public static final boolean DEBUG = false; // Will cause StubIO to print its contents, useful for tests.
 
 	private static App app;
 
