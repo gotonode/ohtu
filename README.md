@@ -32,6 +32,7 @@ From our wiki:
 * [Definition of Done](https://github.com/gotonode/ohtu/wiki/Definition-of-Done)
 * [Code Style](https://github.com/gotonode/ohtu/wiki/Code-Style)
 * [Database](https://github.com/gotonode/ohtu/wiki/Database)
+* [Sprint Charts](https://github.com/gotonode/ohtu/wiki/Sprint-Charts)
 
 Backlogs (GitHub Projects):
 * [Product Backlog](https://github.com/gotonode/ohtu/projects/3)
