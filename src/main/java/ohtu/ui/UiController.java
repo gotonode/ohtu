@@ -135,6 +135,9 @@ public class UiController {
 		io.println("URL: " + printableData.get(4));
 		io.println("Date added: " + printableData.get(1));
 		io.println(""); // An empty line to tidy things up.
+	}
 
+	public void printEmptyLine() {
+		io.println("");
 	}
 }

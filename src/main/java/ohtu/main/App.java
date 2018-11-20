@@ -10,7 +10,6 @@ import ohtu.tools.Builder;
 import ohtu.ui.UiController;
 
 import java.io.File;
-import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -129,8 +128,9 @@ public class App {
 			} else {
 				uiController.addFailure();
 			}
+			uiController.printEmptyLine();
 		} catch (Exception e) {
-			System.out.println(e);
+			Main.LOG.warning(e.getMessage());
 		}
 
 	}

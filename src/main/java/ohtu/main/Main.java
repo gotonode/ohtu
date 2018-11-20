@@ -6,12 +6,16 @@ import java.sql.SQLException;
 import java.text.ParseException;
 import ohtu.io.ConsoleIO;
 import java.util.Scanner;
+import java.util.logging.Logger;
+
 import ohtu.database.Database;
 
 /**
  * The program starts here. Program logic is handled in App-object. This class is ignored in code coverage.
  */
 public class Main {
+
+	public static final Logger LOG = Logger.getLogger(Main.class.getName());
 
 	// Declare final variables here.
 	public static final String APP_NAME = "Bookmarks Database";
@@ -21,13 +25,13 @@ public class Main {
 
 	private static App app;
 
-    public static void main(String[] args) throws IOException, SQLException, ParseException {
+    public static void main(String[] args) throws ParseException {
    
         File databaseFile = new File(System.getProperty("user.dir") + "/bookmarks.db");
         Database db = new Database(databaseFile);
 
     	if (DEBUG) {
-			System.out.println("# App started in DEBUG mode");
+			Main.LOG.info("# App started in DEBUG mode");
 		}
 
     	Scanner scanner = new Scanner(System.in);
