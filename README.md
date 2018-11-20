@@ -7,6 +7,10 @@ Course: *Ohjelmistotuotanto 2018*
 | :-: | :-: | :-: |
 |[![Build Status](https://travis-ci.org/gotonode/ohtu.svg?branch=master)](https://travis-ci.org/gotonode/ohtu) | [![codecov](https://codecov.io/gh/gotonode/ohtu/branch/master/graph/badge.svg)](https://codecov.io/gh/gotonode/ohtu) | [![Codacy Badge](https://api.codacy.com/project/badge/Grade/2d0bf2d457bf498696afd4075722bf3a)](https://www.codacy.com/app/gotonode/ohtu?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=gotonode/ohtu&amp;utm_campaign=Badge_Grade)
 
+### Introduction
+
+Bookmarks Database is a simple app for creating, editing and viewing different types of bookmarks. It's a console-based *Java* application, built using *Gradle* and tested with *JUnit*. Code coverage is done by *JaCoCo* and code style enforcement by *Checkstyle*.
+
 ### Links
 
 From our wiki:
