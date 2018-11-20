@@ -23,6 +23,7 @@ Once the app starts, you'll be greeted with a list of commands at your disposal.
 | :- | :- |
 | `A` | begins adding a new blogpost to the database by asking you for the blogpost's information |
 | `L` | lists all the blogposts currently in the database, if any |
+| `X` | lists all the commands available to the user |
 | `E` | exits from the app |
 
 ### Links
