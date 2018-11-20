@@ -5,10 +5,11 @@
 /nbproject/
 /build/
 /.nb-gradle/
+/out/
+
+# Databases
 /bookmarks.db
 /test.db
-/test1.db
-/out/
 
 # Compiled class file
 *.class
