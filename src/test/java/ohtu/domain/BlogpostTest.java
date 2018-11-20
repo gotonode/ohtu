@@ -2,12 +2,11 @@ package ohtu.domain;
 
 import org.junit.Before;
 import org.junit.Test;
-
-import java.sql.Date;
-import java.time.Instant;
-
+import java.util.Date;
+import org.junit.Assert;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertFalse;
 
 public class BlogpostTest {
 
@@ -15,21 +14,55 @@ public class BlogpostTest {
 
 	@Before
 	public void initialize() {
-		blogpost = new Blogpost(0, "TITLE", Date.from(Instant.now()), "AUTHOR", "URL");
+            blogpost = new Blogpost(9, "A Matter of Testing", new Date(1005), 
+                    "A test coder", "a-test-blog/tests.com");
 	}
 
 	@Test
-	public void sampleTest() {
-		assertEquals("AUTHOR", blogpost.getAuthor());
+	public void construtorSetsIdOfRelatedBookmarkCorrectly() {
+            assertEquals(9, blogpost.getId());
+	}
+        
+        @Test
+        public void construtorSetsTitleOfRelatedBookmarkCorrectly() {
+            assertEquals("A Matter of Testing", blogpost.getTitle());
+	}
+        
+        @Test
+        public void construtorSetsAuthorCorrectly() {
+            assertEquals("A test coder", blogpost.getAuthor());
+	}
+        
+        @Test
+        public void construtorSetsUrlCorrectly() {
+            assertEquals("a-test-blog/tests.com", blogpost.getUrl());
+	}
+        
+        @Test
+        public void construtorSetsDateCorrectly() {
+            assertEquals(1005, blogpost.getAddDate().getTime());
+	}
+        
+        @Test
+        public void construtorSetsTypeCorrectly() {
+            String type = "B";
+            assertEquals(type.charAt(0), blogpost.getType());
 	}
 
 	@Test
 	public void typeIsCorrect() {
-		assertTrue(blogpost.isBlogpost());
-		/* We could also do something like:
-		if (blogpost instanceof Blogpost) {
-
-		}
-		*/
+            assertTrue(blogpost.isBlogpost());
 	}
+        
+        @Test
+        public void equalsReturnsFalseWhenWrongClass() {
+            assertFalse(blogpost.equals(new Date()));
+        }
+        
+        @Test
+        public void hashCodesNotEqual() {
+            Blogpost b2 = new Blogpost(9, "A Matter of Testing", new Date(1005), 
+                    "A test coder", "b-test-blog/tests.com");
+            Assert.assertNotEquals(b2.hashCode(), blogpost.hashCode());
+        }      
 }

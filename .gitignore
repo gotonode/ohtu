@@ -9,6 +9,7 @@
 
 # Databases
 /bookmarks.db
+/test.db
 
 # Compiled class file
 *.class
