@@ -12,36 +12,39 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
+
 import static org.junit.Assert.*;
 
 public class BlogpostDaoTest {
 
-    Database database;
+	private static TemporaryFolder tempFolder;
 
-    File databaseFile;
-    BlogpostDao blogpostDao;
-    Blogpost b1, b2, b3;
+	private static Database database;
 
-    public BlogpostDaoTest() {
-    }
+	private static File databaseFile;
+	private static BlogpostDao blogpostDao;
+	private static Blogpost b1, b2, b3;
 
     @BeforeClass
     public static void setUpClass() throws IOException {
+    	tempFolder = new TemporaryFolder();
+    	tempFolder.create();
 
+		// Assign a test database into the newly created temporary folder.
+		databaseFile = new File(tempFolder.getRoot() + "/test.db");
+		if (databaseFile.exists()) {
+			databaseFile.delete();
+		}
     }
 
-    @AfterClass
-    public static void tearDownClass() {
-
-    }
+	@AfterClass
+	public static void tearDownClass() {
+		databaseFile.delete();
+	}
 
     @Before
     public void setUp() throws SQLException, ParseException {
-
-        databaseFile = new File(System.getProperty("user.dir") + "/test.db");
-        if (databaseFile.exists()) {
-            databaseFile.delete();
-        }
         database = new Database(databaseFile);
         blogpostDao = new BlogpostDao(database);
         b1 = new Blogpost(-1, "title", null, "author1", "url1");
@@ -50,7 +53,6 @@ public class BlogpostDaoTest {
         blogpostDao.create(b1);
         blogpostDao.create(b2);
         blogpostDao.create(b3);
-
     }
 
     @After
@@ -67,28 +69,26 @@ public class BlogpostDaoTest {
 
     @Test
     public void canListBlogpostsWithSameTitle() throws SQLException, ParseException {
-
         List<Blogpost> blogposts = blogpostDao.findByTitle(b2.getTitle());
-        assertEquals(blogposts.size(), 2);
-
+        assertEquals(4, blogposts.size());
     }
 
     @Test
     public void canListAllBlogposts() throws SQLException, ParseException {
         List<Blogpost> allBlogposts = blogpostDao.findAll();
-        assertEquals(allBlogposts.size(), 3);
+        assertEquals(3, allBlogposts.size());
     }
 
     @Test
     public void canFindBlogpostByExistedId() throws SQLException, ParseException {
         Blogpost found = blogpostDao.findById(1);
-        assertEquals(found.getId(), 1);
+        assertEquals(1, found.getId());
     }
 
     @Test
     public void cannotFindBlogpostByNonexistedId() throws SQLException, ParseException {
         Blogpost found = blogpostDao.findById(100);
-        assertEquals(found, null);
+        assertEquals(null, found);
     }
 
 }

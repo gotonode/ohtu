@@ -6,6 +6,7 @@
 package ohtu.dao;
 
 import java.io.File;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.List;
@@ -17,6 +18,8 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
+
 import static org.junit.Assert.*;
 
 /**
@@ -25,18 +28,23 @@ import static org.junit.Assert.*;
  */
 public class BookmarkDaoTest {
 
-    static Database database;
-    static File databaseFile;
-    static BlogpostDao blogpostDao;
-    static BookmarkDao bookmarkDao;
-    static Blogpost b1;
+	private static TemporaryFolder tempFolder;
 
-    public BookmarkDaoTest() {
-    }
+	private static Database database;
+	private static File databaseFile;
+	private static BlogpostDao blogpostDao;
+	private static BookmarkDao bookmarkDao;
+	private static Blogpost b1;
 
     @BeforeClass
-    public static void setUpClass() throws SQLException, ParseException {
-        BookmarkDaoTest.databaseFile = new File(System.getProperty("user.dir") + "/test1.db");
+    public static void setUpClass() throws SQLException, ParseException, IOException {
+
+		tempFolder = new TemporaryFolder();
+		tempFolder.create();
+
+		// Assign a test database into the newly created temporary folder.
+		databaseFile = new File(tempFolder.getRoot() + "/test.db");
+
         if (databaseFile.exists()) {
             databaseFile.delete();
         }
@@ -65,16 +73,15 @@ public class BookmarkDaoTest {
 
     @Test
     public void canListAllBookmarks() throws SQLException, ParseException {
-
         List<Bookmark> bookmarks = bookmarkDao.findAll();
-        assertEquals(bookmarks.size(), 1);
+        assertEquals(1, bookmarks.size());
     }
 
     @Test
     public void canFindBookmarkByExistedId() throws SQLException, ParseException {
         Bookmark found = bookmarkDao.findById(1);
         assertTrue(found.isBlogpost());
-        assertEquals(found.getId(), 1);
+        assertEquals(1, found.getId());
     }
 
     @Test
@@ -86,6 +93,6 @@ public class BookmarkDaoTest {
     @Test
     public void canFindBookmarkWithSamaTitle() throws SQLException, ParseException {
         List<Bookmark> bookmarks = bookmarkDao.findByTitle(b1.getTitle());
-        assertEquals(bookmarks.size(), 1);
+        assertEquals(1, bookmarks.size());
     }
 }
