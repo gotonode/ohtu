@@ -11,6 +11,20 @@ Course: *Ohjelmistotuotanto 2018*
 
 Bookmarks Database is a simple app for creating, editing and viewing different types of bookmarks. It's a console-based *Java* application, built using *Gradle* and tested with *JUnit*. Code coverage is done by *JaCoCo* and code style enforcement by *Checkstyle*.
 
+### Instructions
+
+Clone or download this repository to your computer. Unzip the archive into a folder of your choosing.
+
+To run Bookmarks Database, simple type in `gradle run`. This will download all required dependencies.
+
+Once the app starts, you'll be greeted with a list of commands at your disposal. Currently, these commands are available:
+
+| Command | What will happen |
+| :- | :- |
+| `A` | begins adding a new blogpost to the database by asking you for the blogpost's information |
+| `L` | lists all the blogposts currently in the database, if any |
+| `E` | exits from the app |
+
 ### Links
 
 From our wiki:
@@ -27,7 +41,7 @@ External resources:
 * [Codecov](https://codecov.io/gh/gotonode/ohtu) (test coverage)
 * [Codacy](https://www.codacy.com/app/gotonode/ohtu) (static code analysis)
 
-### Instructions
+### Commands
 
 | What | Command | Explanation |
 | :- | :- | :- |
