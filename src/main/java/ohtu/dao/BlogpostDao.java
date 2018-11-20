@@ -35,7 +35,7 @@ public class BlogpostDao implements ObjectDao<Blogpost, Integer> {
                 .prepareStatement("SELECT*FROM bookmark,blogpost WHERE bookmark.title=? AND bookmark.id=blogpost.id");
         stmt.setString(1, title);
         ResultSet rs = stmt.executeQuery();
-        if (rs.next()) {
+        while (rs.next()) {
             Blogpost output = constructBlogpostFromResultSet(rs);
             //close(rs, stmt, conn);
             blogposts.add(output);

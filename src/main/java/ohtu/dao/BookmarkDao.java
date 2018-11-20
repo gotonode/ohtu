@@ -62,7 +62,7 @@ public class BookmarkDao {
                 .prepareStatement("SELECT id,type FROM bookmark where title=?");
         stmt.setString(1, title);
         ResultSet rs = stmt.executeQuery();
-        if (rs.next()) {
+        while (rs.next()) {
             Bookmark found = findCertainBookmarkByType(rs);
             //close(rs,stmt,conn);
             bookmarks.add(found);
