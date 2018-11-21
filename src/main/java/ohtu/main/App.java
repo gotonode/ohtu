@@ -40,7 +40,7 @@ public class App {
 
 		while (appRunning) {
 
-			char command = uiController.askForCharacter(new char[]{'A', 'L', 'E'});
+			char command = uiController.askForCharacter(new char[]{'A', 'L', 'E', 'D', 'M'});
 
 			if (command == 'X') {
 				uiController.printInstructions();
@@ -49,16 +49,29 @@ public class App {
 
 			// I'll be using the enums from enums.Commands-package soon.
 			switch (command) {
+
 				case 'L':
 					listAll();
 					break;
+
 				case 'A':
 					addBlogpost();
+					break;
+
+				case 'D':
+					deleteBookmark();
+					break;
+
+				case 'M':
+					modifyBookmark();
 					break;
 
 				case 'E':
 					appRunning = false;
 					break;
+
+				default:
+					throw new IllegalArgumentException("This method was called with an illegal argument.");
 			}
 		}
 
@@ -66,9 +79,21 @@ public class App {
 		uiController.printGoodbye();
 	}
 
+	private void modifyBookmark() {
+		int id = uiController.askForIdToRemove();
+		// TODO: Work in progress.
+		io.println("Modifying bookmark with ID " + id);
+	}
+
+	private void deleteBookmark() {
+		int id = uiController.askForIdToRemove();
+		// TODO: Work in progress.
+		io.println("Removing bookmark with ID " + id);
+	}
+
 	private void listAll() {
 		io.println("Listing all bookmarks...");
-		io.println(""); // Tidy.
+		uiController.printEmptyLine(); // Tidy.
 		try {
 			List<Bookmark> bookmarks = bookmarkDao.findAll();
 			for (Bookmark bookmark : bookmarks) {

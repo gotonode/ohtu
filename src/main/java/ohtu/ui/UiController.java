@@ -2,144 +2,194 @@ package ohtu.ui;
 
 import ohtu.io.IO;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public class UiController {
 
-    private IO io;
+	private IO io;
 
-    public UiController(IO io) {
-            this.io = io;
-    }
+	public UiController(IO io) {
+		this.io = io;
+	}
 
-    public void addSuccess(String type) {
-            io.println("A new " + type.trim() + " has been created and saved to the database.");
-    }
+	public void addSuccess(String type) {
+		io.println("A new " + type.trim() + " has been created and saved to the database.");
+	}
 
-    public void addFailure() {
-            io.println("Could not add your new bookmark to the database. Please try again.");
-    }
+	public void addFailure() {
+		io.println("Could not add your new bookmark to the database. Please try again.");
+	}
 
-    public void printGreeting() {
-            io.println("Welcome to " + ohtu.main.Main.APP_NAME + "!\n");
-    }
+	public void printGreeting() {
+		io.println("Welcome to " + ohtu.main.Main.APP_NAME + "!\n");
+	}
 
-    public void printGoodbye() {
-            io.println("Thanks for using " + ohtu.main.Main.APP_NAME + ".");
-    }
+	public void printGoodbye() {
+		io.println("Thanks for using " + ohtu.main.Main.APP_NAME + ".");
+	}
 
-    /**
-     * Prompts the user for a title, author and URL.
-     *
-     * @return An array of Strings, e.g. "String[]". Index 0 contains title, index 1 contains author and index 2 contains url.
-     */
-    public String[] askBlogpostData() {
+	/**
+	 * Prompts the user for a title, author and URL.
+	 *
+	 * @return An array of Strings, e.g. "String[]". Index 0 contains title, index 1 contains author and index 2 contains url.
+	 */
+	public String[] askBlogpostData() {
 
-            io.println("Adding a new blogpost.");
+		io.println("Adding a new blogpost.");
 
-            String title = askForString("Title:", false);
-            String author = askForString("Author:", false);
-            String url = askForString("URL:", false);
+		String title = askForString("Title:", false);
+		String author = askForString("Author:", false);
+		String url = askForString("URL:", false);
 
-            return new String[]{title, author, url};
-    }
+		return new String[]{title, author, url};
+	}
 
-    /**
-     * Asks the user for a string. Optionally doesn't allow empty strings.
-     *
-     * @param prompt     What to ask (prompt) from the user.
-     * @param allowEmpty If true, the string can be empty. Otherwise it cannot.
-     * @return The string the user typed in.
-     */
-    public String askForString(String prompt, boolean allowEmpty) {
+	public int askForIdToRemove() {
+		io.println("Which bookmark to delete? Please see the ID from the bookmark in question.");
+		int id = askForInt(0, Integer.MAX_VALUE);
+		return id;
+	}
 
-            String data = "";
+	/**
+	 * Asks the user for a string. Optionally doesn't allow empty strings.
+	 *
+	 * @param prompt     What to ask (prompt) from the user.
+	 * @param allowEmpty If true, the string can be empty. Otherwise it cannot.
+	 * @return The string the user typed in.
+	 */
+	public String askForString(String prompt, boolean allowEmpty) {
 
-            while (true) {
-                    data = io.readLine(prompt);
-                    if (data.isEmpty()) {
-                            if (allowEmpty) {
-                                    break;
-                            } else {
-                                    io.println("Please write something.");
-                            }
-                    } else {
-                            break;
-                    }
-            }
-            return data;
-    }
+		String data = "";
 
-    /**
-     * prints all the available instructions for the user.
-     */
-    public void printInstructions() {
-            io.println("L: List all blogposts");
-            io.println("A: Add a new blogpost");
-            io.println("E: Exit from the app");
-            io.println("");
-    }
+		while (true) {
+			data = io.readLine(prompt);
+			if (data.isEmpty()) {
+				if (allowEmpty) {
+					break;
+				} else {
+					io.println("Please write something.");
+				}
+			} else {
+				break;
+			}
+		}
+		return data;
+	}
 
-    /**
-     * Continuously ask the user for a character, until a valid one is given.
-     *
-     * @param allowedChars A list of chars that are accepted.
-     * @return A valid uppercase character.
-     */
-    public char askForCharacter(char[] allowedChars) {
+	/**
+	 * prints all the available instructions for the user.
+	 */
+	public void printInstructions() {
+		io.println("L: List all blogposts");
+		io.println("A: Add a new blogpost");
+		io.println("M: Add a new blogpost");
+		io.println("D: Delete a bookmark");
+		io.println("");
+		io.println("E: Exit from the app");
+		io.println("");
+	}
 
-            while (true) {
+	/**
+	 * Continuously ask the user for a character, until a valid one is given.
+	 *
+	 * @param allowedChars A list of chars that are accepted.
+	 * @return A valid uppercase character.
+	 */
+	public char askForCharacter(char[] allowedChars) {
 
-                    String next = io.readLine("Your choice:");
+		while (true) {
 
-                    if (next.isEmpty()) {
-                            io.println("Please enter something. For a list of available commands, type 'X'.");
-                            continue;
-                    }
+			String next = io.readLine("Your choice:");
 
-                    if (next.length() > 1) {
-                            io.println("Please only enter 1 character.");
-                            continue;
-                    }
+			if (next.isEmpty()) {
+				io.println("Please enter something. For a list of available commands, type 'X'.");
+				continue;
+			}
 
-                    char input = next.toUpperCase().charAt(0);
+			if (next.length() > 1) {
+				io.println("Please only enter 1 character.");
+				continue;
+			}
 
-                    boolean found = false;
+			char input = next.toUpperCase().charAt(0);
 
-                    for (char c : allowedChars) {
-                            if (input == c || input == 'X') {
-                                    found = true;
-                                    break;
-                            }
-                    }
+			boolean found = false;
 
-                    if (!found) {
-                            io.println("Please enter a character from the following: " + Arrays.toString(allowedChars));
-                    } else {
-                            return input;
-                    }
-            }
+			for (char c : allowedChars) {
+				if (input == c || input == 'X') {
+					found = true;
+					break;
+				}
+			}
 
-    }
+			if (!found) {
+				io.println("Please enter a character from the following: " + Arrays.toString(allowedChars));
+			} else {
+				return input;
+			}
+		}
 
-    /**
-     * Prints the Blogpost's data into console.
-     *
-     * @param printableData The data IN ORDER.
-     */
-    public void printBlogpost(List<String> printableData) {
-    	    io.println("===== " + printableData.get(5) + " =====");
-            io.println("Title: " + printableData.get(2));
-            io.println("Type: " + printableData.get(0));
-            io.println("Author: " + printableData.get(3));
-            io.println("URL: " + printableData.get(4));
-            io.println("Date added: " + printableData.get(1));
-            io.println(""); // An empty line to tidy things up.
-    }
+	}
 
-    public void printEmptyLine() {
-            io.println("");
-    }
+	/**
+	 * Continuously ask the user for an integer, until a valid one is given.
+	 *
+	 * @param min Min value for the integer.
+	 * @param max Max value for the integer.
+	 * @return A valid integer between min and max.
+	 */
+	public int askForInt(int min, int max) {
+
+		int value = 0;
+
+		while (true) {
+
+			String next = io.readLine("Your choice:");
+
+			if (next.isEmpty()) {
+				io.println("Please enter something.");
+				continue;
+			}
+
+			try {
+				value = Integer.parseInt(next);
+			} catch (Exception e) {
+				io.println("Please enter an integer.");
+				continue;
+			}
+
+			if (value < min) {
+				io.println("Please enter an integer that is greater than " + min + ".");
+				continue;
+			} else if (value > max) {
+				io.println("Please enter an integer that is less than " + min + ".");
+				continue;
+			}
+
+			break;
+		}
+
+		return value;
+
+	}
+
+	/**
+	 * Prints the Blogpost's data into console.
+	 *
+	 * @param printableData The data IN ORDER.
+	 */
+	public void printBlogpost(List<String> printableData) {
+		io.println("===== " + printableData.get(5) + " =====");
+		io.println("Title: " + printableData.get(2));
+		io.println("Type: " + printableData.get(0));
+		io.println("Author: " + printableData.get(3));
+		io.println("URL: " + printableData.get(4));
+		io.println("Date added: " + printableData.get(1));
+		io.println(""); // An empty line to tidy things up.
+	}
+
+	public void printEmptyLine() {
+		io.println("");
+	}
 }
