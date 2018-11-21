@@ -4,6 +4,7 @@ import ohtu.io.IO;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class UiController {
 
@@ -128,7 +129,8 @@ public class UiController {
      *
      * @param printableData The data IN ORDER.
      */
-    public void printBlogpost(ArrayList<String> printableData) {
+    public void printBlogpost(List<String> printableData) {
+    	    io.println("===== " + printableData.get(5) + " =====");
             io.println("Title: " + printableData.get(2));
             io.println("Type: " + printableData.get(0));
             io.println("Author: " + printableData.get(3));
