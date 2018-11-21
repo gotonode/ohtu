@@ -1,22 +1,42 @@
 package ohtu.cucumberTest;
 
-import ohtu.io.StubIO;
+import cucumber.api.java.Before;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
-import java.io.File;
-import java.util.*;
 import ohtu.database.Database;
+import ohtu.io.StubIO;
 import ohtu.main.App;
+import org.junit.rules.TemporaryFolder;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.junit.Assert.assertTrue;
 
 public class Stepdefs {
 
+	TemporaryFolder tempFolder;
     StubIO io;
     App app;
-    File databaseFile = new File(System.getProperty("user.dir") + "/test.db");
-    Database db = new Database(databaseFile);
-    List<String> inputs = new ArrayList<>();
+    File databaseFile;
+    Database db = null;
+    List<String> inputs;
+
+    @Before
+	public void before() throws IOException {
+    	if (tempFolder == null) {
+    		tempFolder = new TemporaryFolder();
+			tempFolder.create();
+			databaseFile = new File(tempFolder.getRoot() + "/test.db");
+			db = new Database(databaseFile);
+			inputs = new ArrayList<>();
+		}
+
+    	 inputs.clear(); // Maybe it's faster to just clear this than to re-initialize?
+	}
 
     @Given("^command adding a blogpost is selected$")
     public void command_A_selected() throws Throwable {
@@ -28,7 +48,7 @@ public class Stepdefs {
         inputs.add(title);
         inputs.add(author);
         inputs.add(url);
-        inputs.add("E");
+        inputs.add("E"); // Exits the app so it doesn't stay in an infinite loop.
         io = new StubIO(inputs);
         app = new App(io, db);
         app.run();
