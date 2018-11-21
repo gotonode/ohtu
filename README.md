@@ -20,9 +20,11 @@ To run Bookmarks Database, simple type in `gradle run`. This will download all r
 Once the app starts, you'll be greeted with a list of commands at your disposal. Currently, these commands are available:
 
 | Command | What will happen |
-| :- | :- |
-| `A` | begins adding a new blogpost to the database by asking you for the blogpost's information |
-| `L` | lists all the blogposts currently in the database, if any |
+| -: | :- |
+| `A` | begins adding a new bookmark to the database by asking you for the bookmark's information |
+| `L` | lists all the bookmarks currently in the database, if any |
+| `D` | delete an existing bookmark |
+| `M` | modify an existing bookmark's information |
 | `X` | lists all the commands available to the user |
 | `E` | exits from the app |
 
