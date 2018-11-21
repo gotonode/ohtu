@@ -7,10 +7,10 @@ import java.util.Date;
  */
 public abstract class Bookmark {
 
-    private int id;
+    private final int id;
     private String title;
     private Date addDate;
-    private char type;
+    private final char type;
     // We'll add "isRead" property later.
 
     /**
@@ -48,10 +48,6 @@ public abstract class Bookmark {
         return title;
     }
 
-    public void setId(int id) {
-        throw new IllegalStateException("This method should never be called?");
-    }
-
     public void setTitle(String title) {
         this.title = title;
     }
@@ -62,9 +58,5 @@ public abstract class Bookmark {
 
     public int getType() {
         return type;
-    }
-
-    public void setType(char type) {
-        this.type = type;
     }
 }
