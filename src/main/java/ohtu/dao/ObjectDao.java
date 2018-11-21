@@ -47,7 +47,7 @@ public interface ObjectDao<Bookmark, Integer> {
      */
     Bookmark create(Bookmark bookmark) throws SQLException, ParseException;
 
-    // To be implemented later:
-    //public boolean delete(Integer id) throws SQLException;
-    //public boolean update(Bookmark bookmark) throws SQLException;
+    boolean delete(Integer id) throws SQLException;
+
+    boolean update(Bookmark bookmark) throws SQLException;
 }

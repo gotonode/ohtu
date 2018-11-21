@@ -62,7 +62,17 @@ public class BlogpostDao implements ObjectDao<Blogpost, Integer> {
         return null;
     }
 
-    @Override
+	@Override
+	public boolean delete(Integer id) throws SQLException {
+		return false;
+	}
+
+	@Override
+	public boolean update(Blogpost blogpost) throws SQLException {
+		return false;
+	}
+
+	@Override
     public List<Blogpost> findAll() throws SQLException, ParseException {
         Connection conn = database.getConnection();
         PreparedStatement stmt = conn.prepareStatement("SELECT*FROM bookmark,blogpost WHERE bookmark.id=blogpost.id");
