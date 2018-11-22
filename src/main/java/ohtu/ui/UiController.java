@@ -89,7 +89,7 @@ public class UiController {
 	public void printInstructions() {
 		io.println("L: List all blogposts");
 		io.println("A: Add a new blogpost");
-		io.println("M: Add a new blogpost");
+		io.println("M: Modify a new blogpost");
 		io.println("D: Delete a bookmark");
 		io.println("");
 		io.println("X: Print all of the available commands (this text)");
