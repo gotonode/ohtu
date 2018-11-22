@@ -13,6 +13,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * A DAO object for the Blogposts. This class talks with the database and
@@ -29,7 +31,7 @@ public class BlogpostDao implements ObjectDao<Blogpost, Integer> {
     // TODO: Implement findById, findByTitle, findAll etc.
     @Override
     public List<Blogpost> findByTitle(String title) throws SQLException, ParseException {
-        List<Blogpost>blogposts=new ArrayList<>();
+        List<Blogpost> blogposts = new ArrayList<>();
         Connection conn = database.getConnection();
         PreparedStatement stmt = conn
                 .prepareStatement("SELECT*FROM bookmark,blogpost WHERE bookmark.title=? AND bookmark.id=blogpost.id");
@@ -39,7 +41,7 @@ public class BlogpostDao implements ObjectDao<Blogpost, Integer> {
             Blogpost output = constructBlogpostFromResultSet(rs);
             //close(rs, stmt, conn);
             blogposts.add(output);
-            
+
         }
         close(rs, stmt, conn);
         return blogposts;
@@ -56,23 +58,35 @@ public class BlogpostDao implements ObjectDao<Blogpost, Integer> {
 
         // make sure that blogpost-object is added to database
         Blogpost added = findById(id);
-        if(added.equals(blogpost)){
+        if (added.equals(blogpost)) {
             return added;
         }
         return null;
     }
 
-	@Override
-	public boolean delete(Integer id) throws SQLException {
-		return false;
-	}
+    /**
+     *
+     * @param id
+     * @return true if id is found and deleted successfully
+     * @throws SQLException
+     */
+    @Override
+    public boolean delete(Integer id) throws SQLException {
+        if (deleteFromBookmarkTable(id)) {
+            return deleteFromBlogpostTable(id);
+        }
+        return false;
+    }
 
-	@Override
-	public boolean update(Blogpost blogpost) throws SQLException {
-		return false;
-	}
+    @Override
+    public boolean update(Blogpost blogpost) throws SQLException {
+        if (updateBookmark(blogpost.getTitle(), blogpost.getId())) {
+            return updateBlogpost(blogpost.getAuthor(), blogpost.getUrl(), blogpost.getId());
+        }
+        return false;
+    }
 
-	@Override
+    @Override
     public List<Blogpost> findAll() throws SQLException, ParseException {
         Connection conn = database.getConnection();
         PreparedStatement stmt = conn.prepareStatement("SELECT*FROM bookmark,blogpost WHERE bookmark.id=blogpost.id");
@@ -151,6 +165,63 @@ public class BlogpostDao implements ObjectDao<Blogpost, Integer> {
         rs.close();
         stmt.close();
         conn.close();
+    }
+
+    /**
+     * delete from bookmark table by id
+     *
+     * @param id
+     * @return true if id is found and deleted successfully
+     * @throws SQLException
+     */
+    public boolean deleteFromBookmarkTable(int id) throws SQLException {
+        Connection conn = database.getConnection();
+        PreparedStatement stmt = conn.prepareStatement("DELETE FROM bookmark where id=?");
+        stmt.setInt(1, id);
+        int success = stmt.executeUpdate();
+        stmt.close();
+        conn.close();
+        return success == 1;
+    }
+
+    /**
+     * deleted from blogpost by id
+     *
+     * @param id
+     * @return true if id is found and deleted successfully
+     * @throws SQLException
+     */
+    private boolean deleteFromBlogpostTable(int id) throws SQLException {
+        Connection conn = database.getConnection();
+        PreparedStatement stmt = conn.prepareStatement("DELETE FROM blogpost where id=?");
+        stmt.setInt(1, id);
+        int success = stmt.executeUpdate();
+        stmt.close();
+        conn.close();
+        return success == 1;
+    }
+
+    private boolean updateBookmark(String title, int id) throws SQLException {
+        Connection conn = database.getConnection();
+        PreparedStatement stmt = conn.prepareStatement("UPDATE bookmark SET title=? WHERE id=?");
+        stmt.setString(1, title);
+        stmt.setInt(2, id);
+        int success = stmt.executeUpdate();
+        stmt.close();
+        conn.close();
+        return success == 1;
+    }
+
+    private boolean updateBlogpost(String author, String url, int id) throws SQLException {
+        Connection conn = database.getConnection();
+        PreparedStatement stmt = conn.prepareStatement("UPDATE blogpost SET author=?,url=? WHERE id=?");
+        stmt.setString(1, author);
+        stmt.setString(2, url);
+        stmt.setInt(3, id);
+        int success = stmt.executeUpdate();
+        stmt.close();
+        conn.close();
+        return success == 1;
     }
 
 }
