@@ -52,10 +52,6 @@ public abstract class Bookmark {
         this.title = title;
     }
 
-    public void setAddDate(Date addDate) {
-        this.addDate = addDate;
-    }
-
     public int getType() {
         return type;
     }

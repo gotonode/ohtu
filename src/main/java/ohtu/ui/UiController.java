@@ -51,6 +51,12 @@ public class UiController {
 		return id;
 	}
 
+	public int askForIdToModify() {
+		io.println("Which bookmark to modify? Please see the ID from the bookmark in question.");
+		int id = askForInt(0, Integer.MAX_VALUE);
+		return id;
+	}
+
 	/**
 	 * Asks the user for a string. Optionally doesn't allow empty strings.
 	 *
@@ -86,6 +92,7 @@ public class UiController {
 		io.println("M: Add a new blogpost");
 		io.println("D: Delete a bookmark");
 		io.println("");
+		io.println("X: Print all of the available commands (this text)");
 		io.println("E: Exit from the app");
 		io.println("");
 	}
@@ -103,7 +110,7 @@ public class UiController {
 			String next = io.readLine("Your choice:");
 
 			if (next.isEmpty()) {
-				io.println("Please enter something. For a list of available commands, type 'X'.");
+				io.println("Please enter something.");
 				continue;
 			}
 
@@ -116,8 +123,9 @@ public class UiController {
 
 			boolean found = false;
 
+			// This should use Java's streams.
 			for (char c : allowedChars) {
-				if (input == c || input == 'X') {
+				if (input == c) {
 					found = true;
 					break;
 				}
@@ -191,5 +199,22 @@ public class UiController {
 
 	public void printEmptyLine() {
 		io.println("");
+	}
+
+	public void printDeleteConfirmation(int id, String title, String type) {
+		io.println("Bookmark with ID " + id + " has a title of '" + title + "' and is of type " + type + ".");
+		io.println("Please confirm that you want to delete this bookmark? Type 'Y' for yes, 'N' for no.");
+	}
+
+	public void printAbortDelete() {
+		io.println("Bookmark will not be deleted.");
+	}
+
+	public void printDeleteSuccessful(int id) {
+		io.println("Successfully deleted bookmark with ID " + id + ".");
+	}
+
+	public void printNoBookmarks() {
+		io.println("No bookmarks have been saved in the database.");
 	}
 }
