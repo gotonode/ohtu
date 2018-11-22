@@ -5,11 +5,15 @@ import ohtu.dao.BookmarkDao;
 import ohtu.database.Database;
 import ohtu.domain.Blogpost;
 import ohtu.domain.Bookmark;
+import ohtu.enums.Commands;
 import ohtu.io.IO;
 import ohtu.tools.Builder;
 import ohtu.ui.UiController;
 
+import java.sql.SQLException;
+import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -40,33 +44,34 @@ public class App {
 
 		while (appRunning) {
 
-			char command = uiController.askForCharacter(new char[]{'A', 'L', 'E', 'D', 'M'});
+			char character = uiController.askForCharacter(new char[]{'A', 'L', 'E', 'D', 'M', 'X'});
 
-			if (command == 'X') {
-				uiController.printInstructions();
-				continue;
-			}
+			// I believe there might be a better way to achieve this. Feel free to improve!
+			Commands command = Arrays.stream(Commands.values()).filter(a -> a.getCommand() == character).findFirst().get();
 
-			// I'll be using the enums from enums.Commands-package soon.
 			switch (command) {
 
-				case 'L':
+				case LIST:
 					listAll();
 					break;
 
-				case 'A':
+				case ADD:
 					addBlogpost();
 					break;
 
-				case 'D':
+				case DELETE:
 					deleteBookmark();
 					break;
 
-				case 'M':
+				case MODIFY:
 					modifyBookmark();
 					break;
 
-				case 'E':
+				case HELP:
+					uiController.printInstructions();
+					break;
+
+				case EXIT:
 					appRunning = false;
 					break;
 
@@ -80,20 +85,96 @@ public class App {
 	}
 
 	private void modifyBookmark() {
-		int id = uiController.askForIdToRemove();
-		// TODO: Work in progress.
-		io.println("Modifying bookmark with ID " + id);
+		int id = uiController.askForIdToModify();
+		Bookmark bookmark;
+		try {
+			bookmark = bookmarkDao.findById(id);
+		} catch (Exception e) {
+			Main.LOG.warning(e.getMessage());
+			return;
+		}
+
+		io.println("Enter new values. Leave blank to use current value.");
+
+		io.println("Current title: " + bookmark.getTitle());
+		String newTitle = uiController.askForString("New title: ", true);
+		if (!newTitle.isEmpty()) {
+			bookmark.setTitle(newTitle);
+		}
+
+		boolean success = false;
+
+		if (bookmark instanceof Blogpost) {
+			try {
+				success = blogpostDao.update((Blogpost)bookmark);
+			} catch (SQLException e) {
+				Main.LOG.warning(e.getMessage());
+				return;
+			}
+		}
+
+		if (success) {
+			io.println("Successfully updated your bookmark.");
+		} else {
+			io.println("Couldn't update your bookmark. Please try again.");
+		}
 	}
 
 	private void deleteBookmark() {
+
+		try {
+			if (bookmarkDao.findAll().isEmpty()) {
+				uiController.printNoBookmarks();
+				return;
+			}
+
+		} catch (Exception e) {
+			Main.LOG.warning(e.getMessage());
+			return;
+		}
+
 		int id = uiController.askForIdToRemove();
-		// TODO: Work in progress.
-		io.println("Removing bookmark with ID " + id);
+		Bookmark bookmark;
+		try {
+			bookmark = bookmarkDao.findById(id);
+		} catch (Exception e) {
+			Main.LOG.warning(e.getMessage());
+			return;
+		}
+
+		uiController.printDeleteConfirmation(bookmark.getId(), bookmark.getTitle(), bookmark.getClass().getSimpleName());
+
+		char c = uiController.askForCharacter(new char[]{'Y', 'N'});
+
+		if (c == 'Y') {
+			if (bookmark instanceof Blogpost) {
+				try {
+					blogpostDao.delete(id);
+					uiController.printDeleteSuccessful(id);
+				} catch (SQLException e) {
+					Main.LOG.warning(e.getMessage());
+					return;
+				}
+			}
+		} else {
+			uiController.printAbortDelete();
+		}
 	}
 
 	private void listAll() {
+
 		io.println("Listing all bookmarks...");
 		uiController.printEmptyLine(); // Tidy.
+
+		try {
+			if (bookmarkDao.findAll().isEmpty()) {
+				uiController.printNoBookmarks();
+				return;
+			}
+		} catch (Exception e) {
+			Main.LOG.warning(e.getMessage());
+		}
+
 		try {
 			List<Bookmark> bookmarks = bookmarkDao.findAll();
 			for (Bookmark bookmark : bookmarks) {
