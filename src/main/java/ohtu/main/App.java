@@ -1,5 +1,7 @@
 package ohtu.main;
 
+import ohtu.actions.Browse;
+import ohtu.actions.Exit;
 import ohtu.dao.BlogpostDao;
 import ohtu.dao.BookmarkDao;
 import ohtu.database.Database;
@@ -11,7 +13,6 @@ import ohtu.tools.Builder;
 import ohtu.ui.UiController;
 
 import java.sql.SQLException;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -26,11 +27,17 @@ public class App {
 	private Database database;
 	private UiController uiController;
 
+	private Exit exit;
+	private Browse browse;
+
 	public App(IO io, Database db) {
 		this.io = io;
 		this.database = db;
 		blogpostDao = new BlogpostDao(database);
 		bookmarkDao = new BookmarkDao(database, blogpostDao);
+
+		exit = new Exit(io);
+
 	}
 
 	public void run() {
@@ -81,7 +88,7 @@ public class App {
 		}
 
 		// The main loop has exited, so the program will terminate.
-		uiController.printGoodbye();
+		exit.act();
 	}
 
 	private void modifyBookmark() {

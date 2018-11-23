@@ -25,10 +25,6 @@ public class UiController {
 		io.println("Welcome to " + ohtu.main.Main.APP_NAME + "!\n");
 	}
 
-	public void printGoodbye() {
-		io.println("Thanks for using " + ohtu.main.Main.APP_NAME + ".");
-	}
-
 	/**
 	 * Prompts the user for a title, author and URL.
 	 *
