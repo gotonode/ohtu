@@ -28,8 +28,8 @@ public class BlogpostDaoTest {
 
     @BeforeClass
     public static void setUpClass() throws IOException {
-    	tempFolder = new TemporaryFolder();
-    	tempFolder.create();
+        tempFolder = new TemporaryFolder();
+        tempFolder.create();
 
         // Assign a test database into the newly created temporary folder.
         databaseFile = new File(tempFolder.getRoot() + "/test.db");
@@ -40,7 +40,7 @@ public class BlogpostDaoTest {
 
     @AfterClass
     public static void tearDownClass() {
-            databaseFile.delete();
+        databaseFile.delete();
     }
 
     @Before
@@ -89,6 +89,38 @@ public class BlogpostDaoTest {
     public void cannotFindBlogpostByNonexistedId() throws SQLException, ParseException {
         Blogpost found = blogpostDao.findById(100);
         assertEquals(null, found);
+    }
+
+    @Test
+    public void canDeleteBlogpostByExistedId() throws SQLException, ParseException {
+        int toBeDeleted = 1;
+        boolean success = blogpostDao.delete(toBeDeleted);
+        assertTrue(success);
+        assertNull(blogpostDao.findById(toBeDeleted));
+    }
+
+    @Test
+    public void cannotDeleteBlogpostByNonexistedId() throws SQLException {
+        int nonExisted = 100;
+        boolean success = blogpostDao.delete(nonExisted);
+        assertFalse(success);
+    }
+
+    @Test
+    public void canUpdateExistedBlogpost() throws SQLException, ParseException {
+        Blogpost toBeUpdated = blogpostDao.findById(1);
+        toBeUpdated.setTitle("new title");
+        boolean success = blogpostDao.update(toBeUpdated);
+        assertTrue(success);
+        assertEquals("new title", blogpostDao.findById(toBeUpdated.getId()).getTitle());
+    }
+
+    @Test
+    public void cannotUpdateNonexistedBlogpost() throws SQLException {
+        Blogpost nonExisted = new Blogpost(100, "titled", null, "author4", "url4");
+        nonExisted.setTitle("new title");
+        boolean success = blogpostDao.update(nonExisted);
+        assertFalse(success);
     }
 
 }
