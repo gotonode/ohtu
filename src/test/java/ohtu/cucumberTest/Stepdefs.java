@@ -15,6 +15,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import ohtu.dao.BlogpostDao;
 import ohtu.domain.Blogpost;
 
 import static org.junit.Assert.assertTrue;
@@ -36,6 +37,7 @@ public class Stepdefs {
             databaseFile = new File(tempFolder.getRoot() + "/test.db");
             db = new Database(databaseFile);
             inputs = new ArrayList<>();
+
         }
 
         inputs.clear(); // Maybe it's faster to just clear this than to re-initialize?
@@ -75,9 +77,28 @@ public class Stepdefs {
         assertTrue(io.getPrints().contains(expectedOutput));
     }
 
+    @Given("^two blogposts have been created and saved to the database$")
+    public void two_blogposts_have_been_created_and_saved_to_the_database() throws Throwable {
+        addNewBlogposts();
+    }
+
     @Given("^command listing all bookmarks is selected$")
     public void command_L_is_selected() throws Throwable {
         inputs.add("L");
+
+    }
+
+    @Given("^command \"([^\"]*)\" is chosen to order the list by id$")
+    public void command_is_chosen_to_list_bookmarks_by_id(String listById) throws Throwable {
+        inputs.add(listById);
+        inputs.add("E");
+        runApp();
+
+    }
+
+    @Given("^command \"([^\"]*)\" is chosen to order the list by title$")
+    public void command_is_chosen_to_order_the_list_by_title(String listByTitle) throws Throwable {
+        inputs.add(listByTitle);
         inputs.add("E");
         runApp();
     }
@@ -86,22 +107,16 @@ public class Stepdefs {
     public void system_will_start_to_list_all_bookmarks_and_respond_with(String expectedOutput) throws Throwable {
         assertTrue(io.getPrints().contains(expectedOutput));
     }
-    
-     @Given("^a new blogpost has been created and added to the database$")
-    public void a_new_blogpost_has_been_created_and_added_to_the_database() throws Throwable {
-        Blogpost blogpost=new Blogpost(-1,"title1",null,"author1","url1");
-        inputs.add("A");
-        inputs.add(blogpost.getTitle());
-        inputs.add(blogpost.getAuthor());
-        inputs.add(blogpost.getUrl());
+
+    @Then("^system will tell the user that the database is empty by responding with \"([^\"]*)\"$")
+    public void system_will_tell_the_user_that_the_database_is_empty_by_responding_with(String expectedOutput) throws Throwable {
+        assertTrue(io.getPrints().contains(expectedOutput));
     }
 
-   
-    
-     @Given("^command deleting a blogpost is selected$")
+    @Given("^command deleting a blogpost is selected$")
     public void command_deleting_a_blogpost_is_selected() throws Throwable {
         inputs.add("D");
-        
+
     }
 
     @When("^existed id (\\d+) is entered$")
@@ -115,24 +130,27 @@ public class Stepdefs {
         inputs.add("E");
         runApp();
     }
-    
+
     @When("^user cancells the deletion by entering \"([^\"]*)\"$")
     public void user_cancells_the_deletion_by_entering(String cancellation) throws Throwable {
         inputs.add(cancellation);
         inputs.add("E");
         runApp();
     }
-    
-    private void runApp(){
-        io=new StubIO(inputs);
-        app=new App(io,db);
+
+    private void runApp() {
+        io = new StubIO(inputs);
+        app = new App(io, db);
         app.run();
     }
 
-
-
-	@When("^sort order \"([^\"]*)\" is chosen$")
-	public void sortOrderIsChosen(String arg0) throws Throwable {
-		inputs.add("I");
-	}
+    private void addNewBlogposts() {
+        inputs.add("A");
+        inputs.add("titleA");
+        inputs.add("authorA");
+        inputs.add("urlA");
+        inputs.add("titleB");
+        inputs.add("authorB");
+        inputs.add("urlB");
+    }
 }
