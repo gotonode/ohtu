@@ -17,7 +17,15 @@ public class Blogpost extends Bookmark {
         this.url = url;
     }
 
-    public String getUrl() {
+	@Override
+	public String toString() {
+		return "Blogpost{" +
+				"author='" + author + '\'' +
+				", url='" + url + '\'' +
+				'}';
+	}
+
+	public String getUrl() {
         return url;
     }
 
@@ -48,4 +56,6 @@ public class Blogpost extends Bookmark {
         hash = 29 * hash + Objects.hashCode(this.url);
         return hash;
     }
+
+
 }

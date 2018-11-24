@@ -50,7 +50,7 @@ public class StubIO implements IO {
 
 			return out;
 		} else {
-			throw new RuntimeException("App tried to read from console, but came up empty. Add more lines to it?");
+			throw new RuntimeException("App tried to read from console, but came up empty. AddAction more lines to it?");
 		}
 	}
 }

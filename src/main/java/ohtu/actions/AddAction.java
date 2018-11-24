@@ -2,9 +2,9 @@ package ohtu.actions;
 
 import ohtu.io.IO;
 
-public class Add extends Action {
+public class AddAction extends Action {
 
-	public Add(IO io) {
+	public AddAction(IO io) {
 		super(io);
 	}
 
