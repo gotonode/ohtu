@@ -45,6 +45,21 @@ public class UiController {
 		return new String[]{title, author, url};
 	}
 
+	/**
+	 * Prompts the user for a title and URL.
+	 *
+	 * @return An array of Strings, e.g. "String[]". Index 0 contains title, index 1 contains url.
+	 */
+	public String[] askVideoData() {
+
+		io.println("Adding a new video.");
+
+		String title = askForString("Title:", false);
+		String url = askForString("URL:", false);
+
+		return new String[]{title, url};
+	}
+
 	public int askForIdToRemove() {
 		io.println("Which bookmark to delete? Please see the ID from the bookmark in question.");
 		return askForInt(0, Integer.MAX_VALUE, "Bookmark to delete");
@@ -201,6 +216,31 @@ public class UiController {
 		io.println("  Type: " + printableData.get(0));
 		io.println("  Author: " + printableData.get(3));
 		io.println("  URL: " + printableData.get(4));
+		io.println("  Date added: " + printableData.get(1));
+
+		String block = "  ";
+		while (block.length() < firstLine.length()) {
+			block += "=";
+		}
+
+		io.println(block);
+		printEmptyLine(); // An empty line to tidy things up.
+	}
+
+	/**
+	 * Prints the Video's data into console.
+	 *
+	 * @param printableData The data IN ORDER.
+	 */
+	public void printVideo(List<String> printableData) {
+
+
+		String firstLine = "  ===== " + printableData.get(5) + " =====";
+
+		io.println(firstLine);
+		io.println("  Title: " + printableData.get(2));
+		io.println("  Type: " + printableData.get(0));
+		io.println("  URL: " + printableData.get(3));
 		io.println("  Date added: " + printableData.get(1));
 
 		String block = "  ";

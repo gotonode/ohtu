@@ -56,4 +56,8 @@ public class AddAction extends Action {
 		uiController.printEmptyLine();
 
 	}
+
+	private void createBlogpost() {
+
+	}
 }
