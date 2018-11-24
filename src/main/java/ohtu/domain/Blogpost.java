@@ -12,7 +12,7 @@ public class Blogpost extends Bookmark {
     private String url;
 
     public Blogpost(int id, String title, Date addDate, String author, String url) {
-        super(id, title, addDate, 'B'); // 'B' here indicates a Blogpost.
+        super(id, title, addDate, 'B'); // B here indicates a Blogpost.
         this.author = author;
         this.url = url;
     }

@@ -3,6 +3,7 @@ package ohtu.actions;
 import ohtu.dao.BookmarkDao;
 import ohtu.domain.Blogpost;
 import ohtu.domain.Bookmark;
+import ohtu.domain.Video;
 import ohtu.io.IO;
 import ohtu.main.Main;
 import ohtu.ui.UiController;
@@ -66,6 +67,20 @@ public class ListAction extends Action {
 
 					// Ask the controller to print the Bookmark's data to console.
 					uiController.printBlogpost(printableData);
+				} else if (bookmark instanceof Video) {
+
+					Video video = (Video) bookmark;
+
+					// Create an ArrayList of Strings that contains the printable data IN ORDER.
+					ArrayList<String> printableData = new ArrayList<>();
+					printableData.add(video.getClass().getSimpleName());
+					printableData.add(video.getAddDate().toString());
+					printableData.add(video.getTitle());
+					printableData.add(video.getUrl());
+					printableData.add(String.valueOf(video.getId()));
+
+					// Ask the controller to print the Bookmark's data to console.
+					uiController.printVideo(printableData);
 				}
 			}
 		} catch (Exception e) {

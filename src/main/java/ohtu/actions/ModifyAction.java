@@ -2,8 +2,10 @@ package ohtu.actions;
 
 import ohtu.dao.BlogpostDao;
 import ohtu.dao.BookmarkDao;
+import ohtu.dao.VideoDao;
 import ohtu.domain.Blogpost;
 import ohtu.domain.Bookmark;
+import ohtu.domain.Video;
 import ohtu.io.IO;
 import ohtu.main.Main;
 import ohtu.ui.UiController;
@@ -15,12 +17,14 @@ public class ModifyAction extends Action {
 	private UiController uiController;
 	private BookmarkDao bookmarkDao;
 	private BlogpostDao blogpostDao;
+	private VideoDao videoDao;
 
-	public ModifyAction(IO io, UiController uiController, BookmarkDao bookmarkDao, BlogpostDao blogpostDao) {
+	public ModifyAction(IO io, UiController uiController, BookmarkDao bookmarkDao, BlogpostDao blogpostDao, VideoDao videoDao) {
 		super(io);
 		this.uiController = uiController;
 		this.bookmarkDao = bookmarkDao;
 		this.blogpostDao = blogpostDao;
+		this.videoDao = videoDao;
 	}
 
 	@Override
@@ -55,7 +59,9 @@ public class ModifyAction extends Action {
 			return;
 		}
 
-		super.getIo().println("Enter new values. Leave blank to use current value.");
+		super.getIo().println("Enter new values. Leave blank to use current value. You can't change the ID, date added or type.");
+
+		uiController.printEmptyLine();
 
 		super.getIo().println("Current title: " + bookmark.getTitle());
 		String newTitle = uiController.askForString("New title: ", true);
@@ -63,16 +69,25 @@ public class ModifyAction extends Action {
 			bookmark.setTitle(newTitle);
 		}
 
+		if (bookmark instanceof Blogpost) {
+			modifyBlogpost((Blogpost) bookmark);
+		} else if (bookmark instanceof Video) {
+			modifyVideo((Video) bookmark);
+		}
+
 		boolean success = false;
 
-		if (bookmark instanceof Blogpost) {
-			try {
-				success = blogpostDao.update((Blogpost)bookmark);
-			} catch (SQLException e) {
-				Main.LOG.warning(e.getMessage());
-				return;
+		try {
+			if (bookmark instanceof Blogpost) {
+				success = blogpostDao.update((Blogpost) bookmark);
+			} else if (bookmark instanceof Video) {
+				success = videoDao.update((Video) bookmark);
 			}
+		} catch (SQLException e) {
+			Main.LOG.warning(e.getMessage());
+			return;
 		}
+
 
 		if (success) {
 			super.getIo().println("Successfully updated your bookmark.");
@@ -81,5 +96,30 @@ public class ModifyAction extends Action {
 		}
 
 		uiController.printEmptyLine();
+	}
+
+	private void modifyBlogpost(Blogpost blogpost) {
+
+		super.getIo().println("Current author: " + blogpost.getAuthor());
+		String newAuthor = uiController.askForString("New author: ", true);
+		if (!newAuthor.isEmpty()) {
+			blogpost.setAuthor(newAuthor);
+		}
+
+		super.getIo().println("Current URL: " + blogpost.getUrl());
+		String newUrl = uiController.askForString("New URL: ", true);
+		if (!newUrl.isEmpty()) {
+			blogpost.setUrl(newUrl);
+		}
+	}
+
+	private void modifyVideo(Video video) {
+
+		// Code repetition here. Feel free to reduce it.
+		super.getIo().println("Current URL: " + video.getUrl());
+		String newUrl = uiController.askForString("New URL: ", true);
+		if (!newUrl.isEmpty()) {
+			video.setUrl(newUrl);
+		}
 	}
 }

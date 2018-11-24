@@ -7,10 +7,10 @@ import java.util.Date;
  */
 public abstract class Bookmark {
 
-    private final int id;
-    private String title;
-    private Date addDate;
-    private final char type;
+    private final int id; // Can never be changed.
+    private String title; // Can be changed.
+    private Date addDate; // Can never be changed.
+    private final char type; // Can never be changed.
     // We'll add "isRead" property later.
 
     /**
