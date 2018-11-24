@@ -1,8 +1,6 @@
 package ohtu.cucumberTest;
 
-import cucumber.api.PendingException;
 import cucumber.api.java.Before;
-import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -15,29 +13,24 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import ohtu.dao.BlogpostDao;
-import ohtu.domain.Blogpost;
 
 import static org.junit.Assert.assertTrue;
 
 public class Stepdefs {
 
-    TemporaryFolder tempFolder;
-    StubIO io;
-    App app;
-    File databaseFile;
-    Database db = null;
-    List<String> inputs;
+    private TemporaryFolder tempFolder;
+    private StubIO io;
+	private Database db = null;
+    private List<String> inputs;
 
     @Before
     public void before() throws IOException {
         if (tempFolder == null) {
             tempFolder = new TemporaryFolder();
             tempFolder.create();
-            databaseFile = new File(tempFolder.getRoot() + "/test.db");
+			File databaseFile = new File(tempFolder.getRoot() + "/test.db");
             db = new Database(databaseFile);
             inputs = new ArrayList<>();
-
         }
 
         inputs.clear(); // Maybe it's faster to just clear this than to re-initialize?
@@ -53,8 +46,6 @@ public class Stepdefs {
         inputs.add(title);
         inputs.add(author);
         inputs.add(url);
-        inputs.add("E"); // Exits the app so it doesn't stay in an infinite loop.
-        runApp();
     }
 
     @When("^title is empty$")
@@ -63,17 +54,17 @@ public class Stepdefs {
         inputs.add("title1");
         inputs.add("author1");
         inputs.add("url1");
-        inputs.add("E");
-        runApp();
     }
 
     @Then("^system will respond with \"([^\"]*)\"$")
     public void system_will_respond_with(String expectedOutput) throws Throwable {
+		runAndExit();
         assertTrue(io.getPrints().contains(expectedOutput));
     }
 
     @Then("^system will ask the user to enter something by responding with \"([^\"]*)\"$")
     public void system_will_ask_the_user_to_enter_something_by_responding_with(String expectedOutput) throws Throwable {
+		runAndExit();
         assertTrue(io.getPrints().contains(expectedOutput));
     }
 
@@ -85,38 +76,33 @@ public class Stepdefs {
     @Given("^command listing all bookmarks is selected$")
     public void command_L_is_selected() throws Throwable {
         inputs.add("L");
-
     }
 
     @Given("^command \"([^\"]*)\" is chosen to order the list by id$")
     public void command_is_chosen_to_list_bookmarks_by_id(String listById) throws Throwable {
         inputs.add(listById);
-        inputs.add("E");
-        runApp();
-
     }
 
     @Given("^command \"([^\"]*)\" is chosen to order the list by title$")
     public void command_is_chosen_to_order_the_list_by_title(String listByTitle) throws Throwable {
         inputs.add(listByTitle);
-        inputs.add("E");
-        runApp();
     }
 
     @Then("^system will start to list all bookmarks and respond with \"([^\"]*)\"$")
     public void system_will_start_to_list_all_bookmarks_and_respond_with(String expectedOutput) throws Throwable {
+		runAndExit();
         assertTrue(io.getPrints().contains(expectedOutput));
     }
 
     @Then("^system will tell the user that the database is empty by responding with \"([^\"]*)\"$")
     public void system_will_tell_the_user_that_the_database_is_empty_by_responding_with(String expectedOutput) throws Throwable {
+		runAndExit();
         assertTrue(io.getPrints().contains(expectedOutput));
     }
 
     @Given("^command deleting a blogpost is selected$")
     public void command_deleting_a_blogpost_is_selected() throws Throwable {
         inputs.add("D");
-
     }
 
     @When("^existed id (\\d+) is entered$")
@@ -127,22 +113,19 @@ public class Stepdefs {
     @When("^confirmation \"([^\"]*)\" is entered$")
     public void confirmation_is_entered(String confirmation) throws Throwable {
         inputs.add(confirmation);
-        inputs.add("E");
-        runApp();
     }
 
     @When("^user cancells the deletion by entering \"([^\"]*)\"$")
     public void user_cancells_the_deletion_by_entering(String cancellation) throws Throwable {
         inputs.add(cancellation);
-        inputs.add("E");
-        runApp();
     }
 
-    private void runApp() {
-        io = new StubIO(inputs);
-        app = new App(io, db);
-        app.run();
-    }
+    private void runAndExit() {
+		inputs.add("E");
+		io = new StubIO(inputs);
+		App app = new App(io, db);
+		app.run();
+	}
 
     private void addNewBlogposts() {
         inputs.add("A");
