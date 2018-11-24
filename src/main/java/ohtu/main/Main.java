@@ -14,24 +14,24 @@ import ohtu.database.Database;
  */
 public class Main {
 
-	// Use the logger for error messages and other such important topics.
-	public static final Logger LOG = Logger.getLogger(Main.class.getName());
+    // Use the logger for error messages and other such important topics.
+    public static final Logger LOG = Logger.getLogger(Main.class.getName());
 
-	// Declare final variables here.
-	public static final String APP_NAME = "Bookmarks Database";
+    // Declare final variables here.
+    public static final String APP_NAME = "Bookmarks Database";
 
-	private static App app;
+    private static App app;
 
-	public static void main(String[] args) {
+    public static void main(String[] args) {
 
-		File databaseFile = new File(System.getProperty("user.dir") + "/bookmarks.db");
-		Database db = new Database(databaseFile);
+            File databaseFile = new File(System.getProperty("user.dir") + "/bookmarks.db");
+            Database db = new Database(databaseFile);
 
-		Scanner scanner = new Scanner(System.in);
+            Scanner scanner = new Scanner(System.in);
 
-		ConsoleIO consoleIo = new ConsoleIO(scanner);
+            ConsoleIO consoleIo = new ConsoleIO(scanner);
 
-		app = new App(consoleIo, db); // Dependency injection. For tests, pass a StubIO.
-		app.run(); // Run the app. It contains a loop, and once it breaks, the app will terminate.
-	}
+            app = new App(consoleIo, db); // Dependency injection. For tests, pass a StubIO.
+            app.run(); // Run the app. It contains a loop, and once it breaks, the app will terminate.
+    }
 }
