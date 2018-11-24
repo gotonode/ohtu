@@ -19,13 +19,13 @@ To run Bookmarks Database, simple type in `gradle run`. This will download all r
 
 Once the app starts, you'll be greeted with a list of commands at your disposal. Currently, these commands are available:
 
-| Command | What will happen |
-| -: | :- |
-| `A` | begins adding a new bookmark to the database by asking you for the bookmark's information |
-| `L` | lists all the bookmarks currently in the database, if any |
+| | What will happen |
+| :-: | :- |
+| `A` | begins adding a new bookmark to the database by asking you for the bookmark's type and information |
+| `L` | lists all the bookmarks currently in the database (either by ID or by title) |
 | `D` | delete an existing bookmark |
 | `M` | modify an existing bookmark's information |
-| `X` | lists all the commands available to the user |
+| `X` | lists all of the commands available to the user |
 | `E` | exits from the app |
 
 ### Links
@@ -51,4 +51,8 @@ External resources:
 | :- | :- | :- |
 | Launch this app | `gradle run` | Gradle will build the app first if necessary |
 | Start the build process | `gradle build` | All dependencies will be downloaded |
+| Build a JAR file | `gradle jar` | Cannot build if project contains errors (use `check` first) 
 | Clean the project | `gradle clean` | Sometimes this may fix errors |
+| Runs all checks | `gradle check` | This includes checking for errors and for code style violations |
+| Run Checkstyle | `gradle checkstyleMain` | Checks for code style violations |
+| Generate JaCoCo | `gradle jacocoTestReport` | Generates a JaCoCo (code coverage) report |
