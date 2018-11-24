@@ -44,7 +44,7 @@ public class BlogpostDaoTest {
     }
 
     @Before
-    public void setUp() throws SQLException, ParseException {
+    public void setUp() throws SQLException, ParseException, IOException {
         database = new Database(databaseFile);
         blogpostDao = new BlogpostDao(database);
         b1 = new Blogpost(-1, "title", null, "author1", "url1");
