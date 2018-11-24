@@ -6,8 +6,8 @@ public class Video extends Bookmark {
 
 	private String url;
 
-	Video(int id, String title, Date addDate, char type, String url) {
-		super(id, title, addDate, type);
+	Video(int id, String title, Date addDate, String url) {
+		super(id, title, addDate, 'V'); // V for video.
 		this.url = url;
 	}
 
@@ -20,5 +20,9 @@ public class Video extends Bookmark {
 
 	public String getUrl() {
 		return url;
+	}
+
+	public void setUrl(String url) {
+		this.url = url;
 	}
 }

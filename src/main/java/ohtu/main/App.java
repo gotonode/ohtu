@@ -3,6 +3,7 @@ package ohtu.main;
 import ohtu.actions.*;
 import ohtu.dao.BlogpostDao;
 import ohtu.dao.BookmarkDao;
+import ohtu.dao.VideoDao;
 import ohtu.database.Database;
 import ohtu.enums.Commands;
 import ohtu.io.IO;
@@ -21,7 +22,10 @@ public class App {
 	private HelpAction help;
 
 	public App(IO io, Database db) {
+
 		BlogpostDao blogpostDao = new BlogpostDao(db);
+		VideoDao videoDao = new VideoDao(db);
+
 		BookmarkDao bookmarkDao = new BookmarkDao(db, blogpostDao);
 
 		uiController = new UiController(io); // Either ConsoleIO or StubIO.
@@ -30,7 +34,7 @@ public class App {
 		delete = new DeleteAction(io, uiController, bookmarkDao, blogpostDao);
 		browse = new ListAction(io, uiController, bookmarkDao);
 		add = new AddAction(io, uiController, bookmarkDao, blogpostDao);
-		modify = new ModifyAction(io, uiController, bookmarkDao, blogpostDao);
+		modify = new ModifyAction(io, uiController, bookmarkDao, blogpostDao, videoDao);
 		help = new HelpAction(io, uiController);
 	}
 

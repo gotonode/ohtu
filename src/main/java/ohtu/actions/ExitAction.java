@@ -14,6 +14,7 @@ public class ExitAction extends Action {
 
 	@Override
 	public void act() {
+		uiController.printEmptyLine();
 		uiController.printGoodbye();
 	}
 }

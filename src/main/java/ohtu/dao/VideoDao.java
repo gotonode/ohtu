@@ -1,5 +1,6 @@
 package ohtu.dao;
 
+import ohtu.database.Database;
 import ohtu.domain.Video;
 
 import java.sql.SQLException;
@@ -7,6 +8,12 @@ import java.text.ParseException;
 import java.util.List;
 
 public class VideoDao implements ObjectDao<Video, Integer> {
+
+	private final Database database;
+
+	public VideoDao(Database database) {
+		this.database = database;
+	}
 
 	@Override
 	public List<Video> findAll() throws SQLException, ParseException {
