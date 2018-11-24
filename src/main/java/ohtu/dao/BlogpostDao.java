@@ -13,8 +13,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * A DAO object for the Blogposts. This class talks with the database and
@@ -223,5 +221,20 @@ public class BlogpostDao implements ObjectDao<Blogpost, Integer> {
         conn.close();
         return success == 1;
     }
-
+      
+    public List<Blogpost> findAllOrderByTitle() throws SQLException, ParseException {
+        Connection conn = database.getConnection();
+        PreparedStatement stmt = conn.prepareStatement("SELECT * FROM bookmark, blogpost WHERE "
+                + "bookmark.id = blogpost.id ORDER BY title");
+        ResultSet rs = stmt.executeQuery();
+        List<Blogpost> orderedList = new ArrayList<>();
+        
+        while (rs.next()) {
+            Blogpost b = constructBlogpostFromResultSet(rs);
+            orderedList.add(b);
+        }
+        
+        close(rs, stmt, conn);
+        return orderedList;
+    }
 }
