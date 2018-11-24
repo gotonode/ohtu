@@ -2,10 +2,10 @@ package ohtu.database;
 
 import ohtu.main.Main;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
+import java.io.IOException;
 import java.sql.*;
+import java.util.List;
 
 public class Database {
 
@@ -19,7 +19,7 @@ public class Database {
      *
      * @param file Where the SQLite ohtu.database file is located.
      */
-    public Database(File file) {
+    public Database(File file) throws IOException {
         this.databaseFile = file;
         this.databaseAddress = ("jdbc:sqlite:").concat(file.getAbsolutePath());
 
@@ -39,44 +39,33 @@ public class Database {
     }
 
     /**
-     * Creates the database structure for a new database from a SQL-script file.
+     * Creates the database structure for a new database from a SQL-script file. 
+     * Reading the scriptfile is performed by SQLReader class.
      */
-    private void initiateDatabaseTables() {
+    private void initiateDatabaseTables() throws IOException {
+        SQLReader reader =  new SQLReader(System.getProperty("user.dir") + "/src/main/resources/sql/createstatements.sql");
+        List<String> statements = reader.readSQLStatements();
+        
         try {
-            runSQLScript(System.getProperty("user.dir") + "/src/main/resources/sql/createstatements.sql");
+            ExecuteSQLStatements(statements);
         } catch (SQLException e) {
             Main.LOG.warning(e.getMessage());
         }
     }
 
     /**
-     * Reads and executes the SQL-statements in the file that is found through the
-     * given filepath.
+     * Executes the SQL-statements given to it in the form of a list.
      *
-     * @param filepath the location of the .sql file containing the required SQL-statements
+     * @param statements the list containing the SQL-statements to be executed
      * @throws SQLException
      */
-    private void runSQLScript(String filepath) throws SQLException {
+    private void ExecuteSQLStatements(List<String> statements) throws SQLException {
         try (Connection conn = getConnection(); Statement s = conn.createStatement()) {
-            BufferedReader reader = new BufferedReader(new FileReader(filepath));
-
-            String executable = "";
-            String nextline;
-
-            while ((nextline = reader.readLine()) != null) {
-                String line = nextline.trim();
-
-                if (line.equals(("")) || line.startsWith("//") || line.startsWith("/*")) {
-                        continue;
-                }
-
-                executable += line + " ";
-
-                if (line.endsWith(";")) {
-                        s.executeUpdate(executable);
-                        executable = "";
-                }
+            
+            for (int i = 0; i < statements.size(); i++) {
+                s.executeUpdate(statements.get(i));
             }
+            
         } catch (Exception e) {
             Main.LOG.warning(e.getMessage());
         }

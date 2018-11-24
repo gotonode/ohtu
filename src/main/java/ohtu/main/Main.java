@@ -1,6 +1,7 @@
 package ohtu.main;
 
 import java.io.File;
+import java.io.IOException;
 
 import ohtu.io.ConsoleIO;
 
@@ -22,16 +23,16 @@ public class Main {
 
     private static App app;
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
 
-            File databaseFile = new File(System.getProperty("user.dir") + "/bookmarks.db");
-            Database db = new Database(databaseFile);
+        File databaseFile = new File(System.getProperty("user.dir") + "/bookmarks.db");
+        Database db = new Database(databaseFile);
 
-            Scanner scanner = new Scanner(System.in);
+        Scanner scanner = new Scanner(System.in);
 
-            ConsoleIO consoleIo = new ConsoleIO(scanner);
+        ConsoleIO consoleIo = new ConsoleIO(scanner);
 
-            app = new App(consoleIo, db); // Dependency injection. For tests, pass a StubIO.
-            app.run(); // Run the app. It contains a loop, and once it breaks, the app will terminate.
+        app = new App(consoleIo, db); // Dependency injection. For tests, pass a StubIO.
+        app.run(); // Run the app. It contains a loop, and once it breaks, the app will terminate.
     }
 }
