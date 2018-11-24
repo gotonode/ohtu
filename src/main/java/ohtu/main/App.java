@@ -1,6 +1,7 @@
 package ohtu.main;
 
-import ohtu.actions.Browse;
+import ohtu.actions.DeleteAction;
+import ohtu.actions.ListAction;
 import ohtu.actions.Exit;
 import ohtu.dao.BlogpostDao;
 import ohtu.dao.BookmarkDao;
@@ -28,7 +29,8 @@ public class App {
 	private UiController uiController;
 
 	private Exit exit;
-	private Browse browse;
+	private ListAction browse;
+	private DeleteAction delete;
 
 	public App(IO io, Database db) {
 		this.io = io;
@@ -36,15 +38,16 @@ public class App {
 		blogpostDao = new BlogpostDao(database);
 		bookmarkDao = new BookmarkDao(database, blogpostDao);
 
-		exit = new Exit(io);
+		uiController = new UiController(io); // Either ConsoleIO or StubIO.
 
+		exit = new Exit(io, uiController);
+		delete = new DeleteAction(io, uiController, bookmarkDao, blogpostDao);
+		browse = new ListAction(io, uiController, bookmarkDao);
 	}
 
 	public void run() {
 
 		appRunning = true;
-
-		uiController = new UiController(io); // Either ConsoleIO or StubIO.
 
 		uiController.printGreeting();
 		uiController.printInstructions();
@@ -59,7 +62,7 @@ public class App {
 			switch (command) {
 
 				case LIST:
-					listAll();
+					browse.act();
 					break;
 
 				case ADD:
@@ -67,7 +70,7 @@ public class App {
 					break;
 
 				case DELETE:
-					deleteBookmark();
+					delete.act();
 					break;
 
 				case MODIFY:
@@ -80,6 +83,7 @@ public class App {
 
 				case EXIT:
 					appRunning = false;
+					exit.act();
 					break;
 
 				default:
@@ -88,7 +92,7 @@ public class App {
 		}
 
 		// The main loop has exited, so the program will terminate.
-		exit.act();
+
 	}
 
 	private void modifyBookmark() {
@@ -125,86 +129,6 @@ public class App {
 		} else {
 			io.println("Couldn't update your bookmark. Please try again.");
 		}
-	}
-
-	private void deleteBookmark() {
-
-		try {
-			if (bookmarkDao.findAll().isEmpty()) {
-				uiController.printNoBookmarks();
-				return;
-			}
-
-		} catch (Exception e) {
-			Main.LOG.warning(e.getMessage());
-			return;
-		}
-
-		int id = uiController.askForIdToRemove();
-		Bookmark bookmark;
-		try {
-			bookmark = bookmarkDao.findById(id);
-		} catch (Exception e) {
-			Main.LOG.warning(e.getMessage());
-			return;
-		}
-
-		uiController.printDeleteConfirmation(bookmark.getId(), bookmark.getTitle(), bookmark.getClass().getSimpleName());
-
-		char c = uiController.askForCharacter(new char[]{'Y', 'N'});
-
-		if (c == 'Y') {
-			if (bookmark instanceof Blogpost) {
-				try {
-					blogpostDao.delete(id);
-					uiController.printDeleteSuccessful(id);
-				} catch (SQLException e) {
-					Main.LOG.warning(e.getMessage());
-					return;
-				}
-			}
-		} else {
-			uiController.printAbortDelete();
-		}
-	}
-
-	private void listAll() {
-
-		io.println("Listing all bookmarks...");
-		uiController.printEmptyLine(); // Tidy.
-
-		try {
-			if (bookmarkDao.findAll().isEmpty()) {
-				uiController.printNoBookmarks();
-				return;
-			}
-		} catch (Exception e) {
-			Main.LOG.warning(e.getMessage());
-		}
-
-		try {
-			List<Bookmark> bookmarks = bookmarkDao.findAll();
-			for (Bookmark bookmark : bookmarks) {
-				if (bookmark instanceof Blogpost) {
-					Blogpost blogpost = (Blogpost) bookmark;
-
-					// Create an ArrayList of Strings that contains the printable data IN ORDER.
-					ArrayList<String> printableData = new ArrayList<>();
-					printableData.add(blogpost.getClass().getSimpleName());
-					printableData.add(blogpost.getAddDate().toString());
-					printableData.add(blogpost.getTitle());
-					printableData.add(blogpost.getAuthor());
-					printableData.add(blogpost.getUrl());
-					printableData.add(String.valueOf(blogpost.getId()));
-
-					// Ask the controller to print the Bookmark's data to console.
-					uiController.printBlogpost(printableData);
-				}
-			}
-		} catch (Exception e) {
-			Main.LOG.warning(e.getMessage());
-		}
-
 	}
 
 	/**

@@ -55,4 +55,7 @@ public abstract class Bookmark {
     public int getType() {
         return type;
     }
+
+    // Override this on a per-object basis.
+    public abstract String toString();
 }

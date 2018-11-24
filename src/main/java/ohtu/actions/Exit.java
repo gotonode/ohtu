@@ -1,15 +1,19 @@
 package ohtu.actions;
 
 import ohtu.io.IO;
+import ohtu.ui.UiController;
 
 public class Exit extends Action {
 
-	public Exit(IO io) {
+	private UiController uiController;
+
+	public Exit(IO io, UiController uiController) {
 		super(io);
+		this.uiController = uiController;
 	}
 
 	@Override
 	public void act() {
-		super.getIo().println("Thanks for using " + ohtu.main.Main.APP_NAME + ".");
+		uiController.printGoodbye();
 	}
 }

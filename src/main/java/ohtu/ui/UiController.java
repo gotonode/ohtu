@@ -13,16 +13,20 @@ public class UiController {
 		this.io = io;
 	}
 
+	public void printGreeting() {
+		io.println("Welcome to " + ohtu.main.Main.APP_NAME + "!\n");
+	}
+
+	public void printGoodbye() {
+		io.println("Thanks for using " + ohtu.main.Main.APP_NAME + ".");
+	}
+
 	public void addSuccess(String type) {
 		io.println("A new " + type.trim() + " has been created and saved to the database.");
 	}
 
 	public void addFailure() {
 		io.println("Could not add your new bookmark to the database. Please try again.");
-	}
-
-	public void printGreeting() {
-		io.println("Welcome to " + ohtu.main.Main.APP_NAME + "!\n");
 	}
 
 	/**
@@ -83,10 +87,10 @@ public class UiController {
 	 * prints all the available instructions for the user.
 	 */
 	public void printInstructions() {
-		io.println("L: List all blogposts");
-		io.println("A: Add a new blogpost");
-		io.println("M: Modify a new blogpost");
-		io.println("D: Delete a bookmark");
+		io.println("L: List all bookmarks");
+		io.println("A: Add a new bookmark");
+		io.println("M: Modify an existing bookmark");
+		io.println("D: Delete an existing bookmark");
 		io.println("");
 		io.println("X: Print all of the available commands (this text)");
 		io.println("E: Exit from the app");
