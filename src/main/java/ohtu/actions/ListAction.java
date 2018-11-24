@@ -26,21 +26,15 @@ public class ListAction extends Action {
 
 		uiController.printEmptyLine();
 
-		// The following has been disabled for now, because it broke the Cucumber test.
+		super.getIo().println("How to sort your bookmarks? Choose 'I' for ID, 'T' for title.");
 
-//		super.getIo().println("How to sort your bookmarks? Choose 'I' for ID, 'T' for title.");
-//
-//		char c = uiController.askForCharacter(new char[]{'I', 'T'}, "How to order");
-//
-//		String sortType = "";
-//
-//		if (c == 'I') {
-//			// Order by ID.
-//			sortType = "ID";
-//		} else if (c == 'T') {
-//			sortType = "title";
-//			// Order by title.
-//		}
+		char c = uiController.askForCharacter(new char[]{'I', 'T'}, "How to order");
+
+		if (c == 'I') {
+			// Order by ID.
+		} else if (c == 'T') {
+			// Order by title.
+		}
 
 		super.getIo().println("Listing all bookmarks...");
 		uiController.printEmptyLine();

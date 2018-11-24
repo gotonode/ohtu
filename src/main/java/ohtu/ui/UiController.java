@@ -85,14 +85,19 @@ public class UiController {
 	 * prints all the available instructions for the user.
 	 */
 	public void printInstructions() {
+
 		printEmptyLine();
+
 		io.println("L: List all bookmarks");
 		io.println("A: Add a new bookmark");
 		io.println("M: Modify an existing bookmark");
 		io.println("D: Delete an existing bookmark");
-		io.println("");
+
+		printEmptyLine();
+
 		io.println("X: Print all of the available commands (this text)");
 		io.println("E: Exit from the app");
+
 		printEmptyLine();
 	}
 
@@ -187,13 +192,24 @@ public class UiController {
 	 * @param printableData The data IN ORDER.
 	 */
 	public void printBlogpost(List<String> printableData) {
-		io.println("===== " + printableData.get(5) + " =====");
-		io.println("Title: " + printableData.get(2));
-		io.println("Type: " + printableData.get(0));
-		io.println("Author: " + printableData.get(3));
-		io.println("URL: " + printableData.get(4));
-		io.println("Date added: " + printableData.get(1));
-		io.println(""); // An empty line to tidy things up.
+
+
+		String firstLine = "  ===== " + printableData.get(5) + " =====";
+
+		io.println(firstLine);
+		io.println("  Title: " + printableData.get(2));
+		io.println("  Type: " + printableData.get(0));
+		io.println("  Author: " + printableData.get(3));
+		io.println("  URL: " + printableData.get(4));
+		io.println("  Date added: " + printableData.get(1));
+
+		String block = "  ";
+		while (block.length() < firstLine.length()) {
+			block += "=";
+		}
+
+		io.println(block);
+		printEmptyLine(); // An empty line to tidy things up.
 	}
 
 	public void printEmptyLine() {
