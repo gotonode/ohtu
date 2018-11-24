@@ -8,7 +8,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class SQLReader {
     private final String filepath;
 
@@ -31,7 +30,7 @@ public class SQLReader {
      */
     public List<String> readSQLStatements() throws IOException {
         BufferedReader reader = new BufferedReader(new FileReader(filepath));
-        
+
         List<String> statements = new ArrayList<>();
         String statement = "";
         String nextline;
@@ -43,7 +42,7 @@ public class SQLReader {
                 continue;
             }
 
-            statement += line + " ";
+            statement += line + " "; // TODO: Use a StringBuilder here?
 
             if (line.endsWith(";")) {
                 statements.add(statement);

@@ -14,7 +14,7 @@ public class UiController {
 	}
 
 	public void printGreeting() {
-		io.println("Welcome to " + ohtu.main.Main.APP_NAME + "!\n");
+		io.println("Welcome to " + ohtu.main.Main.APP_NAME + "!");
 	}
 
 	public void printGoodbye() {
@@ -47,14 +47,12 @@ public class UiController {
 
 	public int askForIdToRemove() {
 		io.println("Which bookmark to delete? Please see the ID from the bookmark in question.");
-		int id = askForInt(0, Integer.MAX_VALUE);
-		return id;
+		return askForInt(0, Integer.MAX_VALUE, "Bookmark to delete");
 	}
 
 	public int askForIdToModify() {
 		io.println("Which bookmark to modify? Please see the ID from the bookmark in question.");
-		int id = askForInt(0, Integer.MAX_VALUE);
-		return id;
+		return askForInt(0, Integer.MAX_VALUE, "Bookmark to modify");
 	}
 
 	/**
@@ -87,6 +85,7 @@ public class UiController {
 	 * prints all the available instructions for the user.
 	 */
 	public void printInstructions() {
+		printEmptyLine();
 		io.println("L: List all bookmarks");
 		io.println("A: Add a new bookmark");
 		io.println("M: Modify an existing bookmark");
@@ -94,7 +93,7 @@ public class UiController {
 		io.println("");
 		io.println("X: Print all of the available commands (this text)");
 		io.println("E: Exit from the app");
-		io.println("");
+		printEmptyLine();
 	}
 
 	/**
@@ -103,11 +102,11 @@ public class UiController {
 	 * @param allowedChars A list of chars that are accepted.
 	 * @return A valid uppercase character.
 	 */
-	public char askForCharacter(char[] allowedChars) {
+	public char askForCharacter(char[] allowedChars, String prompt) {
 
 		while (true) {
 
-			String next = io.readLine("Your choice:");
+			String next = io.readLine(prompt.trim() + ":");
 
 			if (next.isEmpty()) {
 				io.println("Please enter something.");
@@ -147,13 +146,13 @@ public class UiController {
 	 * @param max Max value for the integer.
 	 * @return A valid integer between min and max.
 	 */
-	public int askForInt(int min, int max) {
+	public int askForInt(int min, int max, String prompt) {
 
 		int value = 0;
 
 		while (true) {
 
-			String next = io.readLine("Your choice:");
+			String next = io.readLine(prompt + ":");
 
 			if (next.isEmpty()) {
 				io.println("Please enter something.");
@@ -216,5 +215,9 @@ public class UiController {
 
 	public void printNoBookmarks() {
 		io.println("No bookmarks have been saved in the database.");
+	}
+
+	public void printBookmarkNotFound() {
+		io.println("Could not find a bookmark with that ID. Please re-check it.");
 	}
 }

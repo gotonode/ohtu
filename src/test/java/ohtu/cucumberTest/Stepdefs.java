@@ -1,6 +1,8 @@
 package ohtu.cucumberTest;
 
+import cucumber.api.PendingException;
 import cucumber.api.java.Before;
+import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -90,4 +92,8 @@ public class Stepdefs {
         assertTrue(io.getPrints().contains(expectedOutput));
     }
 
+	@When("^sort order \"([^\"]*)\" is chosen$")
+	public void sortOrderIsChosen(String arg0) throws Throwable {
+		inputs.add("I");
+	}
 }

@@ -25,9 +25,13 @@ public class DeleteAction extends Action {
 
 	@Override
 	public void act() {
+
+		uiController.printEmptyLine();
+
 		try {
 			if (bookmarkDao.findAll().isEmpty()) {
 				uiController.printNoBookmarks();
+				uiController.printEmptyLine();
 				return;
 			}
 
@@ -45,23 +49,30 @@ public class DeleteAction extends Action {
 			return;
 		}
 
+		if (bookmark == null) {
+			uiController.printBookmarkNotFound();
+			uiController.printEmptyLine();
+			return;
+		}
+
 		uiController.printDeleteConfirmation(bookmark.getId(), bookmark.getTitle(), bookmark.getClass().getSimpleName());
 
-		char c = uiController.askForCharacter(new char[]{'Y', 'N'});
+		char c = uiController.askForCharacter(new char[]{'Y', 'N'}, "Really delete");
 
 		if (c == 'Y') {
 			if (bookmark instanceof Blogpost) {
 				try {
 					blogpostDao.delete(id);
-					super.getIo().println("Successfully deleted bookmark with ID " + id + ".");
+					uiController.printDeleteSuccessful(id);
 				} catch (SQLException e) {
 					Main.LOG.warning(e.getMessage());
-					return;
 				}
 			}
 		} else {
-			super.getIo().println("Bookmark will not be deleted.");
+			uiController.printAbortDelete();
 		}
+
+		uiController.printEmptyLine();
 
 	}
 }

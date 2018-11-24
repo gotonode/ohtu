@@ -23,12 +23,32 @@ public class ListAction extends Action {
 
 	@Override
 	public void act() {
+
+		uiController.printEmptyLine();
+
+		// The following has been disabled for now, because it broke the Cucumber test.
+
+//		super.getIo().println("How to sort your bookmarks? Choose 'I' for ID, 'T' for title.");
+//
+//		char c = uiController.askForCharacter(new char[]{'I', 'T'}, "How to order");
+//
+//		String sortType = "";
+//
+//		if (c == 'I') {
+//			// Order by ID.
+//			sortType = "ID";
+//		} else if (c == 'T') {
+//			sortType = "title";
+//			// Order by title.
+//		}
+
 		super.getIo().println("Listing all bookmarks...");
-		uiController.printEmptyLine(); // Tidy.
+		uiController.printEmptyLine();
 
 		try {
 			if (bookmarkDao.findAll().isEmpty()) {
 				uiController.printNoBookmarks();
+				uiController.printEmptyLine();
 				return;
 			}
 		} catch (Exception e) {
@@ -57,5 +77,7 @@ public class ListAction extends Action {
 		} catch (Exception e) {
 			Main.LOG.warning(e.getMessage());
 		}
+
+		// No need to print an empty line here since the listed bookmarks have an empty line at the end.
 	}
 }
