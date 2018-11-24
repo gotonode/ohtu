@@ -132,6 +132,7 @@ public class Stepdefs {
         inputs.add("titleA");
         inputs.add("authorA");
         inputs.add("urlA");
+		inputs.add("A"); // Should this be here?
         inputs.add("titleB");
         inputs.add("authorB");
         inputs.add("urlB");
