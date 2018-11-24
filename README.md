@@ -39,6 +39,7 @@ From our wiki:
 Backlogs (GitHub Projects):
 * [Product Backlog](https://github.com/gotonode/ohtu/projects/3)
 * [Sprint 1 Backlog](https://github.com/gotonode/ohtu/projects/1)
+* [Sprint 2 Backlog](https://github.com/gotonode/ohtu/projects/2)
 
 External resources:
 * [Travis](https://travis-ci.org/gotonode/ohtu) (continuous integration & tests)
