@@ -9,8 +9,7 @@ import java.util.List;
 
 public class Database {
 
-    private File databaseFile;
-    private String databaseAddress;
+	private String databaseAddress;
 
     /**
      * Creates a new Database-object with the given File, which points to the actual SQLite ohtu.database.
@@ -20,10 +19,10 @@ public class Database {
      * @param file Where the SQLite ohtu.database file is located.
      */
     public Database(File file) throws IOException {
-        this.databaseFile = file;
+		File databaseFile = file;
         this.databaseAddress = ("jdbc:sqlite:").concat(file.getAbsolutePath());
 
-        if (!this.databaseFile.exists()) {
+        if (!databaseFile.exists()) {
             initiateDatabaseTables();
         }
     }
@@ -47,7 +46,7 @@ public class Database {
         List<String> statements = reader.readSQLStatements();
         
         try {
-            ExecuteSQLStatements(statements);
+            executeSQLStatements(statements);
         } catch (SQLException e) {
             Main.LOG.warning(e.getMessage());
         }
@@ -59,12 +58,12 @@ public class Database {
      * @param statements the list containing the SQL-statements to be executed
      * @throws SQLException
      */
-    private void ExecuteSQLStatements(List<String> statements) throws SQLException {
+    private void executeSQLStatements(List<String> statements) throws SQLException {
         try (Connection conn = getConnection(); Statement s = conn.createStatement()) {
-            
-            for (int i = 0; i < statements.size(); i++) {
-                s.executeUpdate(statements.get(i));
-            }
+
+			for (String statement : statements) {
+				s.executeUpdate(statement);
+			}
             
         } catch (Exception e) {
             Main.LOG.warning(e.getMessage());
