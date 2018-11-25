@@ -33,8 +33,17 @@ public abstract class Bookmark {
     public boolean isBlogpost() {
         return this instanceof Blogpost;
     }
+    
+    /**
+     * Checks whether an instance of a Bookmark is a Video.
+     * 
+     * @return true if the object is a Video, otherwise false.
+     */
+    public boolean isVideo() {
+        return this instanceof Video;
+    }
 
-    // We'll add the rest later (video, article, book, podcast).
+    // We'll add the rest later (article, book, podcast).
 
     public int getId() {
         return id;
