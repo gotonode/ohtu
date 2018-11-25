@@ -16,5 +16,12 @@ CREATE TABLE IF NOT EXISTS Blogpost (
     FOREIGN KEY (id) REFERENCES Bookmark(id)
 );
 
+CREATE TABLE IF NOT EXISTS Video (
+    id integer NOT NULL,
+    url varchar(400),
+    PRIMARY KEY (id),
+    FOREIGN KEY (id) REFERENCES Bookmark(id)
+);
+
 /* TODO: Consider adding NOT NULL for some of the columns */
 /* TODO: Consider changing some varchar sizes */
