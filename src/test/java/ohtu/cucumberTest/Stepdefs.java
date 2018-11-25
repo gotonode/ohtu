@@ -20,7 +20,7 @@ public class Stepdefs {
 
     private TemporaryFolder tempFolder;
     private StubIO io;
-	private Database db = null;
+    private Database db = null;
     private List<String> inputs;
 
     @Before
@@ -28,7 +28,7 @@ public class Stepdefs {
         if (tempFolder == null) {
             tempFolder = new TemporaryFolder();
             tempFolder.create();
-			File databaseFile = new File(tempFolder.getRoot() + "/test.db");
+            File databaseFile = new File(tempFolder.getRoot() + "/test.db");
             db = new Database(databaseFile);
             inputs = new ArrayList<>();
         }
@@ -58,13 +58,13 @@ public class Stepdefs {
 
     @Then("^system will respond with \"([^\"]*)\"$")
     public void system_will_respond_with(String expectedOutput) throws Throwable {
-		runAndExit();
+        runAndExit();
         assertTrue(io.getPrints().contains(expectedOutput));
     }
 
     @Then("^system will ask the user to enter something by responding with \"([^\"]*)\"$")
     public void system_will_ask_the_user_to_enter_something_by_responding_with(String expectedOutput) throws Throwable {
-		runAndExit();
+        runAndExit();
         assertTrue(io.getPrints().contains(expectedOutput));
     }
 
@@ -90,13 +90,13 @@ public class Stepdefs {
 
     @Then("^system will start to list all bookmarks and respond with \"([^\"]*)\"$")
     public void system_will_start_to_list_all_bookmarks_and_respond_with(String expectedOutput) throws Throwable {
-		runAndExit();
+        runAndExit();
         assertTrue(io.getPrints().contains(expectedOutput));
     }
 
     @Then("^system will tell the user that the database is empty by responding with \"([^\"]*)\"$")
     public void system_will_tell_the_user_that_the_database_is_empty_by_responding_with(String expectedOutput) throws Throwable {
-		runAndExit();
+        runAndExit();
         assertTrue(io.getPrints().contains(expectedOutput));
     }
 
@@ -109,6 +109,12 @@ public class Stepdefs {
     public void id_is_entered(int id) throws Throwable {
         inputs.add(Integer.toString(id));
     }
+    
+    @When("^unexisted id (\\d+) is entered$")
+    public void unexisted_id_is_entered(int unexistedId) throws Throwable {
+        inputs.add(Integer.toString(unexistedId));
+    }
+
 
     @When("^confirmation \"([^\"]*)\" is entered$")
     public void confirmation_is_entered(String confirmation) throws Throwable {
@@ -121,18 +127,18 @@ public class Stepdefs {
     }
 
     private void runAndExit() {
-		inputs.add("E");
-		io = new StubIO(inputs);
-		App app = new App(io, db);
-		app.run();
-	}
+        inputs.add("E");
+        io = new StubIO(inputs);
+        App app = new App(io, db);
+        app.run();
+    }
 
     private void addNewBlogposts() {
         inputs.add("A");
         inputs.add("titleA");
         inputs.add("authorA");
         inputs.add("urlA");
-		inputs.add("A"); // Should this be here?
+            inputs.add("A"); // Should this be here? Maybe yes? When we created a blogpost the console print "Choose a command" again and we need to enter the A command again to create another blogpost
         inputs.add("titleB");
         inputs.add("authorB");
         inputs.add("urlB");
