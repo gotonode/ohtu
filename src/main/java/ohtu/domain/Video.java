@@ -40,6 +40,7 @@ public class Video extends Bookmark {
     public int hashCode() {
         int hash = 9;
         hash = 37 * hash + Objects.hashCode(this.url);
+        
         return hash;
     }
 }
