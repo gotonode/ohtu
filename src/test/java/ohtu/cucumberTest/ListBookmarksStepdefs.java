@@ -1,32 +1,22 @@
-
 package ohtu.cucumberTest;
 
 import cucumber.api.java.Before;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
-import cucumber.api.java.en.When;
-import ohtu.database.Database;
 import ohtu.io.StubIO;
 import ohtu.main.App;
-import org.junit.rules.TemporaryFolder;
-
-import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
 import static org.junit.Assert.assertTrue;
-public class ListBookmarksStepdefs extends AbstractStepdefs{
-    
-   
+
+public class ListBookmarksStepdefs extends AbstractStepdefs {
 
     @Before
     public void before() throws IOException {
         initialize();
         inputs.clear(); // Maybe it's faster to just clear this than to re-initialize?
     }
-    
-@Given("^two bookmarks have been created and saved to the database$")
+
+    @Given("^two bookmarks have been created and saved to the database$")
     public void two_bookmarks_have_been_created_and_saved_to_the_database() throws Throwable {
         addNewBookmarks();
     }
@@ -57,7 +47,7 @@ public class ListBookmarksStepdefs extends AbstractStepdefs{
         runAndExit();
         assertTrue(io.getPrints().contains(expectedOutput));
     }
-    
+
     private void runAndExit() {
         inputs.add("E");
         io = new StubIO(inputs);
@@ -67,12 +57,12 @@ public class ListBookmarksStepdefs extends AbstractStepdefs{
 
     private void addNewBookmarks() { //other types will be added soon
         inputs.add("A");
-		inputs.add("B");
+        inputs.add("B");
         inputs.add("titleA");
         inputs.add("authorA");
         inputs.add("urlA");
         inputs.add("A"); // Should this be here? Maybe yes? When we created a blogpost the console print "Choose a command" again and we need to enter the A command again to create another blogpost
-		inputs.add("B");
+        inputs.add("B");
         inputs.add("titleB");
         inputs.add("authorB");
         inputs.add("urlB");
