@@ -8,8 +8,6 @@ import ohtu.domain.Bookmark;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import ohtu.database.Database;
 
@@ -18,6 +16,7 @@ public class BookmarkDao {
     // If possible, this class could return all results, when we don't want to get e.g. just the blog posts.
     private final Database database;
     private BlogpostDao blogpostDao;
+    private VideoDao videoDao;
 
     public BookmarkDao(Database database, BlogpostDao blogpostDao) {
         this.database = database;
@@ -46,7 +45,6 @@ public class BookmarkDao {
         // Add here in similar manner the new types of Bookmarks (the method FindAllOrderByTitle)
         
         bookmarks.stream().sorted((b1, b2) -> b1.getTitle().compareToIgnoreCase(b2.getTitle()));
-        System.out.println(bookmarks);
         return bookmarks;
     }
  
