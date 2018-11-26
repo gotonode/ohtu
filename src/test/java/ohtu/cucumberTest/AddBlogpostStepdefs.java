@@ -24,10 +24,14 @@ public class AddBlogpostStepdefs extends AbstractStepdefs {
         inputs.clear(); // Maybe it's faster to just clear this than to re-initialize?
     }
 
-    @Given("^command adding a blogpost is selected$")
+    @Given("^command adding a bookmark is selected$")
     public void command_A_selected() throws Throwable {
         inputs.add("A");
-		inputs.add("B"); // 'B' is for Blogpost.
+    }
+
+    @Given("^command adding a blogpost is selected$")
+    public void command_B_selected() throws Throwable {
+        inputs.add("B"); // 'B' is for Blogpost.
     }
 
     @When("^title \"([^\"]*)\" and author \"([^\"]*)\" and url \"([^\"]*)\" are entered$")
