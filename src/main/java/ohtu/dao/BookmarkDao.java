@@ -8,6 +8,8 @@ import ohtu.domain.Bookmark;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import ohtu.database.Database;
 
@@ -35,7 +37,18 @@ public class BookmarkDao {
         close(rs,stmt,conn);
         return bookmarks;
     }
+    
+    public List<Bookmark> findAllOrderByTitle() throws SQLException, ParseException {
+        List<Bookmark> bookmarks = new ArrayList<>();
+        Connection conn = database.getConnection();
 
+        bookmarks.addAll(blogpostDao.findAllOrderByTitle());
+        // Add here in similar manner the new types of Bookmarks (the method FindAllOrderByTitle)
+        
+        bookmarks.stream().sorted((b1, b2) -> b1.getTitle().compareToIgnoreCase(b2.getTitle()));
+        System.out.println(bookmarks);
+        return bookmarks;
+    }
  
     public Bookmark findById(Integer id) throws SQLException, ParseException {
         Connection conn = database.getConnection();
@@ -64,7 +77,6 @@ public class BookmarkDao {
         ResultSet rs = stmt.executeQuery();
         while (rs.next()) {
             Bookmark found = findCertainBookmarkByType(rs);
-            //close(rs,stmt,conn);
             bookmarks.add(found);
         }
         close(rs,stmt,conn);

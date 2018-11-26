@@ -50,11 +50,7 @@ public class ListAction extends Action {
 			if (orderBy == OrderBy.ID) {
 				bookmarks = bookmarkDao.findAll();
 			} else if (orderBy == OrderBy.TITLE) {
-				// TODO: Uncomment this once the feature is done.
-				//bookmarks = bookmarkDao.findAllOrderByTitle();
-
-				// And remove the following line.
-				bookmarks = bookmarkDao.findAll();
+				bookmarks = bookmarkDao.findAllOrderByTitle();
 			}
 
 			// Loop through all of the Bookmarks and ask them to be printed to the console.
