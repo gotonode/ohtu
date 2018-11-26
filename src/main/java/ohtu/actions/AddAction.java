@@ -2,7 +2,9 @@ package ohtu.actions;
 
 import ohtu.dao.BlogpostDao;
 import ohtu.dao.BookmarkDao;
+import ohtu.dao.VideoDao;
 import ohtu.domain.Blogpost;
+import ohtu.domain.Video;
 import ohtu.io.IO;
 import ohtu.main.Main;
 import ohtu.tools.Builder;
@@ -15,12 +17,14 @@ public class AddAction extends Action {
 	private UiController uiController;
 	private BookmarkDao bookmarkDao;
 	private BlogpostDao blogpostDao;
+	private VideoDao videoDao;
 
-	public AddAction(IO io, UiController uiController, BookmarkDao bookmarkDao, BlogpostDao blogpostDao) {
+	public AddAction(IO io, UiController uiController, BookmarkDao bookmarkDao, BlogpostDao blogpostDao, VideoDao videoDao) {
 		super(io);
 		this.uiController = uiController;
 		this.bookmarkDao = bookmarkDao;
 		this.blogpostDao = blogpostDao;
+		this.videoDao = videoDao;
 	}
 
 	/**
@@ -32,6 +36,53 @@ public class AddAction extends Action {
 
 		uiController.printEmptyLine();
 
+		super.getIo().println("What kind of a bookmark you'd like to create?");
+		super.getIo().println("Choose 'B' for Blogpost, 'V' for video.");
+
+		char type = uiController.askForCharacter(new char[]{'B', 'V'}, "Bookmark type");
+
+		switch (type) {
+			case 'B':
+				createBlogpost();
+				break;
+			case 'V':
+				createVideo();
+				break;
+			default:
+				throw new RuntimeException("Got an illegal value.");
+		}
+
+
+
+		uiController.printEmptyLine();
+
+	}
+
+	// Contains code repetition, will be fixed later.
+	private void createVideo() {
+		String[] values = uiController.askVideoData();
+		String title = values[0]; // Care should be taken so as not to mix these indices up.
+		String url = values[1];
+
+		// Database will handle assigning correct ID to the object, and decides the addDate value.
+		Date date = null; // This is here just as a reference that it is null.
+		int id = -1; // When creating new Bookmarks from user input, assign -1 as the ID.
+
+		Video newVideo = Builder.buildVideo(id, title, url, date);
+		try {
+			final Video success = videoDao.create(newVideo);
+			if (success != null) {
+				uiController.addSuccess(newVideo.getClass().getSimpleName());
+			} else {
+				uiController.addFailure();
+			}
+		} catch (Exception e) {
+			Main.LOG.warning(e.getMessage());
+		}
+	}
+
+	// Contains code repetition, will be fixed later.
+	private void createBlogpost() {
 		String[] values = uiController.askBlogpostData();
 		String title = values[0]; // Care should be taken so as not to mix these indices up.
 		String author = values[1];
@@ -52,12 +103,5 @@ public class AddAction extends Action {
 		} catch (Exception e) {
 			Main.LOG.warning(e.getMessage());
 		}
-
-		uiController.printEmptyLine();
-
-	}
-
-	private void createBlogpost() {
-
 	}
 }

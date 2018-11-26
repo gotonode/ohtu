@@ -33,7 +33,7 @@ public class App {
 		exit = new ExitAction(io, uiController);
 		delete = new DeleteAction(io, uiController, bookmarkDao, blogpostDao);
 		browse = new ListAction(io, uiController, bookmarkDao);
-		add = new AddAction(io, uiController, bookmarkDao, blogpostDao);
+		add = new AddAction(io, uiController, bookmarkDao, blogpostDao, videoDao);
 		modify = new ModifyAction(io, uiController, bookmarkDao, blogpostDao, videoDao);
 		help = new HelpAction(io, uiController);
 	}

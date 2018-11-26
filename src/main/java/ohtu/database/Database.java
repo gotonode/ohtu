@@ -19,15 +19,22 @@ public class Database {
      * @param file Where the SQLite ohtu.database file is located.
      */
     public Database(File file) throws IOException {
-		File databaseFile = file;
         this.databaseAddress = ("jdbc:sqlite:").concat(file.getAbsolutePath());
 
-        if (!databaseFile.exists()) {
+        if (!file.exists()) {
             initiateDatabaseTables();
         }
     }
 
-    /**
+	@Override
+	public String toString() {
+    	// This is here to ease debugging.
+		return "Database{" +
+				"databaseAddress='" + databaseAddress + '\'' +
+				'}';
+	}
+
+	/**
      * Get connection to database.
      *
      * @return Connection to database.

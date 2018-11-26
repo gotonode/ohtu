@@ -27,6 +27,7 @@ public class AddBlogpostStepdefs extends AbstractStepdefs {
     @Given("^command adding a blogpost is selected$")
     public void command_A_selected() throws Throwable {
         inputs.add("A");
+		inputs.add("B"); // 'B' is for Blogpost.
     }
 
     @When("^title \"([^\"]*)\" and author \"([^\"]*)\" and url \"([^\"]*)\" are entered$")
@@ -35,7 +36,6 @@ public class AddBlogpostStepdefs extends AbstractStepdefs {
         inputs.add(author);
         inputs.add(url);
     }
-//
 
     @When("^title is empty$")
     public void title_is_empty() throws Throwable {
@@ -44,7 +44,6 @@ public class AddBlogpostStepdefs extends AbstractStepdefs {
         inputs.add("author1");
         inputs.add("url1");
     }
-//
 
     @Then("^system will respond with \"([^\"]*)\"$")
     public void system_will_respond_with(String expectedOutput) throws Throwable {

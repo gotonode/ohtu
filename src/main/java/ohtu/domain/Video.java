@@ -6,7 +6,7 @@ public class Video extends Bookmark {
 
 	private String url;
 
-	Video(int id, String title, Date addDate, String url) {
+	public Video(int id, String title, Date addDate, String url) {
 		super(id, title, addDate, 'V'); // V for video.
 		this.url = url;
 	}

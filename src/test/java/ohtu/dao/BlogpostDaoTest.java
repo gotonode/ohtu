@@ -45,6 +45,14 @@ public class BlogpostDaoTest {
 
     @Before
     public void setUp() throws SQLException, ParseException, IOException {
+
+    	// Can we delete the database after each test and re-create it? Currently the following doesn't work.
+		final boolean delete = databaseFile.delete();
+
+		// TODO: This temporary fixes the problem on Windows. But it's ineffective. And creates a lot of temp folders.
+		setUpClass();
+
+
         database = new Database(databaseFile);
         blogpostDao = new BlogpostDao(database);
         b1 = new Blogpost(-1, "title", null, "author1", "url1");
