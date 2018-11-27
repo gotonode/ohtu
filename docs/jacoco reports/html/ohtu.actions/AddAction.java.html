@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fi"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AddAction.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">ohtu</a> &gt; <a href="index.source.html" class="el_package">ohtu.actions</a> &gt; <span class="el_source">AddAction.java</span></div><h1>AddAction.java</h1><pre class="source lang-java linenums">package ohtu.actions;
+
+import ohtu.dao.BlogpostDao;
+import ohtu.dao.BookmarkDao;
+import ohtu.dao.VideoDao;
+import ohtu.domain.Blogpost;
+import ohtu.domain.Video;
+import ohtu.io.IO;
+import ohtu.main.Main;
+import ohtu.tools.Builder;
+import ohtu.ui.UiController;
+
+import java.util.Date;
+
+public class AddAction extends Action {
+
+	private UiController uiController;
+	private BookmarkDao bookmarkDao;
+	private BlogpostDao blogpostDao;
+	private VideoDao videoDao;
+
+	public AddAction(IO io, UiController uiController, BookmarkDao bookmarkDao, BlogpostDao blogpostDao, VideoDao videoDao) {
+<span class="fc" id="L23">		super(io);</span>
+<span class="fc" id="L24">		this.uiController = uiController;</span>
+<span class="fc" id="L25">		this.bookmarkDao = bookmarkDao;</span>
+<span class="fc" id="L26">		this.blogpostDao = blogpostDao;</span>
+<span class="fc" id="L27">		this.videoDao = videoDao;</span>
+<span class="fc" id="L28">	}</span>
+
+	/**
+	 * Asks the user for title, author and url, and creates a new Blogpost by using Builder.
+	 * Then tries to add the new Blogpost into the database. Tells the user if the operation succeeded or not.
+	 */
+	@Override
+	public void act() {
+
+<span class="fc" id="L37">		uiController.printEmptyLine();</span>
+
+<span class="fc" id="L39">		super.getIo().println(&quot;What kind of a bookmark you'd like to create?&quot;);</span>
+<span class="fc" id="L40">		super.getIo().println(&quot;Choose 'B' for Blogpost, 'V' for video.&quot;);</span>
+
+<span class="fc" id="L42">		char type = uiController.askForCharacter(new char[]{'B', 'V'}, &quot;Bookmark type&quot;);</span>
+
+<span class="pc bpc" id="L44" title="1 of 3 branches missed.">		switch (type) {</span>
+			case 'B':
+<span class="fc" id="L46">				createBlogpost();</span>
+<span class="fc" id="L47">				break;</span>
+			case 'V':
+<span class="fc" id="L49">				createVideo();</span>
+<span class="fc" id="L50">				break;</span>
+			default:
+<span class="nc" id="L52">				throw new RuntimeException(&quot;Got an illegal value.&quot;);</span>
+		}
+
+
+
+<span class="fc" id="L57">		uiController.printEmptyLine();</span>
+
+<span class="fc" id="L59">	}</span>
+
+	// Contains code repetition, will be fixed later.
+	private void createVideo() {
+<span class="fc" id="L63">		String[] values = uiController.askVideoData();</span>
+<span class="fc" id="L64">		String title = values[0]; // Care should be taken so as not to mix these indices up.</span>
+<span class="fc" id="L65">		String url = values[1];</span>
+
+		// Database will handle assigning correct ID to the object, and decides the addDate value.
+<span class="fc" id="L68">		Date date = null; // This is here just as a reference that it is null.</span>
+<span class="fc" id="L69">		int id = -1; // When creating new Bookmarks from user input, assign -1 as the ID.</span>
+
+<span class="fc" id="L71">		Video newVideo = Builder.buildVideo(id, title, url, date);</span>
+		try {
+<span class="fc" id="L73">			final Video success = videoDao.create(newVideo);</span>
+<span class="pc bpc" id="L74" title="1 of 2 branches missed.">			if (success != null) {</span>
+<span class="fc" id="L75">				uiController.addSuccess(newVideo.getClass().getSimpleName());</span>
+			} else {
+<span class="nc" id="L77">				uiController.addFailure();</span>
+			}
+<span class="nc" id="L79">		} catch (Exception e) {</span>
+<span class="nc" id="L80">			Main.LOG.warning(e.getMessage());</span>
+<span class="fc" id="L81">		}</span>
+<span class="fc" id="L82">	}</span>
+
+	// Contains code repetition, will be fixed later.
+	private void createBlogpost() {
+<span class="fc" id="L86">		String[] values = uiController.askBlogpostData();</span>
+<span class="fc" id="L87">		String title = values[0]; // Care should be taken so as not to mix these indices up.</span>
+<span class="fc" id="L88">		String author = values[1];</span>
+<span class="fc" id="L89">		String url = values[2];</span>
+
+		// Database will handle assigning correct ID to the object, and decides the addDate value.
+<span class="fc" id="L92">		Date date = null; // This is here just as a reference that it is null.</span>
+<span class="fc" id="L93">		int id = -1; // When creating new Bookmarks from user input, assign -1 as the ID.</span>
+
+<span class="fc" id="L95">		Blogpost newBlogpost = Builder.buildBlogpost(id, title, author, url, date);</span>
+		try {
+<span class="fc" id="L97">			final Blogpost success = blogpostDao.create(newBlogpost);</span>
+<span class="pc bpc" id="L98" title="1 of 2 branches missed.">			if (success != null) {</span>
+<span class="fc" id="L99">				uiController.addSuccess(newBlogpost.getClass().getSimpleName());</span>
+			} else {
+<span class="nc" id="L101">				uiController.addFailure();</span>
+			}
+<span class="nc" id="L103">		} catch (Exception e) {</span>
+<span class="nc" id="L104">			Main.LOG.warning(e.getMessage());</span>
+<span class="fc" id="L105">		}</span>
+<span class="fc" id="L106">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.8.201612092310</span></div></body></html>
