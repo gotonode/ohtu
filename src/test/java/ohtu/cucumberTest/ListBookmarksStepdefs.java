@@ -51,13 +51,13 @@ public class ListBookmarksStepdefs extends AbstractStepdefs {
     private void addNewBookmarks() { //other types will be added soon
         inputs.add("A");
         inputs.add("B");
-        inputs.add("titleA");
-        inputs.add("authorA");
-        inputs.add("urlA");
+        inputs.add("Data Mining");
+        inputs.add("navamani saravanan");
+        inputs.add("http://notescompsci.blogspot.com/2013/04/data-mining.html");
         inputs.add("A"); // Should this be here? Maybe yes? When we created a blogpost the console print "Choose a command" again and we need to enter the A command again to create another blogpost
-        inputs.add("B");
-        inputs.add("titleB");
-        inputs.add("authorB");
-        inputs.add("urlB");
+        inputs.add("V");
+        inputs.add("Map of Computer Science");
+        inputs.add("navamani saravanan");
+        inputs.add("https://www.youtube.com/watch?v=SzJ46YA_RaA");
     }
 }

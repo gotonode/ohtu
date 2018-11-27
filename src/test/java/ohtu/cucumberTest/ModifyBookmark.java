@@ -69,26 +69,20 @@ public class ModifyBookmark extends AbstractStepdefs {
         runAndExit();
         assertTrue(io.getPrints().contains(expectedOutput));
     }
-    
-     @Then("^system will report there's nothing can be modified by responding with \"([^\"]*)\"$")
+
+    @Then("^system will report there's nothing can be modified by responding with \"([^\"]*)\"$")
     public void system_will_report_there_s_nothing_can_be_modified_by_responding_with(String expectedOutput) throws Throwable {
         runAndExit();
         assertTrue(io.getPrints().contains(expectedOutput));
     }
 
-
     private void addNewBlogpost() {
         inputs.add("A");
         inputs.add("B");
-        inputs.add("titleA");
-        inputs.add("authorA");
-        inputs.add("urlA");
+        inputs.add("Data Mining");
+        inputs.add("navamani saravanan");
+        inputs.add("http://notescompsci.blogspot.com/2013/04/data-mining.html");
     }
 
-//    private void runAndExit() {
-//        inputs.add("E");
-//        io = new StubIO(inputs);
-//        App app = new App(io, db);
-//        app.run();
-//    }
+
 }
