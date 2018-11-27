@@ -9,6 +9,7 @@ import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import ohtu.database.Database;
 
 public class BookmarkDao {
@@ -18,9 +19,10 @@ public class BookmarkDao {
     private BlogpostDao blogpostDao;
     private VideoDao videoDao;
 
-    public BookmarkDao(Database database, BlogpostDao blogpostDao) {
+    public BookmarkDao(Database database, BlogpostDao blogpostDao, VideoDao videoDao) {
         this.database = database;
         this.blogpostDao = blogpostDao;
+        this.videoDao = videoDao;
     }
 
     public List<Bookmark> findAll() throws SQLException, ParseException {
@@ -40,12 +42,13 @@ public class BookmarkDao {
     public List<Bookmark> findAllOrderByTitle() throws SQLException, ParseException {
         List<Bookmark> bookmarks = new ArrayList<>();
         Connection conn = database.getConnection();
-
         bookmarks.addAll(blogpostDao.findAllOrderByTitle());
+        bookmarks.addAll(videoDao.findAllOrderByTitle());
         // Add here in similar manner the new types of Bookmarks (the method FindAllOrderByTitle)
         
-        bookmarks.stream().sorted((b1, b2) -> b1.getTitle().compareToIgnoreCase(b2.getTitle()));
-        return bookmarks;
+        List<Bookmark> ordered = bookmarks.stream().sorted((b1, b2) -> b1.getTitle().compareToIgnoreCase(b2.getTitle()))
+                .collect(Collectors.toList());
+        return ordered;
     }
  
     public Bookmark findById(Integer id) throws SQLException, ParseException {
@@ -84,8 +87,9 @@ public class BookmarkDao {
     private Bookmark findCertainBookmarkByType(ResultSet rs) throws SQLException, ParseException {
         if (rs.getString("type").equals("B")) {
             return blogpostDao.findById(rs.getInt("id"));
+        } else if (rs.getString("type").equals("V")) {
+            return videoDao.findById(rs.getInt("id"));
         }
-
         // other types will be added later
         return null;
     }
