@@ -112,7 +112,7 @@ public class VideoDao implements ObjectDao<Video, Integer> {
     @Override
     public boolean delete(Integer id) throws SQLException {
         String s1 = "DELETE FROM bookmark WHERE id = ?";
-        String s2 = "DELETE FROM blogpost WHERE id = ?";
+        String s2 = "DELETE FROM video WHERE id = ?";
         
         try (Connection conn = database.getConnection(); PreparedStatement stmt1 = conn.prepareStatement(s1);
                 PreparedStatement stmt2 = conn.prepareStatement(s2)) {
