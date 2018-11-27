@@ -55,8 +55,8 @@ public class BookmarkDaoTest {
         BookmarkDaoTest.blogpostDao = new BlogpostDao(database);
         BookmarkDaoTest.videoDao = new VideoDao(database);
         BookmarkDaoTest.bookmarkDao = new BookmarkDao(database, blogpostDao, videoDao);
-        BookmarkDaoTest.b1 = new Blogpost(-1, "computer science", null, "author1", "url1");
-        BookmarkDaoTest.v1 = new Video(-1, "algorithms", null, "url2");
+        BookmarkDaoTest.b1 = new Blogpost(-1, "Data Mining", null, "navamani saravanan", "http://notescompsci.blogspot.com/2013/04/data-mining.html");
+        BookmarkDaoTest.v1 = new Video(-1, "Map of Computer Science", null, "https://www.youtube.com/watch?v=SzJ46YA_RaA");
         blogpostDao.create(b1);
         videoDao.create(v1);
 
@@ -105,7 +105,7 @@ public class BookmarkDaoTest {
     @Test
     public void canFindAllBookmarksOrderByTitle() throws SQLException, ParseException{
         List<Bookmark>allBookmarks=bookmarkDao.findAllOrderByTitle();
-        assertEquals(v1.getTitle(),allBookmarks.get(0).getTitle());
-        assertEquals(b1.getTitle(),allBookmarks.get(1).getTitle());
+        assertEquals(b1.getTitle(),allBookmarks.get(0).getTitle());
+        assertEquals(v1.getTitle(),allBookmarks.get(1).getTitle());
     }
 }

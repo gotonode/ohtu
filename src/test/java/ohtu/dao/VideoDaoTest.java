@@ -37,9 +37,9 @@ public class VideoDaoTest extends AbstractDaoTest {
         setUpClass();
         database = new Database(databaseFile);
         videoDao = new VideoDao(database);
-        v1 = new Video(-1, "title", null, "url1");
-        v2 = new Video(-1, "title", null, "url2");
-        v3 = new Video(-1, "titlec", null, "url3");
+        v1 = new Video(-1, "Map of computer science", null, "https://www.youtube.com/watch?v=SzJ46YA_RaA");
+        v2 = new Video(-1, "Map of computer science", null, "https://www.youtube.com/watch?v=ohyai6GIRZg");
+        v3 = new Video(-1, "Java programming", null, "https://www.youtube.com/watch?v=WPvGqX-TXP0");
         videoDao.create(v1);
         videoDao.create(v2);
         videoDao.create(v3);
@@ -52,7 +52,7 @@ public class VideoDaoTest extends AbstractDaoTest {
 
     @Test
     public void canCreateNewVideo() throws SQLException, ParseException {
-        Video v4 = new Video(-1, "titled", null, "url4");
+        Video v4 = new Video(-1, "C programming", null, "https://www.youtube.com/watch?v=KJgsSFOSQv0");
         Video added = videoDao.create(v4);
         assertEquals(v4, added);
     }
@@ -99,16 +99,17 @@ public class VideoDaoTest extends AbstractDaoTest {
     @Test
     public void canUpdateExistedVideo() throws SQLException, ParseException {
         Video toBeUpdated = videoDao.findById(1);
-        toBeUpdated.setTitle("new title");
+        String newTitle="Oritentation to computer science";
+        toBeUpdated.setTitle(newTitle);
         boolean success = videoDao.update(toBeUpdated);
         assertTrue(success);
-        assertEquals("new title", videoDao.findById(toBeUpdated.getId()).getTitle());
+        assertEquals(newTitle, videoDao.findById(toBeUpdated.getId()).getTitle());
     }
 
     @Test
     public void cannotUpdateNonexistedVideo() throws SQLException {
-        Video nonExisted = new Video(100, "titled", null, "url4");
-        nonExisted.setTitle("new title");
+        Video nonExisted = new Video(100, "Ruby programming", null, "https://www.youtube.com/watch?v=t_ispmWmdjY");
+        nonExisted.setTitle("Ruby tutorial");
         boolean success = videoDao.update(nonExisted);
         assertFalse(success);
     }
@@ -116,9 +117,9 @@ public class VideoDaoTest extends AbstractDaoTest {
     @Test
     public void canFindAllVideosOrderedByTitle() throws SQLException, ParseException {
         List<Video> allVideos = videoDao.findAllOrderByTitle();
-        assertEquals(v1.getTitle(), allVideos.get(0).getTitle());
-        assertEquals(v2.getTitle(), allVideos.get(1).getTitle());
-        assertEquals(v3.getTitle(), allVideos.get(2).getTitle());
+        assertEquals(v3.getTitle(), allVideos.get(0).getTitle());
+        assertEquals(v1.getTitle(), allVideos.get(1).getTitle());
+        assertEquals(v2.getTitle(), allVideos.get(2).getTitle());
     }
 
 }

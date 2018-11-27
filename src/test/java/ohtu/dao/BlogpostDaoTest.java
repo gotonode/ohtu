@@ -55,9 +55,10 @@ public class BlogpostDaoTest extends AbstractDaoTest{
 
         database = new Database(databaseFile);
         blogpostDao = new BlogpostDao(database);
-        b1 = new Blogpost(-1, "title", null, "author1", "url1");
-        b2 = new Blogpost(-1, "title", null, "author2", "url2");
-        b3 = new Blogpost(-1, "titlec", null, "author3", "url3");
+        b1 = new Blogpost(-1, "Data Mining", null, "navamani saravanan", "http://notescompsci.blogspot.com/2013/04/data-mining.html");
+        b2 = new Blogpost(-1,"Data Mining", null, "P.Fournier-Viger", "http://data-mining.philippe-fournier-viger.com/introduction-data-mining" );
+        b3 = new Blogpost(-1, "Java TWO marks", null, "navamani saravanan", "http://notescompsci.blogspot.com/2013/04/java-two-marks.html");
+        
         blogpostDao.create(b1);
         blogpostDao.create(b2);
         blogpostDao.create(b3);
@@ -70,7 +71,7 @@ public class BlogpostDaoTest extends AbstractDaoTest{
 
     @Test
     public void canCreateNewBlogpost() throws SQLException, ParseException {
-        Blogpost b4 = new Blogpost(-1, "titled", null, "author4", "url4");
+        Blogpost b4 = new Blogpost(-1, "How to learn computer science", null, "Karim", "https://www.afternerd.com/blog/learn-computer-science/");
         Blogpost added = blogpostDao.create(b4);
         assertEquals(b4, added);
     }
@@ -117,16 +118,17 @@ public class BlogpostDaoTest extends AbstractDaoTest{
     @Test
     public void canUpdateExistedBlogpost() throws SQLException, ParseException {
         Blogpost toBeUpdated = blogpostDao.findById(1);
-        toBeUpdated.setTitle("new title");
+        String newTitle="Data mining for beginners";
+        toBeUpdated.setTitle(newTitle);
         boolean success = blogpostDao.update(toBeUpdated);
         assertTrue(success);
-        assertEquals("new title", blogpostDao.findById(toBeUpdated.getId()).getTitle());
+        assertEquals(newTitle, blogpostDao.findById(toBeUpdated.getId()).getTitle());
     }
 
     @Test
     public void cannotUpdateNonexistedBlogpost() throws SQLException {
-        Blogpost nonExisted = new Blogpost(100, "titled", null, "author4", "url4");
-        nonExisted.setTitle("new title");
+        Blogpost nonExisted = new Blogpost(100, "Java Base64 URL Safe Encoding ", null, "Billy Yarosh", "https://keaplogik.blogspot.com/2016/01/java-base64-url-safe-encoding.html");
+        nonExisted.setTitle("Safe Encoding for beginners");
         boolean success = blogpostDao.update(nonExisted);
         assertFalse(success);
     }

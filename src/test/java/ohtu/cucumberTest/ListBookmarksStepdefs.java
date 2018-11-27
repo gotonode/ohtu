@@ -57,7 +57,6 @@ public class ListBookmarksStepdefs extends AbstractStepdefs {
         inputs.add("A"); // Should this be here? Maybe yes? When we created a blogpost the console print "Choose a command" again and we need to enter the A command again to create another blogpost
         inputs.add("V");
         inputs.add("Map of Computer Science");
-        inputs.add("navamani saravanan");
         inputs.add("https://www.youtube.com/watch?v=SzJ46YA_RaA");
     }
 }
