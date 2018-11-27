@@ -140,6 +140,7 @@ public class VideoDao implements ObjectDao<Video, Integer> {
             stmt2.setString(1, video.getUrl());
             stmt2.setInt(2, video.getId());
             
+            /* Blogpost is updated only if the Bookmark was successfully updated */ 
             if (stmt1.executeUpdate() == 1) {
                 return stmt2.executeUpdate() == 1;
             }
