@@ -37,10 +37,13 @@ public class AddBookmarkStepdefs extends AbstractStepdefs {
 
     @When("^title is empty$")
     public void title_is_empty() throws Throwable {
+        String title="Java TWO marks";
+        String author="navamani saravanan";
+        String url="http://notescompsci.blogspot.com/2013/04/java-two-marks.html";
         inputs.add("");
-        inputs.add("title1");
-        inputs.add("author1");
-        inputs.add("url1");
+        inputs.add(title);
+        inputs.add(author);
+        inputs.add(url);
     }
 
     @Then("^system will respond with \"([^\"]*)\"$")
@@ -54,5 +57,18 @@ public class AddBookmarkStepdefs extends AbstractStepdefs {
         runAndExit();
         assertTrue(io.getPrints().contains(expectedOutput));
     }
+    
+     @Given("^command adding a video is selected$")
+    public void command_adding_a_video_is_selected() throws Throwable {
+        inputs.add("V");
+    }
+
+    @When("^title \"([^\"]*)\" and url \"([^\"]*)\" are entered$")
+    public void title_and_url_are_entered(String title, String url) throws Throwable {
+        inputs.add(title);
+        inputs.add(url);
+    }
+
+
 
 }
