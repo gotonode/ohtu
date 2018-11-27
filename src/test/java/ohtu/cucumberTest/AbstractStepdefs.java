@@ -1,11 +1,13 @@
 package ohtu.cucumberTest;
 
+import cucumber.api.java.en.Given;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import ohtu.database.Database;
 import ohtu.io.StubIO;
+import ohtu.main.App;
 import org.junit.rules.TemporaryFolder;
 
 public class AbstractStepdefs {
@@ -25,6 +27,13 @@ public class AbstractStepdefs {
             inputs = new ArrayList<>();
         }
 
+    }
+
+    protected void runAndExit() {
+        inputs.add("E");
+        io = new StubIO(inputs);
+        App app = new App(io, db);
+        app.run();
     }
 
 }
