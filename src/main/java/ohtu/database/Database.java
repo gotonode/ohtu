@@ -68,10 +68,10 @@ public class Database {
     private void executeSQLStatements(List<String> statements) throws SQLException {
         try (Connection conn = getConnection(); Statement s = conn.createStatement()) {
 
-			for (String statement : statements) {
-				s.executeUpdate(statement);
-			}
-            
+            for (String statement : statements) {
+                    s.executeUpdate(statement);
+            }
+
         } catch (Exception e) {
             Main.LOG.warning(e.getMessage());
         }

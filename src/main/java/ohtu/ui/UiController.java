@@ -235,7 +235,7 @@ public class UiController {
 	public void printVideo(List<String> printableData) {
 
 
-		String firstLine = "  ===== " + printableData.get(5) + " =====";
+		String firstLine = "  ===== " + printableData.get(4) + " =====";
 
 		io.println(firstLine);
 		io.println("  Title: " + printableData.get(2));

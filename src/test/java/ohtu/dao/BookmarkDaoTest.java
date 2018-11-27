@@ -34,6 +34,7 @@ public class BookmarkDaoTest {
 	private static File databaseFile;
 	private static BlogpostDao blogpostDao;
 	private static BookmarkDao bookmarkDao;
+        private static VideoDao videoDao;
 	private static Blogpost b1;
 
     @BeforeClass
@@ -50,7 +51,7 @@ public class BookmarkDaoTest {
         }
         BookmarkDaoTest.database = new Database(databaseFile);
         BookmarkDaoTest.blogpostDao = new BlogpostDao(database);
-        BookmarkDaoTest.bookmarkDao = new BookmarkDao(database, blogpostDao);
+        BookmarkDaoTest.bookmarkDao = new BookmarkDao(database, blogpostDao, videoDao);
         BookmarkDaoTest.b1 = new Blogpost(-1, "computer science", null, "author1", "url1");
         blogpostDao.create(b1);
 
