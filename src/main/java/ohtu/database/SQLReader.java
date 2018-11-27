@@ -2,6 +2,7 @@
 package ohtu.database;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
@@ -29,6 +30,10 @@ public class SQLReader {
      * @throws IOException 
      */
     public List<String> readSQLStatements() throws IOException {
+        if (!new File(filepath).exists()) {
+            return backupCreateTableStatements();
+        }
+        
         BufferedReader reader = new BufferedReader(new FileReader(filepath));
 
         List<String> statements = new ArrayList<>();
@@ -49,6 +54,19 @@ public class SQLReader {
                 statement = "";
             }
         }
+        
+        return statements;
+    }
+    
+    private List<String> backupCreateTableStatements() {
+        List<String> statements = new ArrayList<>();
+        
+        statements.add("CREATE TABLE IF NOT EXISTS Bookmark (id INTEGER PRIMARY KEY, " +    
+                "title varchar(200), addDate datetime default current_timestamp, type varchar(1));");
+        statements.add("CREATE TABLE IF NOT EXISTS Blogpost (id integer NOT NULL, author varchar(100), " +
+                "url varchar(400), PRIMARY KEY (id), FOREIGN KEY (id) REFERENCES Bookmark(id));");
+        statements.add("CREATE TABLE IF NOT EXISTS Video (id integer NOT NULL, url varchar(400), " +
+                "PRIMARY KEY (id), FOREIGN KEY (id) REFERENCES Bookmark(id));");
         
         return statements;
     }
