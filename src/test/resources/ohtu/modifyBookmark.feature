@@ -4,7 +4,7 @@ Scenario: user can modify a blogpost by giving existed id
 Given a blogpost has been created and saved to the database
 And command modifying is selected
 When existed id 1 is entered to be modified
-And new title "new title" and new author"new author" and new url "new url" are entered
+And new title "Data mining for beginners" and new author"Tavish Srivastava" and new url "www.analyticsvidhya.com/blog/2018/11/4-secrets-for-a-future-ready-career-in-data-science/" are entered
 Then blogpost with given id will be modified with given data and system will respond with "Successfully updated your bookmark."
 
 Scenario: the field of the bookmark which is left empty won't be modified
