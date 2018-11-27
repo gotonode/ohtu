@@ -7,6 +7,7 @@ import org.junit.Assert;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
 
 public class BlogpostTest {
 
@@ -63,6 +64,12 @@ public class BlogpostTest {
         public void hashCodesNotEqual() {
             Blogpost b2 = new Blogpost(9, "A Matter of Testing", new Date(1005), 
                     "A test coder", "b-test-blog/tests.com");
-            Assert.assertNotEquals(b2.hashCode(), blogpost.hashCode());
-        }      
+            assertNotEquals(b2.hashCode(), blogpost.hashCode());
+        }
+        
+        @Test
+        public void toStringReturnsCorrectString() {
+            assertEquals("Blogpost{author='A test coder" + '\''+ ", url='" + 
+                    "a-test-blog/tests.com" + '\''+ "}", blogpost.toString());
+        }
 }
