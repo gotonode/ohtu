@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fi"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>VideoDao.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">ohtu</a> &gt; <a href="index.source.html" class="el_package">ohtu.dao</a> &gt; <span class="el_source">VideoDao.java</span></div><h1>VideoDao.java</h1><pre class="source lang-java linenums">package ohtu.dao;
+
+import ohtu.database.Database;
+import ohtu.domain.Video;
+
+import java.sql.*;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * A DAO object for Video objects. VideoDao communicates with the database and 
+ * adds, edits and removes the Video objects saved in the database. 
+ */
+public class VideoDao implements ObjectDao&lt;Video, Integer&gt; {
+
+    private final Database database;
+    
+    /**
+    * Creates a new VideoDao object. The new VideoDao communicates with the given
+    * database and adds, edits and removes the data concerning Video-objects stored
+    * in the database. 
+     * @param database the database to be communicated with
+    */
+<span class="fc" id="L26">    public VideoDao(Database database) {</span>
+<span class="fc" id="L27">        this.database = database;</span>
+<span class="fc" id="L28">    }</span>
+
+    @Override
+    public List&lt;Video&gt; findAll() throws SQLException, ParseException {
+<span class="fc" id="L32">        List&lt;Video&gt; videos = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L33">        String s = &quot;SELECT * FROM bookmark, video WHERE bookmark.id = video.id&quot;;</span>
+        
+<span class="pc" id="L35">        try (Connection conn = database.getConnection(); ResultSet rs = conn.prepareStatement(s).executeQuery()) {</span>
+<span class="fc bfc" id="L36" title="All 2 branches covered.">            while (rs.next()) {</span>
+<span class="fc" id="L37">                videos.add(constructVideoFromResultSet(rs));</span>
+            }
+<span class="pc bpc" id="L39" title="12 of 16 branches missed.">        }</span>
+        
+<span class="fc" id="L41">        return videos;</span>
+    }
+
+    @Override
+    public Video findById(Integer id) throws SQLException, ParseException {
+<span class="fc" id="L46">        String s = &quot;SELECT * FROM bookmark, video WHERE bookmark.id = ? AND bookmark.id = video.id&quot;;</span>
+        
+<span class="pc" id="L48">        try (Connection conn = database.getConnection(); PreparedStatement stmt = conn.prepareStatement(s)) {</span>
+<span class="fc" id="L49">            stmt.setInt(1, id);</span>
+<span class="fc" id="L50">            ResultSet rs = stmt.executeQuery();</span>
+            
+<span class="fc bfc" id="L52" title="All 2 branches covered.">            if (rs.next()) {</span>
+<span class="fc" id="L53">                Video video = constructVideoFromResultSet(rs);</span>
+<span class="fc" id="L54">                rs.close();</span>
+<span class="fc" id="L55">                return video;</span>
+            }
+            
+<span class="fc" id="L58">            rs.close();</span>
+<span class="pc bpc" id="L59" title="16 of 24 branches missed.">        }</span>
+        
+<span class="fc" id="L61">        return null;</span>
+    }
+
+    @Override
+    public List&lt;Video&gt; findByTitle(String title) throws SQLException, ParseException {
+<span class="fc" id="L66">        List&lt;Video&gt; videos = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L67">        String s = &quot;SELECT * FROM bookmark, video WHERE bookmark.title = ? AND bookmark.id = video.id&quot;;</span>
+        
+<span class="pc" id="L69">        try (Connection conn = database.getConnection(); PreparedStatement stmt = conn.prepareStatement(s)) {</span>
+<span class="fc" id="L70">            stmt.setString(1, title);</span>
+<span class="fc" id="L71">            ResultSet rs = stmt.executeQuery();</span>
+            
+<span class="fc bfc" id="L73" title="All 2 branches covered.">            while (rs.next()) {</span>
+<span class="fc" id="L74">                Video video = constructVideoFromResultSet(rs);</span>
+<span class="fc" id="L75">                videos.add(video);</span>
+<span class="fc" id="L76">            }</span>
+            
+<span class="fc" id="L78">            rs.close();</span>
+<span class="pc bpc" id="L79" title="12 of 16 branches missed.">        }</span>
+        
+<span class="fc" id="L81">        return videos;</span>
+    }
+
+    @Override
+    public Video create(Video video) throws SQLException, ParseException {
+<span class="fc" id="L86">        String s1 = &quot;INSERT INTO bookmark (title, type) VALUES (?, 'V')&quot;;</span>
+<span class="fc" id="L87">        String s2 = &quot;INSERT INTO video (id, url) VALUES (?, ?)&quot;;</span>
+        
+<span class="pc" id="L89">        try (Connection conn = database.getConnection(); PreparedStatement stmt1 = conn.prepareStatement(s1);</span>
+<span class="fc" id="L90">                PreparedStatement stmt2 = conn.prepareStatement(s2)) {</span>
+<span class="fc" id="L91">            stmt1.setString(1, video.getTitle());</span>
+<span class="fc" id="L92">            stmt1.execute();</span>
+            
+<span class="fc" id="L94">            int id = getLatestId();</span>
+<span class="pc bpc" id="L95" title="1 of 2 branches missed.">            if (id == -1) {</span>
+<span class="nc" id="L96">                return null; // Something went wrong when adding the new Bookmark.</span>
+            }
+            
+<span class="fc" id="L99">            stmt2.setInt(1, id);</span>
+<span class="fc" id="L100">            stmt2.setString(2, video.getUrl());</span>
+<span class="fc" id="L101">            stmt2.execute();</span>
+            
+<span class="fc" id="L103">            Video added = findById(id);</span>
+<span class="pc bpc" id="L104" title="1 of 2 branches missed.">            if (added.equals(video)) {</span>
+<span class="fc" id="L105">                return added;</span>
+            }
+<span class="pc bpc" id="L107" title="42 of 48 branches missed.">        }</span>
+        
+<span class="nc" id="L109">        return null;</span>
+    }
+
+    @Override
+    public boolean delete(Integer id) throws SQLException {
+<span class="fc" id="L114">        String s1 = &quot;DELETE FROM bookmark WHERE id = ?&quot;;</span>
+<span class="fc" id="L115">        String s2 = &quot;DELETE FROM video WHERE id = ?&quot;;</span>
+        
+<span class="pc" id="L117">        try (Connection conn = database.getConnection(); PreparedStatement stmt1 = conn.prepareStatement(s1);</span>
+<span class="fc" id="L118">                PreparedStatement stmt2 = conn.prepareStatement(s2)) {</span>
+<span class="fc" id="L119">            stmt1.setInt(1, id);</span>
+<span class="fc" id="L120">            stmt2.setInt(1, id);</span>
+            
+            /* Blogpost is deleted only if the Bookmark was successfully deleted */ 
+<span class="fc bfc" id="L123" title="All 2 branches covered.">            if (stmt1.executeUpdate() == 1) {</span>
+<span class="pc bpc" id="L124" title="1 of 2 branches missed.">                return stmt2.executeUpdate() == 1;</span>
+            }
+<span class="pc bpc" id="L126" title="24 of 36 branches missed.">        }</span>
+        
+<span class="fc" id="L128">        return false;</span>
+    }
+
+    @Override
+    public boolean update(Video video) throws SQLException {
+<span class="fc" id="L133">        String s1 = &quot;UPDATE bookmark SET title = ? WHERE id = ?&quot;;</span>
+<span class="fc" id="L134">        String s2 = &quot;UPDATE video SET url = ? WHERE id = ?&quot;;</span>
+        
+<span class="pc" id="L136">        try (Connection conn = database.getConnection(); PreparedStatement stmt1 = conn.prepareStatement(s1);</span>
+<span class="fc" id="L137">                PreparedStatement stmt2 = conn.prepareStatement(s2)) {</span>
+<span class="fc" id="L138">            stmt1.setString(1, video.getTitle());</span>
+<span class="fc" id="L139">            stmt1.setInt(2, video.getId());</span>
+<span class="fc" id="L140">            stmt2.setString(1, video.getUrl());</span>
+<span class="fc" id="L141">            stmt2.setInt(2, video.getId());</span>
+            
+            /* Blogpost is updated only if the Bookmark was successfully updated */ 
+<span class="fc bfc" id="L144" title="All 2 branches covered.">            if (stmt1.executeUpdate() == 1) {</span>
+<span class="pc bpc" id="L145" title="1 of 2 branches missed.">                return stmt2.executeUpdate() == 1;</span>
+            }
+<span class="pc bpc" id="L147" title="24 of 36 branches missed.">        }</span>
+        
+<span class="fc" id="L149">        return false;</span>
+    }
+    
+    private Video constructVideoFromResultSet(ResultSet rs) throws SQLException, ParseException {
+<span class="fc" id="L153">        Date date = new Date(new SimpleDateFormat(&quot;yyyy-MM-dd&quot;).parse(rs.getString(&quot;addDate&quot;)).getTime());</span>
+<span class="fc" id="L154">        Video video = new Video(rs.getInt(&quot;id&quot;), rs.getString(&quot;title&quot;), date, rs.getString(&quot;url&quot;));</span>
+        
+<span class="fc" id="L156">        return video;</span>
+    }
+    
+    private int getLatestId() throws SQLException{
+<span class="fc" id="L160">        String s = &quot;SELECT MAX(id) FROM bookmark&quot;;</span>
+        
+<span class="pc" id="L162">        try (Connection conn = database.getConnection(); ResultSet rs = conn.prepareStatement(s).executeQuery()) {</span>
+<span class="pc bpc" id="L163" title="1 of 2 branches missed.">            if (rs.next()) {</span>
+<span class="fc" id="L164">                return rs.getInt(&quot;MAX(id)&quot;);</span>
+            }
+<span class="pc bpc" id="L166" title="20 of 24 branches missed.">        }</span>
+        
+<span class="nc" id="L168">        return -1;</span>
+    }
+    
+    public List&lt;Video&gt; findAllOrderByTitle() throws SQLException, ParseException {
+<span class="fc" id="L172">        String s = &quot;SELECT * FROM bookmark, video WHERE bookmark.id = video.id ORDER BY title&quot;;</span>
+<span class="fc" id="L173">        List&lt;Video&gt; videos = new ArrayList&lt;&gt;();</span>
+        
+<span class="pc" id="L175">        try (Connection conn = database.getConnection(); ResultSet rs = conn.prepareStatement(s).executeQuery()) {</span>
+<span class="fc bfc" id="L176" title="All 2 branches covered.">            while (rs.next()) {</span>
+<span class="fc" id="L177">                Video video = constructVideoFromResultSet(rs);</span>
+<span class="fc" id="L178">                videos.add(video);</span>
+<span class="fc" id="L179">            }</span>
+<span class="pc bpc" id="L180" title="12 of 16 branches missed.">        }</span>
+
+<span class="fc" id="L182">        return videos;</span>
+    }
+    
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.8.201612092310</span></div></body></html>
