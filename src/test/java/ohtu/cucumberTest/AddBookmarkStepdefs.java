@@ -10,7 +10,7 @@ import java.io.IOException;
 
 import static org.junit.Assert.assertTrue;
 
-public class AddBlogpostStepdefs extends AbstractStepdefs {
+public class AddBookmarkStepdefs extends AbstractStepdefs {
 
     @Before
     public void before() throws IOException {
@@ -53,13 +53,6 @@ public class AddBlogpostStepdefs extends AbstractStepdefs {
     public void system_will_ask_the_user_to_enter_something_by_responding_with(String expectedOutput) throws Throwable {
         runAndExit();
         assertTrue(io.getPrints().contains(expectedOutput));
-    }
-
-    private void runAndExit() {
-        inputs.add("E");
-        io = new StubIO(inputs);
-        App app = new App(io, db);
-        app.run();
     }
 
 }

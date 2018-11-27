@@ -9,7 +9,7 @@ import ohtu.main.App;
 import java.io.IOException;
 import static org.junit.Assert.assertTrue;
 
-public class DeleteBlogpostStepdefs extends AbstractStepdefs {
+public class DeleteBookmarkStepdefs extends AbstractStepdefs {
 
     @Before
     public void before() throws IOException {
@@ -22,17 +22,17 @@ public class DeleteBlogpostStepdefs extends AbstractStepdefs {
         addNewBlogposts();
     }
 
-    @Given("^command deleting a blogpost is selected$")
+    @Given("^command deleting is selected$")
     public void command_deleting_a_blogpost_is_selected() throws Throwable {
         inputs.add("D");
     }
 
-    @When("^existed id (\\d+) is entered$")
+    @When("^existed id (\\d+) is entered to be deleted$")
     public void id_is_entered(int id) throws Throwable {
         inputs.add(Integer.toString(id));
     }
 
-    @When("^unexisted id (\\d+) is entered$")
+    @When("^unexisted id (\\d+) is entered to be deleted$")
     public void unexisted_id_is_entered(int unexistedId) throws Throwable {
         inputs.add(Integer.toString(unexistedId));
     }
@@ -50,7 +50,6 @@ public class DeleteBlogpostStepdefs extends AbstractStepdefs {
     @Then("^blogpost with given id will be deleted and system will respond with \"([^\"]*)\"$")
     public void blogpost_with_given_id_will_be_deleted_and_system_will_respond_with(String expectedOutput) throws Throwable {
         runAndExit();
-        System.out.println(io.getPrints());
         assertTrue(io.getPrints().contains(expectedOutput));
     }
 
@@ -66,17 +65,10 @@ public class DeleteBlogpostStepdefs extends AbstractStepdefs {
         assertTrue(io.getPrints().contains(expectedOutput));
     }
 
-    @Then("^system will tell the user that the database is empty by responding with \"([^\"]*)\"$")
-    public void system_will_tell_the_user_that_the_database_is_empty_by_responding_with(String expectedOutput) throws Throwable {
+    @Then("^system will report there's nothing can be deleted by responding with \"([^\"]*)\"$")
+    public void system_will_report_nothing_can_be_deleted_by_responding_with(String expectedOutput) throws Throwable {
         runAndExit();
         assertTrue(io.getPrints().contains(expectedOutput));
-    }
-
-    private void runAndExit() {
-        inputs.add("E");
-        io = new StubIO(inputs);
-        App app = new App(io, db);
-        app.run();
     }
 
     private void addNewBlogposts() {
