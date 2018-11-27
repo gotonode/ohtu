@@ -126,7 +126,7 @@ public class BlogpostDao implements ObjectDao<Blogpost, Integer> {
     private void createToBookmarkTable(String title) throws SQLException {
         Connection conn = database.getConnection();
         // insert into bookmark-table
-        PreparedStatement stmtBookmark = conn.prepareStatement("INSERT INTO bookmark(title,addDate,type) VALUES(?,date('now'),'B')");
+        PreparedStatement stmtBookmark = conn.prepareStatement("INSERT INTO bookmark(title,type) VALUES(?,'B')");
         stmtBookmark.setString(1, title);
         stmtBookmark.execute();
         stmtBookmark.close();
@@ -223,18 +223,16 @@ public class BlogpostDao implements ObjectDao<Blogpost, Integer> {
     }
       
     public List<Blogpost> findAllOrderByTitle() throws SQLException, ParseException {
-        Connection conn = database.getConnection();
-        PreparedStatement stmt = conn.prepareStatement("SELECT * FROM bookmark, blogpost WHERE "
-                + "bookmark.id = blogpost.id ORDER BY title");
-        ResultSet rs = stmt.executeQuery();
-        List<Blogpost> orderedList = new ArrayList<>();
+        String s = "SELECT * FROM bookmark, blogpost WHERE bookmark.id = blogpost.id ORDER BY title";
+        List<Blogpost> blogposts = new ArrayList<>();
         
-        while (rs.next()) {
-            Blogpost b = constructBlogpostFromResultSet(rs);
-            orderedList.add(b);
+        try (Connection conn = database.getConnection(); ResultSet rs = conn.prepareStatement(s).executeQuery()) {
+            while (rs.next()) {
+                Blogpost blogpost = constructBlogpostFromResultSet(rs);
+                blogposts.add(blogpost);
+            }
         }
-        
-        close(rs, stmt, conn);
-        return orderedList;
+
+        return blogposts;
     }
 }
