@@ -16,26 +16,27 @@ import org.junit.rules.TemporaryFolder;
 
 import static org.junit.Assert.*;
 
-public class BlogpostDaoTest {
+public class BlogpostDaoTest extends AbstractDaoTest{
 
-    private static TemporaryFolder tempFolder;
-
-    private static Database database;
-
-    private static File databaseFile;
+//    private static TemporaryFolder tempFolder;
+//
+//    private static Database database;
+//
+//    private static File databaseFile;
     private static BlogpostDao blogpostDao;
     private static Blogpost b1, b2, b3;
 
     @BeforeClass
     public static void setUpClass() throws IOException {
-        tempFolder = new TemporaryFolder();
-        tempFolder.create();
-
-        // Assign a test database into the newly created temporary folder.
-        databaseFile = new File(tempFolder.getRoot() + "/test.db");
-        if (databaseFile.exists()) {
-            databaseFile.delete();
-        }
+//        tempFolder = new TemporaryFolder();
+//        tempFolder.create();
+//
+//        // Assign a test database into the newly created temporary folder.
+//        databaseFile = new File(tempFolder.getRoot() + "/test.db");
+//        if (databaseFile.exists()) {
+//            databaseFile.delete();
+//        }
+          initialize();
     }
 
     @AfterClass
@@ -46,12 +47,11 @@ public class BlogpostDaoTest {
     @Before
     public void setUp() throws SQLException, ParseException, IOException {
 
-    	// Can we delete the database after each test and re-create it? Currently the following doesn't work.
-		final boolean delete = databaseFile.delete();
+        // Can we delete the database after each test and re-create it? Currently the following doesn't work.
+        final boolean delete = databaseFile.delete();
 
-		// TODO: This temporary fixes the problem on Windows. But it's ineffective. And creates a lot of temp folders.
-		setUpClass();
-
+        // TODO: This temporary fixes the problem on Windows. But it's ineffective. And creates a lot of temp folders.
+        setUpClass();
 
         database = new Database(databaseFile);
         blogpostDao = new BlogpostDao(database);
@@ -129,6 +129,14 @@ public class BlogpostDaoTest {
         nonExisted.setTitle("new title");
         boolean success = blogpostDao.update(nonExisted);
         assertFalse(success);
+    }
+    
+    @Test
+    public void canFindAllBlogpostsOrderedByTitle()throws SQLException, ParseException{
+        List<Blogpost>allBlogposts=blogpostDao.findAllOrderByTitle();
+        assertEquals(b1.getTitle(),allBlogposts.get(0).getTitle());
+        assertEquals(b2.getTitle(),allBlogposts.get(1).getTitle());
+        assertEquals(b3.getTitle(),allBlogposts.get(2).getTitle());
     }
 
 }
