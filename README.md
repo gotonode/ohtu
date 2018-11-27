@@ -29,7 +29,7 @@ Once the app starts, you'll be greeted with a list of commands at your disposal.
 | `E` | exits from the app |
 
 ### Starting application from a jar file
-* If you have cloned our project, open your command console in the root file of the loaded project and give the command `gradle jar` or `./gradlew jar` if using Windows. This creates the jar file that is now accessable by giving the command `java -jar build/libs/ohtu.jar` int he same root file.
+* If you have cloned our project, open your command console in the root file of the loaded project and give the command `gradle jar` or `./gradlew jar` if using Windows. This creates the jar file that is now accessable by giving the command `java -jar build/libs/ohtu.jar` in the same root file.
 * If you have loaded our application as a jar from a release we have made, open your command console in the file where the loaded jar file is located and give the command `java -jar ohtu.jar`. Starting the application in this way will also create the database bookmarks.db needed by the application in the same file that the jar file is located at, if there is none already in existence.
 
 ### Links
