@@ -48,13 +48,6 @@ public class ListBookmarksStepdefs extends AbstractStepdefs {
         assertTrue(io.getPrints().contains(expectedOutput));
     }
 
-    private void runAndExit() {
-        inputs.add("E");
-        io = new StubIO(inputs);
-        App app = new App(io, db);
-        app.run();
-    }
-
     private void addNewBookmarks() { //other types will be added soon
         inputs.add("A");
         inputs.add("B");
