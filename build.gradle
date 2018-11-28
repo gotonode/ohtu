@@ -53,10 +53,3 @@ test {
     testLogging.showStandardStreams = true
     systemProperties System.getProperties()
 }
-
-
-//// Currently, these are disabled. We'll discuss which rules to enabled later.
-//tasks.withType(Checkstyle) {
-//    ignoreFailures true
-//    exclude '**/**'
-//}
