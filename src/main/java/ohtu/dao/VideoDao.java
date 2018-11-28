@@ -171,9 +171,13 @@ public class VideoDao implements ObjectDao<Video, Integer> {
     public List<Video> findAllOrderByTitle() throws SQLException, ParseException {
         String s = "SELECT * FROM bookmark, video WHERE bookmark.id = video.id ORDER BY title";
         List<Video> videos = new ArrayList<>();
-        
-        try (Connection conn = database.getConnection(); ResultSet rs = conn.prepareStatement(s).executeQuery()) {
-            while (rs.next()) {
+
+        // Having the try-with-resources block only contain one command helps with test coverage.
+		// For an example, only have database.getConnection inside of try(), and handle the rest later.
+		// Remove these comments once done.
+        try (Connection conn = database.getConnection()) {
+			ResultSet rs = conn.prepareStatement(s).executeQuery();
+        	while (rs.next()) {
                 Video video = constructVideoFromResultSet(rs);
                 videos.add(video);
             }

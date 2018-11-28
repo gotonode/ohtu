@@ -225,8 +225,13 @@ public class BlogpostDao implements ObjectDao<Blogpost, Integer> {
     public List<Blogpost> findAllOrderByTitle() throws SQLException, ParseException {
         String s = "SELECT * FROM bookmark, blogpost WHERE bookmark.id = blogpost.id ORDER BY title";
         List<Blogpost> blogposts = new ArrayList<>();
-        
-        try (Connection conn = database.getConnection(); ResultSet rs = conn.prepareStatement(s).executeQuery()) {
+
+		// Having the try-with-resources block only contain one command helps with test coverage.
+		// For an example, only have database.getConnection inside of try(), and handle the rest later.
+		// Remove these comments once done.
+        try (Connection conn = database.getConnection()) {
+
+        	ResultSet rs = conn.prepareStatement(s).executeQuery();
             while (rs.next()) {
                 Blogpost blogpost = constructBlogpostFromResultSet(rs);
                 blogposts.add(blogpost);

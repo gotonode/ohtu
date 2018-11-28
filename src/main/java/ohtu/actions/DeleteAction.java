@@ -66,14 +66,23 @@ public class DeleteAction extends Action {
 		if (c == 'Y') {
 			if (bookmark instanceof Blogpost) {
 				try {
-					blogpostDao.delete(id);
-					uiController.printDeleteSuccessful(id);
+					boolean success = blogpostDao.delete(id);
+					if (success) {
+						uiController.printDeleteSuccessful(id);
+					} else {
+						uiController.printDeleteFailed(id);
+					}
 				} catch (SQLException e) {
 					Main.LOG.warning(e.getMessage());
 				}
 			} else if (bookmark instanceof Video) {
 				try {
-					videoDao.delete(id);
+					boolean success = videoDao.delete(id);
+					if (success) {
+						uiController.printDeleteSuccessful(id);
+					} else {
+						uiController.printDeleteFailed(id);
+					}
 					uiController.printDeleteSuccessful(id);
 				} catch (SQLException e) {
 					Main.LOG.warning(e.getMessage());

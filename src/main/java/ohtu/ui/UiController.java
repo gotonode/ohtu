@@ -276,4 +276,8 @@ public class UiController {
 	public void printBookmarkNotFound() {
 		io.println("Could not find a bookmark with that ID. Please re-check it.");
 	}
+
+	public void printDeleteFailed(int id) {
+		io.println("Could not remove bookmark with ID " + id + ". Please try again.");
+	}
 }
