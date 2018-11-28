@@ -3,7 +3,7 @@
 <module name="Checker">
 	<module name="TreeWalker">
 		<module name="NestedIfDepth">
-			<property name="max" value="1" />
+			<property name="max" value="2" />
 		</module>
 		<module name="NestedForDepth">
 			<property name="max" value="0" />
