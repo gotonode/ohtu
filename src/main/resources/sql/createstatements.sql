@@ -23,5 +23,13 @@ CREATE TABLE IF NOT EXISTS Video (
     FOREIGN KEY (id) REFERENCES Bookmark(id)
 );
 
+CREATE TABLE IF NOT EXISTS Book (
+    id integer NOT NULL,
+    author varchar(100),
+    isbn varchar(20),
+    PRIMARY KEY (id),
+    FOREIGN KEY (id) REFERENCES Bookmark(id)
+);
+
 /* TODO: Consider adding NOT NULL for some of the columns */
 /* TODO: Consider changing some varchar sizes */
