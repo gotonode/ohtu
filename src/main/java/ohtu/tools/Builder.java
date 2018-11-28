@@ -7,6 +7,10 @@ import java.util.Date;
 
 public class Builder {
 
+	private Builder() {
+		throw new IllegalStateException("Builder should not be instantiated.");
+	}
+
 	public static Blogpost buildBlogpost(int id, String title, String author, String url, Date date) {
 		return new Blogpost(id, title, date, author, url);
 	}
