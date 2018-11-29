@@ -1,7 +1,5 @@
 # Bookmarks Database
-A student project done in a team of 3 members
-
-Course: *Ohjelmistotuotanto 2018*
+*A student project done in a team of 3 members*
 
 | Travis CI | Codecov | Codacy |
 | :-: | :-: | :-: |
