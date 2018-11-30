@@ -93,8 +93,9 @@ public class BookmarkDao {
         Connection conn = database.getConnection();
 
         PreparedStatement stmt = conn
-                .prepareStatement("SELECT id,type FROM bookmark where title=?");
-        stmt.setString(1, title);
+                .prepareStatement("SELECT id,type FROM bookmark where title LiKE ?");
+        String pattern="%"+title+"%";
+        stmt.setString(1, pattern);
         ResultSet rs = stmt.executeQuery();
         while (rs.next()) {
             Bookmark found = findCertainBookmarkByType(rs);
@@ -108,7 +109,8 @@ public class BookmarkDao {
     private Bookmark findCertainBookmarkByType(ResultSet rs) throws SQLException, ParseException {
         if (rs.getString("type").equals("B")) {
             return blogpostDao.findById(rs.getInt("id"));
-        } else if (rs.getString("type").equals("V")) {
+        } 
+        if (rs.getString("type").equals("V")) {
             return videoDao.findById(rs.getInt("id"));
         }
         // other types will be added later

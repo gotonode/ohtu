@@ -32,8 +32,9 @@ public class BlogpostDao implements ObjectDao<Blogpost, Integer> {
         List<Blogpost> blogposts = new ArrayList<>();
         Connection conn = database.getConnection();
         PreparedStatement stmt = conn
-                .prepareStatement("SELECT*FROM bookmark,blogpost WHERE bookmark.title=? AND bookmark.id=blogpost.id");
-        stmt.setString(1, title);
+                .prepareStatement("SELECT*FROM bookmark,blogpost WHERE bookmark.title LIKE ? AND bookmark.id=blogpost.id");
+        String pattern="%"+title+"%";
+        stmt.setString(1, pattern);
         ResultSet rs = stmt.executeQuery();
         while (rs.next()) {
             Blogpost output = constructBlogpostFromResultSet(rs);
