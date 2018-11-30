@@ -38,7 +38,7 @@ public class VideoDaoTest extends AbstractDaoTest {
         database = new Database(databaseFile);
         videoDao = new VideoDao(database);
         v1 = new Video(-1, "Map of computer science", null, "https://www.youtube.com/watch?v=SzJ46YA_RaA");
-        v2 = new Video(-1, "Map of computer science", null, "https://www.youtube.com/watch?v=ohyai6GIRZg");
+        v2 = new Video(-1, "Computer science for intermediate learner", null, "https://www.youtube.com/watch?v=ohyai6GIRZg");
         v3 = new Video(-1, "Java programming", null, "https://www.youtube.com/watch?v=WPvGqX-TXP0");
         videoDao.create(v1);
         videoDao.create(v2);
@@ -58,8 +58,9 @@ public class VideoDaoTest extends AbstractDaoTest {
     }
 
     @Test
-    public void canListVideosWithSameTitle() throws SQLException, ParseException {
-        List<Video> videos = videoDao.findByTitle(v2.getTitle());
+    public void canListVideosWithSimilarTitle() throws SQLException, ParseException {
+        String keyword="computer science";
+        List<Video> videos = videoDao.findByTitle(keyword);
         assertEquals(2, videos.size());
     }
 
@@ -117,9 +118,9 @@ public class VideoDaoTest extends AbstractDaoTest {
     @Test
     public void canFindAllVideosOrderedByTitle() throws SQLException, ParseException {
         List<Video> allVideos = videoDao.findAllOrderByTitle();
-        assertEquals(v3.getTitle(), allVideos.get(0).getTitle());
-        assertEquals(v1.getTitle(), allVideos.get(1).getTitle());
-        assertEquals(v2.getTitle(), allVideos.get(2).getTitle());
+        assertEquals(v2.getTitle(), allVideos.get(0).getTitle());
+        assertEquals(v3.getTitle(), allVideos.get(1).getTitle());
+        assertEquals(v1.getTitle(), allVideos.get(2).getTitle());
     }
 
 }

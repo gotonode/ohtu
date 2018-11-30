@@ -67,6 +67,8 @@ public class SQLReader {
                 "url varchar(400), PRIMARY KEY (id), FOREIGN KEY (id) REFERENCES Bookmark(id));");
         statements.add("CREATE TABLE IF NOT EXISTS Video (id integer NOT NULL, url varchar(400), " +
                 "PRIMARY KEY (id), FOREIGN KEY (id) REFERENCES Bookmark(id));");
+        statements.add("CREATE TABLE IF NOT EXISTS Book (id integer NOT NULL, author varchar(100), " +
+                "isbn varchar(20), PRIMARY KEY (id), FOREIGN KEY (id) REFERENCES Bookmark(id));");
         
         return statements;
     }

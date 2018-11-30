@@ -19,7 +19,12 @@ public class ModifyBookmark extends AbstractStepdefs {
 
     @Given("^a blogpost has been created and saved to the database$")
     public void a_blogpost_has_been_created_and_saved_to_the_database() throws Throwable {
-        addNewBlogpost();
+        addNewBlogpost("SoftWare Testing","navamani saravanan","http://notescompsci.blogspot.com/2013/04/software-testing.html");
+    }
+    
+    @Given("^a video has been created and saved to the database$")
+    public void a_video_has_been_created_and_saved_to_the_database() throws Throwable {
+        addNewVideo("Java programming","https://www.youtube.com/watch?v=WPvGqX-TXP0");
     }
 
     @Given("^command modifying is selected$")
@@ -38,9 +43,21 @@ public class ModifyBookmark extends AbstractStepdefs {
         inputs.add(newAuthor);
         inputs.add(newUrl);
     }
+    
+    @When("^new title \"([^\"]*)\" and new url \"([^\"]*)\" are entered$")
+    public void new_title_and_new_url_are_entered(String newTitle, String newUrl) throws Throwable {
+        inputs.add(newTitle);
+        inputs.add(newUrl);
+    }
 
     @Then("^blogpost with given id will be modified with given data and system will respond with \"([^\"]*)\"$")
     public void blogpost_with_given_id_will_be_modified_with_given_data_and_system_will_respond_with(String expectedOutput) throws Throwable {
+        runAndExit();
+        assertTrue(io.getPrints().contains(expectedOutput));
+    }
+    
+    @Then("^video with given id will be modified with given data and system will respond with \"([^\"]*)\"$")
+    public void video_with_given_id_will_be_modified_with_given_data_and_system_will_respond_with(String expectedOutput) throws Throwable {
         runAndExit();
         assertTrue(io.getPrints().contains(expectedOutput));
     }
@@ -76,13 +93,7 @@ public class ModifyBookmark extends AbstractStepdefs {
         assertTrue(io.getPrints().contains(expectedOutput));
     }
 
-    private void addNewBlogpost() {
-        inputs.add("A");
-        inputs.add("B");
-        inputs.add("Data Mining");
-        inputs.add("navamani saravanan");
-        inputs.add("http://notescompsci.blogspot.com/2013/04/data-mining.html");
-    }
+   
 
 
 }

@@ -1,7 +1,5 @@
 # Bookmarks Database
-A student project done in a team of 3 members
-
-Course: *Ohjelmistotuotanto 2018*
+*A student project done in a team of 3 members*
 
 | Travis CI | Codecov | Codacy |
 | :-: | :-: | :-: |
@@ -29,8 +27,8 @@ Once the app starts, you'll be greeted with a list of commands at your disposal.
 | `E` | exits from the app |
 
 #### Starting application from a jar file
-* If you have cloned our project, open your command console in the root file of the loaded project and give the command `gradle jar` or `./gradlew jar` if using Windows. This creates the jar file that is now accessable by giving the command `java -jar build/libs/ohtu.jar` in the same root file.
-* If you have loaded our application as a jar from a release we have made, open your command console in the file where the loaded jar file is located and give the command `java -jar ohtu.jar`. Starting the application in this way will also create the database bookmarks.db needed by the application in the same file that the jar file is located at, if there is none already in existence.
+* If you have cloned our project, open your command console in the root folder of the loaded project and give the command `gradle jar` or `./gradlew jar` if using Windows. This creates the jar file that is now accessable by giving the command `java -jar build/libs/ohtu.jar` in the same root file.
+* If you have loaded our application as a jar from a release we have made, open your command console in the folder where the loaded jar file is located and give the command `java -jar ohtu.jar`. Starting the application in this way will also create the database bookmarks.db needed by the application in the same folder that the jar file is located at, if there is none already in existence.
 
 ### Links
 
@@ -39,12 +37,12 @@ From our wiki:
 * [Code Style](https://github.com/gotonode/ohtu/wiki/Code-Style)
 * [Database](https://github.com/gotonode/ohtu/wiki/Database)
 * [Sprint Charts](https://github.com/gotonode/ohtu/wiki/Sprint-Charts)
-* [Test Coverage Report](https://github.com/gotonode/ohtu/wiki/Test-Coverage-Report)
 
 Backlogs (GitHub Projects):
 * [Product Backlog](https://github.com/gotonode/ohtu/projects/3)
 * [Sprint 1 Backlog](https://github.com/gotonode/ohtu/projects/1)
 * [Sprint 2 Backlog](https://github.com/gotonode/ohtu/projects/2)
+* [Sprint 3 Backlog](https://github.com/gotonode/ohtu/projects/4)
 
 External resources:
 * [Travis](https://travis-ci.org/gotonode/ohtu) (continuous integration & tests)

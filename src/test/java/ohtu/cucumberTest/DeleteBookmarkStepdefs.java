@@ -19,7 +19,14 @@ public class DeleteBookmarkStepdefs extends AbstractStepdefs {
 
     @Given("^two blogposts have been created and saved to the database$")
     public void two_blogposts_have_been_created_and_saved_to_the_database() throws Throwable {
-        addNewBlogposts();
+        addNewBlogpost("Data Mining","navamani saravanan","http://notescompsci.blogspot.com/2013/04/data-mining.html");
+        addNewBlogpost("SoftWare Testing","navamani saravanan","http://notescompsci.blogspot.com/2013/04/software-testing.html");
+    }
+    
+    @Given("^two videos have been created and saved to the database$")
+    public void two_videos_have_been_created_and_saved_to_the_database() throws Throwable {
+        addNewVideo("Map of Computer Science","https://www.youtube.com/watch?v=SzJ46YA_RaA");
+        addNewVideo("Java tutorial","https://www.youtube.com/watch?v=grEKMHGYyns");
     }
 
     @Given("^command deleting is selected$")
@@ -52,9 +59,15 @@ public class DeleteBookmarkStepdefs extends AbstractStepdefs {
         runAndExit();
         assertTrue(io.getPrints().contains(expectedOutput));
     }
+    
+    @Then("^video with given id will be deleted and system will respond with \"([^\"]*)\"$")
+    public void video_with_given_id_will_be_deleted_and_system_will_respond_with(String expectedOutput) throws Throwable {
+        runAndExit();
+        assertTrue(io.getPrints().contains(expectedOutput));
+    }
 
     @Then("^blogpost with given id will not be deleted and system will respond with \"([^\"]*)\"$")
-    public void bolgpost_with_given_id_will_not_be_deleted_and_system_will_respond_with(String expectedOutput) throws Throwable {
+    public void blogpost_with_given_id_will_not_be_deleted_and_system_will_respond_with(String expectedOutput) throws Throwable {
         runAndExit();
         assertTrue(io.getPrints().contains(expectedOutput));
     }
@@ -71,16 +84,9 @@ public class DeleteBookmarkStepdefs extends AbstractStepdefs {
         assertTrue(io.getPrints().contains(expectedOutput));
     }
 
-    private void addNewBlogposts() {
-        inputs.add("A");
-        inputs.add("B");
-        inputs.add("Data Mining");
-        inputs.add("navamani saravanan");
-        inputs.add("http://notescompsci.blogspot.com/2013/04/data-mining.html");
-        inputs.add("A"); // Should this be here? Maybe yes? When we created a blogpost the console print "Choose a command" again and we need to enter the A command again to create another blogpost
-        inputs.add("B");
-        inputs.add("SoftWare Testing");
-        inputs.add("navamani saravanan");
-        inputs.add("http://notescompsci.blogspot.com/2013/04/software-testing.html");
-    }
+//    private void addNewBlogposts() {
+//        addNewBlogpost("Data Mining","navamani saravanan","http://notescompsci.blogspot.com/2013/04/data-mining.html");
+//        addNewBlogpost("SoftWare Testing","navamani saravanan","http://notescompsci.blogspot.com/2013/04/software-testing.html");
+//        
+//    }
 }

@@ -64,10 +64,11 @@ public class VideoDao implements ObjectDao<Video, Integer> {
     @Override
     public List<Video> findByTitle(String title) throws SQLException, ParseException {
         List<Video> videos = new ArrayList<>();
-        String s = "SELECT * FROM bookmark, video WHERE bookmark.title = ? AND bookmark.id = video.id";
+        String pattern="%"+title+"%";
+        String s = "SELECT * FROM bookmark, video WHERE bookmark.title LIKE ? AND bookmark.id = video.id";
         
         try (Connection conn = database.getConnection(); PreparedStatement stmt = conn.prepareStatement(s)) {
-            stmt.setString(1, title);
+            stmt.setString(1, pattern);
             ResultSet rs = stmt.executeQuery();
             
             while (rs.next()) {
@@ -149,6 +150,15 @@ public class VideoDao implements ObjectDao<Video, Integer> {
         return false;
     }
     
+    /**
+     * Constructs a Video object from a ResultSet. The fields of the created Video object match
+     * the corresponding data found in the ResultSet.
+     * 
+     * @param rs the ResultSet containing the needed information
+     * @return A Video object constructed from the data in the given ResultSet
+     * @throws SQLException
+     * @throws ParseException 
+     */
     private Video constructVideoFromResultSet(ResultSet rs) throws SQLException, ParseException {
         Date date = new Date(new SimpleDateFormat("yyyy-MM-dd").parse(rs.getString("addDate")).getTime());
         Video video = new Video(rs.getInt("id"), rs.getString("title"), date, rs.getString("url"));
@@ -156,6 +166,12 @@ public class VideoDao implements ObjectDao<Video, Integer> {
         return video;
     }
     
+    /**
+     * Returns the last id added to the database.
+     * 
+     * @return latest used id or -1 if unable to retrieve id.
+     * @throws SQLException 
+     */
     private int getLatestId() throws SQLException{
         String s = "SELECT MAX(id) FROM bookmark";
         
@@ -168,6 +184,14 @@ public class VideoDao implements ObjectDao<Video, Integer> {
         return -1;
     }
     
+    /**
+     * Retrieves all information of Video objects stored in the database and creates a list 
+     * of corresponding Video objects ordered alphabetically by title.
+     * 
+     * @return alphabetically ordered (by title) list of Video objects.
+     * @throws SQLException
+     * @throws ParseException 
+     */
     public List<Video> findAllOrderByTitle() throws SQLException, ParseException {
         String s = "SELECT * FROM bookmark, video WHERE bookmark.id = video.id ORDER BY title";
         List<Video> videos = new ArrayList<>();
