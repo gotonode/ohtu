@@ -4,7 +4,7 @@ Feature: User can modify a bookmark of type blogpost by given id
     Given a blogpost has been created and saved to the database
     And command modifying is selected
     When existed id 1 is entered to be modified
-    And new title "Data mining for beginners" and new author"Tavish Srivastava" and new url "www.analyticsvidhya.com/blog/2018/11/4-secrets-for-a-future-ready-career-in-data-science/" are entered
+    And new title "Data mining for beginners" and new author"Tavish Srivastava" and new url "http://www.analyticsvidhya.com/blog/2018/11/4-secrets-for-a-future-ready-career-in-data-science/" are entered
     Then blogpost with given id will be modified with given data and system will respond with "Successfully updated your bookmark."
 
 Scenario: user can modify a video by giving existed id
