@@ -21,6 +21,7 @@ Once the app starts, you'll be greeted with a list of commands at your disposal.
 | :-: | :- |
 | `A` | begins adding a new bookmark to the database by asking you for the bookmark's type and information |
 | `L` | lists all the bookmarks currently in the database (either by ID or by title) |
+| `S` | searches for bookmarks (either by title or by URL) |
 | `D` | delete an existing bookmark |
 | `M` | modify an existing bookmark's information |
 | `X` | lists all of the commands available to the user |
