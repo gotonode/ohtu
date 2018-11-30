@@ -37,9 +37,9 @@ public class AddAction extends Action {
 		uiController.printEmptyLine();
 
 		super.getIo().println("What kind of a bookmark you'd like to create?");
-		super.getIo().println("Choose 'B' for Blogpost, 'V' for video.");
+		super.getIo().println("Choose 'B' for Blogpost, 'V' for video, 'K' for book.");
 
-		char type = uiController.askForCharacter(new char[]{'B', 'V'}, "Bookmark type");
+		char type = uiController.askForCharacter(new char[]{'B', 'V', 'K'}, "Bookmark type");
 
 		switch (type) {
 			case 'B':
@@ -47,6 +47,9 @@ public class AddAction extends Action {
 				break;
 			case 'V':
 				createVideo();
+				break;
+			case 'K':
+				//createBook();
 				break;
 			default:
 				throw new RuntimeException("Got an illegal value.");
@@ -104,4 +107,28 @@ public class AddAction extends Action {
 			Main.LOG.warning(e.getMessage());
 		}
 	}
+
+	// Contains code repetition, will be fixed later.
+//	private void createBook() {
+//		String[] values = uiController.askBookData();
+//		String title = values[0]; // Care should be taken so as not to mix these indices up.
+//		String author = values[1];
+//		String isbn = values[2];
+//
+//		// Database will handle assigning correct ID to the object, and decides the addDate value.
+//		Date date = null; // This is here just as a reference that it is null.
+//		int id = -1; // When creating new Bookmarks from user input, assign -1 as the ID.
+//
+//		Book newBook = Builder.buildBook(id, title, author, isbn, date);
+//		try {
+//			final Video success = videoDao.create(newVideo);
+//			if (success != null) {
+//				uiController.addSuccess(newVideo.getClass().getSimpleName());
+//			} else {
+//				uiController.addFailure();
+//			}
+//		} catch (Exception e) {
+//			Main.LOG.warning(e.getMessage());
+//		}
+//	}
 }
