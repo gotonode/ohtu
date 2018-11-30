@@ -1,6 +1,7 @@
 package ohtu.ui;
 
 import ohtu.io.IO;
+import ohtu.tools.Validator;
 
 import java.util.Arrays;
 import java.util.List;
@@ -40,7 +41,7 @@ public class UiController {
 
 		String title = askForString("Title:", false);
 		String author = askForString("Author:", false);
-		String url = askForString("URL:", false);
+		String url = askForValidUrl();
 
 		return new String[]{title, author, url};
 	}
@@ -55,9 +56,32 @@ public class UiController {
 		io.println("Adding a new video.");
 
 		String title = askForString("Title:", false);
-		String url = askForString("URL:", false);
+		String url = askForValidUrl();
 
 		return new String[]{title, url};
+	}
+
+	private String askForValidUrl() {
+
+		String url = "";
+
+		while (true) {
+			url = askForString("URL: ", false);
+			boolean isValidUrl = Validator.isValidUrl(url);
+
+			if (url.isEmpty()) {
+				break;
+			}
+
+			if (!isValidUrl) {
+				printUrlNotValid();
+				continue;
+			}
+
+			break;
+		}
+
+		return url;
 	}
 
 	public int askForIdToRemove() {
@@ -279,5 +303,9 @@ public class UiController {
 
 	public void printDeleteFailed(int id) {
 		io.println("Could not remove bookmark with ID " + id + ". Please try again.");
+	}
+
+	public void printUrlNotValid() {
+		io.println("The URL is not valid. Please remember to add 'http://' at the beginning of it.");
 	}
 }

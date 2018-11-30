@@ -8,6 +8,7 @@ import ohtu.domain.Bookmark;
 import ohtu.domain.Video;
 import ohtu.io.IO;
 import ohtu.main.Main;
+import ohtu.tools.Validator;
 import ohtu.ui.UiController;
 
 import java.sql.SQLException;
@@ -106,20 +107,46 @@ public class ModifyAction extends Action {
 			blogpost.setAuthor(newAuthor);
 		}
 
-		super.getIo().println("Current URL: " + blogpost.getUrl());
-		String newUrl = uiController.askForString("New URL: ", true);
-		if (!newUrl.isEmpty()) {
+		while (true) {
+			super.getIo().println("Current URL: " + blogpost.getUrl());
+			String newUrl = uiController.askForString("New URL: ", true);
+			boolean isValidUrl = Validator.isValidUrl(newUrl);
+
+			if (newUrl.isEmpty()) {
+				break;
+			}
+
+			if (!isValidUrl) {
+				uiController.printUrlNotValid();
+				continue;
+			}
+
 			blogpost.setUrl(newUrl);
+
+			break;
 		}
 	}
 
 	private void modifyVideo(Video video) {
 
 		// Code repetition here. Feel free to reduce it.
-		super.getIo().println("Current URL: " + video.getUrl());
-		String newUrl = uiController.askForString("New URL: ", true);
-		if (!newUrl.isEmpty()) {
+		while (true) {
+			super.getIo().println("Current URL: " + video.getUrl());
+			String newUrl = uiController.askForString("New URL: ", true);
+			boolean isValidUrl = Validator.isValidUrl(newUrl);
+
+			if (newUrl.isEmpty()) {
+				break;
+			}
+
+			if (!isValidUrl) {
+				uiController.printUrlNotValid();
+				continue;
+			}
+
 			video.setUrl(newUrl);
+
+			break;
 		}
 	}
 }
