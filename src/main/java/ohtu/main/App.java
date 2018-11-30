@@ -47,12 +47,16 @@ public class App {
 
 		while (appRunning) {
 
-			char character = uiController.askForCharacter(new char[]{'A', 'L', 'E', 'D', 'M', 'X'}, "Choose a command");
+			char character = uiController.askForCharacter(new char[]{'A', 'L', 'E', 'D', 'M', 'X', 'S'}, "Choose a command ('X' to print all commands)");
 
 			// I believe there might be a better way to achieve this. Feel free to improve!
 			Commands command = Arrays.stream(Commands.values()).filter(a -> a.getCommand() == character).findFirst().get();
 
 			switch (command) {
+
+				case SEARCH:
+					browse.search();
+					break;
 
 				case LIST:
 					browse.act();

@@ -70,6 +70,53 @@ public class ListAction extends Action {
 		// No need to print an empty line here since the listed bookmarks have an empty line at the end.
 	}
 
+	public void search() {
+		super.getIo().println("Would you like to search for bookmarks by title or by URL? Choose 'T' or 'U'.");
+
+		char c = uiController.askForCharacter(new char[]{'T', 'U'}, "Title or URL");
+
+		String searchTerm = "";
+
+		if (c == 'T') {
+			searchTerm = uiController.askForString("Title to search for:", false);
+		} else if (c == 'U') {
+			searchTerm = uiController.askForString("URL to search for:", false);
+		} else {
+			throw new IllegalArgumentException("Illegal argument.");
+		}
+
+		try {
+
+			List<Bookmark> bookmarks = null;
+			if (c == 'T') {
+				bookmarks = bookmarkDao.findByTitle(searchTerm);
+			} else {
+				// TODO: Uncomment and change once findByUrl is done.
+				bookmarks = bookmarkDao.findByTitle(searchTerm);
+				//bookmarks = bookmarkDao.findByUrl(searchTerm);
+			}
+
+			if (bookmarks.isEmpty()) {
+				super.getIo().println("No bookmarks found with those search terms.");
+				uiController.printEmptyLine();
+				return;
+			}
+
+			// Loop through all of the Bookmarks and ask them to be printed to the console.
+			assert bookmarks != null;
+			for (Bookmark bookmark : bookmarks) {
+				// Since Bookmarks may have unique fields, each must be handled separately.
+				if (bookmark instanceof Blogpost) {
+					ouputBlogpost((Blogpost) bookmark);
+				} else if (bookmark instanceof Video) {
+					outputVideo((Video) bookmark);
+				}
+			}
+		} catch (Exception e) {
+			Main.LOG.warning(e.getMessage());
+		}
+	}
+
 	private void outputVideo(Video video) {
 
 		// Create an ArrayList of Strings that contains the printable data IN ORDER.
