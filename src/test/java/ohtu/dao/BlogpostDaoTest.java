@@ -56,7 +56,7 @@ public class BlogpostDaoTest extends AbstractDaoTest{
         database = new Database(databaseFile);
         blogpostDao = new BlogpostDao(database);
         b1 = new Blogpost(-1, "Data Mining", null, "navamani saravanan", "http://notescompsci.blogspot.com/2013/04/data-mining.html");
-        b2 = new Blogpost(-1,"Data Mining", null, "P.Fournier-Viger", "http://data-mining.philippe-fournier-viger.com/introduction-data-mining" );
+        b2 = new Blogpost(-1,"Data Mining For Beginners", null, "P.Fournier-Viger", "http://data-mining.philippe-fournier-viger.com/introduction-data-mining" );
         b3 = new Blogpost(-1, "Java TWO marks", null, "navamani saravanan", "http://notescompsci.blogspot.com/2013/04/java-two-marks.html");
         
         blogpostDao.create(b1);
@@ -77,8 +77,9 @@ public class BlogpostDaoTest extends AbstractDaoTest{
     }
 
     @Test
-    public void canListBlogpostsWithSameTitle() throws SQLException, ParseException {
-        List<Blogpost> blogposts = blogpostDao.findByTitle(b2.getTitle());
+    public void canListBlogpostsWithSimilarTitle() throws SQLException, ParseException {
+        String keyword="data mining";
+        List<Blogpost> blogposts = blogpostDao.findByTitle(keyword);
         assertEquals(2, blogposts.size());
     }
 

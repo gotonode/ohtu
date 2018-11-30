@@ -37,7 +37,7 @@ public class BookmarkDaoTest {
     private static BookmarkDao bookmarkDao;
     private static VideoDao videoDao;
     private static Blogpost b1;
-    private static Video v1;
+    private static Video v1, v2;
 
     @BeforeClass
     public static void setUpClass() throws SQLException, ParseException, IOException {
@@ -57,8 +57,10 @@ public class BookmarkDaoTest {
         BookmarkDaoTest.bookmarkDao = new BookmarkDao(database, blogpostDao, videoDao);
         BookmarkDaoTest.b1 = new Blogpost(-1, "Data Mining", null, "navamani saravanan", "http://notescompsci.blogspot.com/2013/04/data-mining.html");
         BookmarkDaoTest.v1 = new Video(-1, "Map of Computer Science", null, "https://www.youtube.com/watch?v=SzJ46YA_RaA");
+        BookmarkDaoTest.v2 = new Video(-1, "Big Data Analytics", null, "https://www.youtube.com/watch?v=LtScY2guZpo");
         blogpostDao.create(b1);
         videoDao.create(v1);
+        videoDao.create(v2);
 
     }
 
@@ -80,7 +82,7 @@ public class BookmarkDaoTest {
     @Test
     public void canListAllBookmarks() throws SQLException, ParseException {
         List<Bookmark> bookmarks = bookmarkDao.findAll();
-        assertEquals(2, bookmarks.size());
+        assertEquals(3, bookmarks.size());
     }
 
     @Test
@@ -97,15 +99,17 @@ public class BookmarkDaoTest {
     }
 
     @Test
-    public void canFindBookmarkWithSamaTitle() throws SQLException, ParseException {
-        List<Bookmark> bookmarks = bookmarkDao.findByTitle(b1.getTitle());
-        assertEquals(1, bookmarks.size());
+    public void canFindBookmarkWithSamilarTitle() throws SQLException, ParseException {
+        String keyword = "data";
+        List<Bookmark> bookmarks = bookmarkDao.findByTitle(keyword);
+        assertEquals(2, bookmarks.size());
     }
-    
+
     @Test
-    public void canFindAllBookmarksOrderByTitle() throws SQLException, ParseException{
-        List<Bookmark>allBookmarks=bookmarkDao.findAllOrderByTitle();
-        assertEquals(b1.getTitle(),allBookmarks.get(0).getTitle());
-        assertEquals(v1.getTitle(),allBookmarks.get(1).getTitle());
+    public void canFindAllBookmarksOrderByTitle() throws SQLException, ParseException {
+        List<Bookmark> allBookmarks = bookmarkDao.findAllOrderByTitle();
+        assertEquals(v2.getTitle(), allBookmarks.get(0).getTitle());
+        assertEquals(b1.getTitle(), allBookmarks.get(1).getTitle());
+        assertEquals(v1.getTitle(), allBookmarks.get(2).getTitle());
     }
 }

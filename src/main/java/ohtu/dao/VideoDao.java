@@ -64,10 +64,11 @@ public class VideoDao implements ObjectDao<Video, Integer> {
     @Override
     public List<Video> findByTitle(String title) throws SQLException, ParseException {
         List<Video> videos = new ArrayList<>();
-        String s = "SELECT * FROM bookmark, video WHERE bookmark.title = ? AND bookmark.id = video.id";
+        String pattern="%"+title+"%";
+        String s = "SELECT * FROM bookmark, video WHERE bookmark.title LIKE ? AND bookmark.id = video.id";
         
         try (Connection conn = database.getConnection(); PreparedStatement stmt = conn.prepareStatement(s)) {
-            stmt.setString(1, title);
+            stmt.setString(1, pattern);
             ResultSet rs = stmt.executeQuery();
             
             while (rs.next()) {
