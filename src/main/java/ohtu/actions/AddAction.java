@@ -1,9 +1,11 @@
 package ohtu.actions;
 
 import ohtu.dao.BlogpostDao;
+import ohtu.dao.BookDao;
 import ohtu.dao.BookmarkDao;
 import ohtu.dao.VideoDao;
 import ohtu.domain.Blogpost;
+import ohtu.domain.Book;
 import ohtu.domain.Video;
 import ohtu.io.IO;
 import ohtu.main.Main;
@@ -18,13 +20,15 @@ public class AddAction extends Action {
 	private BookmarkDao bookmarkDao;
 	private BlogpostDao blogpostDao;
 	private VideoDao videoDao;
+	private BookDao bookDao;
 
-	public AddAction(IO io, UiController uiController, BookmarkDao bookmarkDao, BlogpostDao blogpostDao, VideoDao videoDao) {
+	public AddAction(IO io, UiController uiController, BookmarkDao bookmarkDao, BlogpostDao blogpostDao, VideoDao videoDao, BookDao bookDao) {
 		super(io);
 		this.uiController = uiController;
 		this.bookmarkDao = bookmarkDao;
 		this.blogpostDao = blogpostDao;
 		this.videoDao = videoDao;
+		this.bookDao = bookDao;
 	}
 
 	/**
@@ -37,9 +41,9 @@ public class AddAction extends Action {
 		uiController.printEmptyLine();
 
 		super.getIo().println("What kind of a bookmark you'd like to create?");
-		super.getIo().println("Choose 'B' for Blogpost, 'V' for video.");
+		super.getIo().println("Choose 'B' for Blogpost, 'V' for video, 'K' for book.");
 
-		char type = uiController.askForCharacter(new char[]{'B', 'V'}, "Bookmark type");
+		char type = uiController.askForCharacter(new char[]{'B', 'V', 'K'}, "Bookmark type");
 
 		switch (type) {
 			case 'B':
@@ -47,6 +51,9 @@ public class AddAction extends Action {
 				break;
 			case 'V':
 				createVideo();
+				break;
+			case 'K':
+				createBook();
 				break;
 			default:
 				throw new RuntimeException("Got an illegal value.");
@@ -97,6 +104,29 @@ public class AddAction extends Action {
 			final Blogpost success = blogpostDao.create(newBlogpost);
 			if (success != null) {
 				uiController.addSuccess(newBlogpost.getClass().getSimpleName());
+			} else {
+				uiController.addFailure();
+			}
+		} catch (Exception e) {
+			Main.LOG.warning(e.getMessage());
+		}
+	}
+
+	private void createBook() {
+		String[] values = uiController.askBookData();
+		String title = values[0]; // Care should be taken so as not to mix these indices up.
+		String author = values[1];
+		String isbn = values[2];
+
+		// Database will handle assigning correct ID to the object, and decides the addDate value.
+		Date date = null; // This is here just as a reference that it is null.
+		int id = -1; // When creating new Bookmarks from user input, assign -1 as the ID.
+
+		Book newBook = Builder.buildBook(id, title, author, isbn, date);
+		try {
+			final Book success = bookDao.create(newBook);
+			if (success != null) {
+				uiController.addSuccess(newBook.getClass().getSimpleName());
 			} else {
 				uiController.addFailure();
 			}

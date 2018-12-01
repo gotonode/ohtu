@@ -1,9 +1,11 @@
 package ohtu.actions;
 
 import ohtu.dao.BlogpostDao;
+import ohtu.dao.BookDao;
 import ohtu.dao.BookmarkDao;
 import ohtu.dao.VideoDao;
 import ohtu.domain.Blogpost;
+import ohtu.domain.Book;
 import ohtu.domain.Bookmark;
 import ohtu.domain.Video;
 import ohtu.io.IO;
@@ -19,13 +21,15 @@ public class ModifyAction extends Action {
 	private BookmarkDao bookmarkDao;
 	private BlogpostDao blogpostDao;
 	private VideoDao videoDao;
+	private BookDao bookDao;
 
-	public ModifyAction(IO io, UiController uiController, BookmarkDao bookmarkDao, BlogpostDao blogpostDao, VideoDao videoDao) {
+	public ModifyAction(IO io, UiController uiController, BookmarkDao bookmarkDao, BlogpostDao blogpostDao, VideoDao videoDao, BookDao bookDao) {
 		super(io);
 		this.uiController = uiController;
 		this.bookmarkDao = bookmarkDao;
 		this.blogpostDao = blogpostDao;
 		this.videoDao = videoDao;
+		this.bookDao = bookDao;
 	}
 
 	@Override
@@ -74,6 +78,8 @@ public class ModifyAction extends Action {
 			modifyBlogpost((Blogpost) bookmark);
 		} else if (bookmark instanceof Video) {
 			modifyVideo((Video) bookmark);
+		} else if (bookmark instanceof Book) {
+			modifyBook((Book) bookmark);
 		}
 
 		boolean success = false;
@@ -83,6 +89,8 @@ public class ModifyAction extends Action {
 				success = blogpostDao.update((Blogpost) bookmark);
 			} else if (bookmark instanceof Video) {
 				success = videoDao.update((Video) bookmark);
+			} else if (bookmark instanceof Book) {
+				success = bookDao.update((Book) bookmark);
 			}
 		} catch (SQLException e) {
 			Main.LOG.warning(e.getMessage());
@@ -147,6 +155,22 @@ public class ModifyAction extends Action {
 			video.setUrl(newUrl);
 
 			break;
+		}
+	}
+
+	private void modifyBook(Book book) {
+
+		// Code repetition here. Feel free to reduce it.
+		super.getIo().println("Current author: " + book.getAuthor());
+		String newAuthor = uiController.askForString("New author: ", true);
+		if (!newAuthor.isEmpty()) {
+			book.setAuthor(newAuthor);
+		}
+
+		super.getIo().println("Current ISBN: " + book.getAuthor());
+		String newIsbn = uiController.askForString("New ISBN: ", true);
+		if (!newIsbn.isEmpty()) {
+			book.setIsbn(newIsbn);
 		}
 	}
 }

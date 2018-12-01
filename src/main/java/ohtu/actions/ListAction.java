@@ -2,6 +2,7 @@ package ohtu.actions;
 
 import ohtu.dao.BookmarkDao;
 import ohtu.domain.Blogpost;
+import ohtu.domain.Book;
 import ohtu.domain.Bookmark;
 import ohtu.domain.Video;
 import ohtu.io.IO;
@@ -31,6 +32,7 @@ public class ListAction extends Action {
 
 		OrderBy orderBy = getOrderBy();
 
+		uiController.printEmptyLine();
 		super.getIo().println("Listing all bookmarks...");
 		uiController.printEmptyLine();
 
@@ -110,11 +112,27 @@ public class ListAction extends Action {
 					ouputBlogpost((Blogpost) bookmark);
 				} else if (bookmark instanceof Video) {
 					outputVideo((Video) bookmark);
+				} else if (bookmark instanceof Book) {
+					outputBook((Book) bookmark);
 				}
 			}
 		} catch (Exception e) {
 			Main.LOG.warning(e.getMessage());
 		}
+	}
+
+	private void outputBook(Book book) {
+		// Create an ArrayList of Strings that contains the printable data IN ORDER.
+		ArrayList<String> printableData = new ArrayList<>();
+		printableData.add(book.getClass().getSimpleName());
+		printableData.add(book.getAddDate().toString());
+		printableData.add(book.getTitle());
+		printableData.add(book.getAuthor());
+		printableData.add(book.getIsbn());
+		printableData.add(String.valueOf(book.getId()));
+
+		// Ask the controller to print the Bookmark's data to console.
+		uiController.printBook(printableData);
 	}
 
 	private void outputVideo(Video video) {

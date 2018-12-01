@@ -2,6 +2,7 @@ package ohtu.main;
 
 import ohtu.actions.*;
 import ohtu.dao.BlogpostDao;
+import ohtu.dao.BookDao;
 import ohtu.dao.BookmarkDao;
 import ohtu.dao.VideoDao;
 import ohtu.database.Database;
@@ -25,6 +26,7 @@ public class App {
 
 		BlogpostDao blogpostDao = new BlogpostDao(db);
 		VideoDao videoDao = new VideoDao(db);
+		BookDao bookDao = new BookDao(db);
 
 		BookmarkDao bookmarkDao = new BookmarkDao(db, blogpostDao, videoDao);
 
@@ -33,8 +35,8 @@ public class App {
 		exit = new ExitAction(io, uiController);
 		delete = new DeleteAction(io, uiController, bookmarkDao, blogpostDao, videoDao);
 		browse = new ListAction(io, uiController, bookmarkDao);
-		add = new AddAction(io, uiController, bookmarkDao, blogpostDao, videoDao);
-		modify = new ModifyAction(io, uiController, bookmarkDao, blogpostDao, videoDao);
+		add = new AddAction(io, uiController, bookmarkDao, blogpostDao, videoDao, bookDao);
+		modify = new ModifyAction(io, uiController, bookmarkDao, blogpostDao, videoDao, bookDao);
 		help = new HelpAction(io, uiController);
 	}
 
@@ -47,7 +49,7 @@ public class App {
 
 		while (appRunning) {
 
-			char character = uiController.askForCharacter(new char[]{'A', 'L', 'E', 'D', 'M', 'X', 'S'}, "Choose a command ('X' to print all commands)");
+			char character = uiController.askForCharacter(new char[]{'A', 'L', 'E', 'D', 'M', 'X', 'S'}, "Choose a command ('X' lists them)");
 
 			// I believe there might be a better way to achieve this. Feel free to improve!
 			Commands command = Arrays.stream(Commands.values()).filter(a -> a.getCommand() == character).findFirst().get();
