@@ -37,4 +37,8 @@ public class Validator {
 		return matchFound;
 		*/
 	}
+
+	public static boolean isValidIsbn(String isbn) {
+		return false;
+	}
 }

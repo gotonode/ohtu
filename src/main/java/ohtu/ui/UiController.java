@@ -3,6 +3,7 @@ package ohtu.ui;
 import ohtu.io.IO;
 import ohtu.tools.Validator;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -308,5 +309,34 @@ public class UiController {
 
 	public void printUrlNotValid() {
 		io.println("The URL is not valid. Please remember to add 'http://' at the beginning of it.");
+	}
+
+	public String[] askBookData() {
+		io.println("Adding a new book.");
+
+		String title = askForString("Title:", false);
+		String author = askForString("Author:", false);
+		String isbn = askForString("ISBN:", false);
+
+		return new String[]{title, author, isbn};
+	}
+
+	public void printBook(ArrayList<String> printableData) {
+		String firstLine = "  ===== " + printableData.get(5) + " =====";
+
+		io.println(firstLine);
+		io.println("  Title: " + printableData.get(2));
+		io.println("  Type: " + printableData.get(0));
+		io.println("  Author: " + printableData.get(3));
+		io.println("  ISBN: " + printableData.get(4));
+		io.println("  Date added: " + printableData.get(1));
+
+		String block = "  ";
+		while (block.length() < firstLine.length()) {
+			block += "=";
+		}
+
+		io.println(block);
+		printEmptyLine(); // An empty line to tidy things up.
 	}
 }

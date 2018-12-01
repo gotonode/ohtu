@@ -1,6 +1,7 @@
 package ohtu.tools;
 
 import ohtu.domain.Blogpost;
+import ohtu.domain.Book;
 import ohtu.domain.Video;
 
 import java.util.Date;
@@ -17,5 +18,9 @@ public class Builder {
 
 	public static Video buildVideo(int id, String title, String url, Date date) {
 		return new Video(id, title, date, url);
+	}
+
+	public static Book buildBook(int id, String title, String author, String isbn, Date date) {
+		return new Book(id, title, date, author, isbn);
 	}
 }
