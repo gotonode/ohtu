@@ -1,9 +1,11 @@
 package ohtu.actions;
 
 import ohtu.dao.BlogpostDao;
+import ohtu.dao.BookDao;
 import ohtu.dao.BookmarkDao;
 import ohtu.dao.VideoDao;
 import ohtu.domain.Blogpost;
+import ohtu.domain.Book;
 import ohtu.domain.Bookmark;
 import ohtu.domain.Video;
 import ohtu.io.IO;
@@ -18,13 +20,15 @@ public class DeleteAction extends Action {
 	private BookmarkDao bookmarkDao;
 	private BlogpostDao blogpostDao;
 	private VideoDao videoDao;
+	private BookDao bookDao;
 
-	public DeleteAction(IO io, UiController uiController, BookmarkDao bookmarkDao, BlogpostDao blogpostDao, VideoDao videoDao) {
+	public DeleteAction(IO io, UiController uiController, BookmarkDao bookmarkDao, BlogpostDao blogpostDao, VideoDao videoDao, BookDao bookDao) {
 		super(io);
 		this.uiController = uiController;
 		this.bookmarkDao = bookmarkDao;
 		this.blogpostDao = blogpostDao;
 		this.videoDao = videoDao;
+		this.bookDao = bookDao;
 	}
 
 	@Override
@@ -83,8 +87,18 @@ public class DeleteAction extends Action {
 					} else {
 						uiController.printDeleteFailed(id);
 					}
-					uiController.printDeleteSuccessful(id);
 				} catch (SQLException e) {
+					Main.LOG.warning(e.getMessage());
+				}
+			} else if (bookmark instanceof Book) {
+				try {
+					boolean success = bookDao.delete(id);
+					if (success) {
+						uiController.printDeleteSuccessful(id);
+					} else {
+						uiController.printDeleteFailed(id);
+					}
+				} catch (Exception e) { // TODO: Change this to SQLException.
 					Main.LOG.warning(e.getMessage());
 				}
 			}
