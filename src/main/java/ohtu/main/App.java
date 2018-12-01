@@ -33,7 +33,7 @@ public class App {
 		uiController = new UiController(io); // Either ConsoleIO or StubIO.
 
 		exit = new ExitAction(io, uiController);
-		delete = new DeleteAction(io, uiController, bookmarkDao, blogpostDao, videoDao);
+		delete = new DeleteAction(io, uiController, bookmarkDao, blogpostDao, videoDao, bookDao);
 		browse = new ListAction(io, uiController, bookmarkDao);
 		add = new AddAction(io, uiController, bookmarkDao, blogpostDao, videoDao, bookDao);
 		modify = new ModifyAction(io, uiController, bookmarkDao, blogpostDao, videoDao, bookDao);
