@@ -48,8 +48,41 @@ public class ListBookmarksStepdefs extends AbstractStepdefs {
         assertTrue(io.getPrints().contains(expectedOutput));
     }
 
+    @Given("^commmand searching bookmarks is selected$")
+    public void commmand_searching_bookmarks_is_selected() throws Throwable {
+        inputs.add("S");
+    }
+
+    @Given("^command \"([^\"]*)\" is chosen to search bookmarks by title$")
+    public void command_is_chosen_to_search_bookmarks_by_title(String searchByTitle) throws Throwable {
+        inputs.add(searchByTitle);
+    }
+
+    @Given("^keyword \"([^\"]*)\" is entered$")
+    public void keyword_is_entered(String keyword) throws Throwable {
+        inputs.add(keyword);
+    }
+
+    @Then("^bookmarks whose titles contain the given keywords will be listed$")
+    public void bookmarks_whose_titles_contain_the_given_keywords_will_be_listed() throws Throwable {
+        runAndExit();
+        System.out.println(io.getPrints());
+        assertTrue(containKeyword(io, "computer"));
+    }
+    
+    @Then("^system will report no bookmark is found and respond with \"([^\"]*)\"$")
+    public void system_will_report_no_bookmark_is_found_and_respond_with(String expectedOutput) throws Throwable {
+        runAndExit();
+        assertTrue(io.getPrints().contains(expectedOutput));
+    }
+
+
     private void addNewBookmarks() { //other types will be added soon
-        addNewBlogpost("Data Mining","navamani saravanan","http://notescompsci.blogspot.com/2013/04/data-mining.html");
-        addNewVideo("Map of Computer Science","https://www.youtube.com/watch?v=SzJ46YA_RaA");
+        addNewBlogpost("Data Mining in computer science", "navamani saravanan", "http://notescompsci.blogspot.com/2013/04/data-mining.html");
+        addNewVideo("Map of Computer Science", "https://www.youtube.com/watch?v=SzJ46YA_RaA");
+    }
+
+    private boolean containKeyword(StubIO io, String keyword) {
+        return io.getPrints().stream().anyMatch((text) -> (text.contains("Title") && text.contains(keyword)));
     }
 }
