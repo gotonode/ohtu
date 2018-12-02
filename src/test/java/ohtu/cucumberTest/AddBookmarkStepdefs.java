@@ -4,6 +4,7 @@ import cucumber.api.java.Before;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import java.awt.event.KeyEvent;
 import ohtu.io.StubIO;
 import ohtu.main.App;
 import java.io.IOException;
@@ -68,5 +69,22 @@ public class AddBookmarkStepdefs extends AbstractStepdefs {
         inputs.add(title);
         inputs.add(url);
     }
+    
+    @When("^title \"([^\"]*)\" and an invalid url \"([^\"]*)\" are entered$")
+    public void title_and_invalid_url_are_entered(String title, String url) throws Throwable {
+        inputs.add(title);
+        inputs.add(url);
+        String validUrl="https://www.youtube.com/watch?v=SzJ46YA_RaA";
+        inputs.add(validUrl);
+    }
+    
+    
+    
+     @Then("^sysytem will ask user to enter a valid url by responding with \"([^\"]*)\"$")
+    public void sysytem_will_ask_user_to_enter_a_valid_url_by_responding_with(String expectedOutput) throws Throwable {
+        runAndExit();
+        assertTrue(io.getPrints().contains(expectedOutput));
+    }
+
 
 }
