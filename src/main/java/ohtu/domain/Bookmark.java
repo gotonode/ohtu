@@ -9,7 +9,7 @@ public abstract class Bookmark {
 
     private final int id; // Can never be changed.
     private String title; // Can be changed.
-    private Date addDate; // Can never be changed.
+    private final Date addDate; // Can never be changed.
     private final char type; // Can never be changed.
     // We'll add "isRead" property later.
 
@@ -42,8 +42,15 @@ public abstract class Bookmark {
     public boolean isVideo() {
         return this instanceof Video;
     }
-
-    // We'll add the rest later (article, book, podcast).
+    
+    /**
+     * Checks whether an instance of a Bookmark is a Book.
+     * 
+     * @return true if the object is a Book, otherwise false.
+     */
+    public boolean isBook() {
+        return this instanceof Book;
+    }
 
     public int getId() {
         return id;
@@ -65,5 +72,6 @@ public abstract class Bookmark {
         return type;
     }
 
+    @Override
     public abstract String toString();
 }
