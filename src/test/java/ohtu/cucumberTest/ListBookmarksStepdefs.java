@@ -4,7 +4,6 @@ import cucumber.api.java.Before;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import ohtu.io.StubIO;
-import ohtu.main.App;
 import java.io.IOException;
 import static org.junit.Assert.assertTrue;
 
@@ -16,8 +15,8 @@ public class ListBookmarksStepdefs extends AbstractStepdefs {
         inputs.clear(); // Maybe it's faster to just clear this than to re-initialize?
     }
 
-    @Given("^two bookmarks have been created and saved to the database$")
-    public void two_bookmarks_have_been_created_and_saved_to_the_database() throws Throwable {
+    @Given("^new bookmarks have been created and saved to the database$")
+    public void new_bookmarks_have_been_created_and_saved_to_the_database() throws Throwable {
         addNewBookmarks();
     }
 
@@ -80,6 +79,7 @@ public class ListBookmarksStepdefs extends AbstractStepdefs {
     private void addNewBookmarks() { //other types will be added soon
         addNewBlogpost("Data Mining in computer science", "navamani saravanan", "http://notescompsci.blogspot.com/2013/04/data-mining.html");
         addNewVideo("Map of Computer Science", "https://www.youtube.com/watch?v=SzJ46YA_RaA");
+        addNewBook("Learning Python","Mark Lutz", "9-781-593-2760-34");
     }
 
     private boolean containKeyword(StubIO io, String keyword) {
