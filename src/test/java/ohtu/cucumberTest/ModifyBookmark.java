@@ -5,8 +5,6 @@ import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import java.io.IOException;
-import ohtu.io.StubIO;
-import ohtu.main.App;
 import static org.junit.Assert.assertTrue;
 
 public class ModifyBookmark extends AbstractStepdefs {
@@ -50,17 +48,12 @@ public class ModifyBookmark extends AbstractStepdefs {
         inputs.add(newUrl);
     }
 
-    @Then("^blogpost with given id will be modified with given data and system will respond with \"([^\"]*)\"$")
-    public void blogpost_with_given_id_will_be_modified_with_given_data_and_system_will_respond_with(String expectedOutput) throws Throwable {
+    @Then("^bookmark with given id will be modified with given data and system will respond with \"([^\"]*)\"$")
+    public void bookmark_with_given_id_will_be_modified_with_given_data_and_system_will_respond_with(String expectedOutput) throws Throwable {
         runAndExit();
         assertTrue(io.getPrints().contains(expectedOutput));
     }
     
-    @Then("^video with given id will be modified with given data and system will respond with \"([^\"]*)\"$")
-    public void video_with_given_id_will_be_modified_with_given_data_and_system_will_respond_with(String expectedOutput) throws Throwable {
-        runAndExit();
-        assertTrue(io.getPrints().contains(expectedOutput));
-    }
 
     @When("^all fields are left empty$")
     public void all_fields_are_left_empty() throws Throwable {
@@ -92,6 +85,19 @@ public class ModifyBookmark extends AbstractStepdefs {
         runAndExit();
         assertTrue(io.getPrints().contains(expectedOutput));
     }
+    
+     @Given("^a book has been created and saved to the database$")
+    public void a_book_has_been_created_and_saved_to_the_database() throws Throwable {
+        addNewBook("Learning Python","Mark Lutz", "9-781-593-2760-34");
+    }
+
+    @When("^new title \"([^\"]*)\" and new author \"([^\"]*)\" and new ISBN \"([^\"]*)\" are entered$")
+    public void new_title_and_new_author_and_new_ISBN_are_entered(String title, String author, String isbn) throws Throwable {
+        inputs.add(title);
+        inputs.add(author);
+        inputs.add(isbn);
+    }
+
 
    
 

@@ -85,6 +85,19 @@ public class AddBookmarkStepdefs extends AbstractStepdefs {
         runAndExit();
         assertTrue(io.getPrints().contains(expectedOutput));
     }
+    
+    @Given("^command adding a book is selected$")
+    public void command_adding_a_book_is_selected() throws Throwable {
+        inputs.add("K");
+    }
+
+    @When("^title \"([^\"]*)\" and author \"([^\"]*)\" and ISBN \"([^\"]*)\" are entered$")
+    public void title_and_author_and_ISBN_are_entered(String title, String author, String isbn) throws Throwable {
+        inputs.add(title);
+        inputs.add(author);
+        inputs.add(isbn);
+    }
+
 
 
 }

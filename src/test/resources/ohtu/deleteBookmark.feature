@@ -5,14 +5,21 @@ Feature: User can delete a bookmark of type blogpost by given id
     And command deleting is selected
     When existed id 1 is entered to be deleted
     And confirmation "Y" is entered
-    Then blogpost with given id will be deleted and system will respond with "Successfully deleted bookmark with ID 1."
+    Then bookmark with given id will be deleted and system will respond with "Successfully deleted bookmark with ID 1."
 
   Scenario: user can delete a video by giving existed id and a confirmation
     Given two videos have been created and saved to the database
     And command deleting is selected
     When existed id 2 is entered to be deleted
     And confirmation "Y" is entered
-    Then video with given id will be deleted and system will respond with "Successfully deleted bookmark with ID 2."
+    Then bookmark with given id will be deleted and system will respond with "Successfully deleted bookmark with ID 2."
+
+  Scenario: user can delete a book by giving existed id and a confirmation
+    Given two books have been created and saved to the database
+    And command deleting is selected
+    When existed id 1 is entered to be deleted
+    And confirmation "Y" is entered
+    Then bookmark with given id will be deleted and system will respond with "Successfully deleted bookmark with ID 1."
 
   Scenario: bookmark will not be deleted if user gives an existed id but doese not confirm
     Given two blogposts have been created and saved to the database

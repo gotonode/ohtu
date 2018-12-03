@@ -28,6 +28,13 @@ public class DeleteBookmarkStepdefs extends AbstractStepdefs {
         addNewVideo("Map of Computer Science","https://www.youtube.com/watch?v=SzJ46YA_RaA");
         addNewVideo("Java tutorial","https://www.youtube.com/watch?v=grEKMHGYyns");
     }
+    
+    @Given("^two books have been created and saved to the database$")
+    public void two_books_have_been_created_and_saved_to_the_database() throws Throwable {
+        addNewBook("Introduction to Algorithms", "Thomas H. Cormen", "9-780-262-0338-48");
+        addNewBook("Learning Python","Mark Lutz", "9-781-593-2760-34");
+    }
+
 
     @Given("^command deleting is selected$")
     public void command_deleting_a_blogpost_is_selected() throws Throwable {
@@ -54,17 +61,12 @@ public class DeleteBookmarkStepdefs extends AbstractStepdefs {
         inputs.add(cancellation);
     }
 
-    @Then("^blogpost with given id will be deleted and system will respond with \"([^\"]*)\"$")
-    public void blogpost_with_given_id_will_be_deleted_and_system_will_respond_with(String expectedOutput) throws Throwable {
+    @Then("^bookmark with given id will be deleted and system will respond with \"([^\"]*)\"$")
+    public void bookmark_with_given_id_will_be_deleted_and_system_will_respond_with(String expectedOutput) throws Throwable {
         runAndExit();
         assertTrue(io.getPrints().contains(expectedOutput));
     }
     
-    @Then("^video with given id will be deleted and system will respond with \"([^\"]*)\"$")
-    public void video_with_given_id_will_be_deleted_and_system_will_respond_with(String expectedOutput) throws Throwable {
-        runAndExit();
-        assertTrue(io.getPrints().contains(expectedOutput));
-    }
 
     @Then("^blogpost with given id will not be deleted and system will respond with \"([^\"]*)\"$")
     public void blogpost_with_given_id_will_not_be_deleted_and_system_will_respond_with(String expectedOutput) throws Throwable {
@@ -84,9 +86,5 @@ public class DeleteBookmarkStepdefs extends AbstractStepdefs {
         assertTrue(io.getPrints().contains(expectedOutput));
     }
 
-//    private void addNewBlogposts() {
-//        addNewBlogpost("Data Mining","navamani saravanan","http://notescompsci.blogspot.com/2013/04/data-mining.html");
-//        addNewBlogpost("SoftWare Testing","navamani saravanan","http://notescompsci.blogspot.com/2013/04/software-testing.html");
-//        
-//    }
+
 }
