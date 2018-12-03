@@ -16,49 +16,48 @@ import static org.junit.Assert.assertTrue;
 
 public class AppTest {
 
-    private static TemporaryFolder tempFolder;
+	private StubIO stubIo;
+	private ArrayList<String> lines;
 
-    private App app;
-    private StubIO stubIo;
-    private ArrayList<String> lines;
+	private static Database database;
 
-    private static Database database;
-    private static File databaseFile;
+	@Before
+	public void beforeClass() {
+		lines = new ArrayList<>();
+		stubIo = new StubIO(lines);
+	}
 
-    @Before
-    public void beforeClass() {
-        lines = new ArrayList<>();
-        stubIo = new StubIO(lines);
-    }
+	@BeforeClass
+	public static void setUpClass() throws IOException {
+		TemporaryFolder tempFolder = new TemporaryFolder();
+		tempFolder.create();
 
-    @BeforeClass
-    public static void setUpClass() throws IOException {
-        tempFolder = new TemporaryFolder();
-        tempFolder.create();
+		// Assign a test database into the newly created temporary folder.
+		File databaseFile = new File(tempFolder.getRoot() + "/test.db");
 
-        // Assign a test database into the newly created temporary folder.
-        databaseFile = new File(tempFolder.getRoot() + "/test.db");
-        if (databaseFile.exists()) {
-                databaseFile.delete();
-        }
-    }
+		database = new Database(databaseFile);
 
-    /**
-     * A sample test which creates a new App with the StubIO, and issues an exit command ('E').
-     * The app should exit with the goodbye message.
-     *
-     * @throws AssertionError
-     */
-    @Test
-    public void appExitsWhenExitCommandGiven() throws AssertionError {
+		if (databaseFile.exists()) {
+			databaseFile.delete();
+		}
+	}
 
-        lines.add("E");
+	/**
+	 * A sample test which creates a new App with the StubIO, and issues an exit command ('E').
+	 * The app should exit with the goodbye message.
+	 *
+	 * @throws AssertionError
+	 */
+	@Test
+	public void appExitsWhenExitCommandGiven() throws AssertionError {
 
-        app = new App(stubIo, database);
-        app.run();
+		lines.add("E");
 
-        ArrayList<String> prints = stubIo.getPrints(); // When debugging tests, this is an interesting variable to read.
+		App app = new App(stubIo, database);
+		app.run();
 
-        assertTrue(prints.contains("Thanks for using " + ohtu.main.Main.APP_NAME + "."));
-    }
+		ArrayList<String> prints = stubIo.getPrints(); // When debugging tests, this is an interesting variable to read.
+
+		assertTrue(prints.contains("Thanks for using " + ohtu.main.Main.APP_NAME + "."));
+	}
 }

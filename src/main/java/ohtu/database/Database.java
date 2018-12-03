@@ -3,7 +3,10 @@ package ohtu.database;
 import ohtu.main.Main;
 
 import java.io.File;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.List;
 
 public class Database {
@@ -27,7 +30,6 @@ public class Database {
 
 	@Override
 	public String toString() {
-		// This is here to ease debugging.
 		return "Database{" +
 				"databaseAddress='" + databaseAddress + '\'' +
 				'}';

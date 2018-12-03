@@ -9,18 +9,19 @@ import ohtu.database.Database;
 import ohtu.enums.Commands;
 import ohtu.io.IO;
 import ohtu.ui.UiController;
+
 import java.util.Arrays;
 
 public class App {
 
 	private UiController uiController;
 
-	private ExitAction exit;
-	private ListAction browse;
-	private DeleteAction delete;
-	private AddAction add;
-	private ModifyAction modify;
-	private HelpAction help;
+	private final ExitAction exit;
+	private final ListAction browse;
+	private final DeleteAction delete;
+	private final AddAction add;
+	private final ModifyAction modify;
+	private final HelpAction help;
 
 	public App(IO io, Database db) {
 
@@ -35,7 +36,7 @@ public class App {
 		exit = new ExitAction(io, uiController);
 		delete = new DeleteAction(io, uiController, bookmarkDao, blogpostDao, videoDao, bookDao);
 		browse = new ListAction(io, uiController, bookmarkDao);
-		add = new AddAction(io, uiController, bookmarkDao, blogpostDao, videoDao, bookDao);
+		add = new AddAction(io, uiController, blogpostDao, videoDao, bookDao);
 		modify = new ModifyAction(io, uiController, bookmarkDao, blogpostDao, videoDao, bookDao);
 		help = new HelpAction(io, uiController);
 	}
@@ -51,7 +52,6 @@ public class App {
 
 			char character = uiController.askForCharacter(new char[]{'A', 'L', 'E', 'D', 'M', 'X', 'S'}, "Choose a command ('X' lists them)");
 
-			// I believe there might be a better way to achieve this. Feel free to improve!
 			Commands command = Arrays.stream(Commands.values()).filter(a -> a.getCommand() == character).findFirst().get();
 
 			switch (command) {

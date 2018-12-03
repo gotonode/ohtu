@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 class SQLReader {
+
 	private final String path;
 
 	/**
@@ -15,7 +16,7 @@ class SQLReader {
 	 *
 	 * @param path The path to the internal SQL file.
 	 */
-	SQLReader(String path) {
+	SQLReader(final String path) {
 		this.path = path;
 	}
 

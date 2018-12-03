@@ -98,7 +98,7 @@ public class DeleteAction extends Action {
 					} else {
 						uiController.printDeleteFailed(id);
 					}
-				} catch (Exception e) { // TODO: Change this to SQLException.
+				} catch (SQLException e) {
 					Main.LOG.warning(e.getMessage());
 				}
 			}
@@ -107,6 +107,5 @@ public class DeleteAction extends Action {
 		}
 
 		uiController.printEmptyLine();
-
 	}
 }

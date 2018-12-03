@@ -42,5 +42,9 @@ public class CommandsTest {
 		assertEquals('L', commands.getCommand());
 	}
 
-
+	@Test
+	public void commandSearchTest() {
+		Commands commands = Commands.SEARCH;
+		assertEquals('S', commands.getCommand());
+	}
 }
