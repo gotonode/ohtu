@@ -210,4 +210,32 @@ public class VideoDao implements ObjectDao<Video, Integer> {
         return videos;
     }
     
+    /**
+     * Searches for Video objects that have an URL that matches the whole or partial 
+     * url given as parameter. 
+     * 
+     * @param url the url/partial url to be searched for
+     * @return List of Videos matching the given url
+     * @throws SQLException
+     * @throws ParseException 
+     */
+    public List<Video> findByURL(String url) throws SQLException, ParseException {
+        List<Video> videos = new ArrayList<>();
+        String s = "SELECT * FROM bookmark, video WHERE video.url LIKE ? "
+                + "AND bookmark.id = video.id";
+        
+        try (Connection conn = database.getConnection(); PreparedStatement stmt = conn.prepareStatement(s)) {
+            stmt.setString(1, "%" + url + "%");
+            ResultSet rs = stmt.executeQuery();
+            
+            while (rs.next()) {
+                Video video = constructVideoFromResultSet(rs);
+                videos.add(video);
+            }
+            
+            rs.close();
+        }
+        
+        return videos;
+    }  
 }

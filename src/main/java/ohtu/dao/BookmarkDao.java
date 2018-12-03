@@ -128,5 +128,24 @@ public class BookmarkDao {
         stmt.close();
         conn.close();
     }
+    
+    /**
+     * Searches for Bookmarks that have an URL matching the given whole or partial url from
+     * those Bookmark objects that have the field URL in them. 
+     * 
+     * @param url the url/partial url to be searched for
+     * @return List of Bookmarks matching the given url ordered by id
+     * @throws SQLException
+     * @throws ParseException 
+     */
+    public List<Bookmark> findByURL(String url) throws SQLException, ParseException {
+        List<Bookmark> bookmarks = new ArrayList<>();
+        bookmarks.addAll(blogpostDao.findByURL(url));
+        bookmarks.addAll(videoDao.findByURL(url));
+        
+        bookmarks.sort(Comparator.comparing(b -> b.getId()));
+        
+        return bookmarks;
+    }
 
 }

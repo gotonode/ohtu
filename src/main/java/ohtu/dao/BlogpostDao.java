@@ -241,4 +241,32 @@ public class BlogpostDao implements ObjectDao<Blogpost, Integer> {
 
         return blogposts;
     }
+    
+    /**
+     * Searches for Blogpost that have an URL that matches the whole or partial url given as parameter. 
+     * 
+     * @param url the url/partial url to be searched for
+     * @return List of Blogposts matching the given url
+     * @throws SQLException
+     * @throws ParseException 
+     */
+    public List<Blogpost> findByURL(String url) throws SQLException, ParseException {
+        List<Blogpost> blogposts = new ArrayList<>();
+        String s = "SELECT * FROM bookmark, blogpost WHERE blogpost.url LIKE ? "
+                + "AND bookmark.id = blogpost.id";
+        
+        try (Connection conn = database.getConnection(); PreparedStatement stmt = conn.prepareStatement(s)) {
+            stmt.setString(1, "%"+ url + "%");
+            ResultSet rs = stmt.executeQuery();
+            
+            while (rs.next()) {
+                Blogpost blogpost = constructBlogpostFromResultSet(rs);
+                blogposts.add(blogpost);
+            }
+            
+            rs.close();
+        }
+        
+        return blogposts;
+    }
 }

@@ -95,9 +95,7 @@ public class ListAction extends Action {
 			if (c == 'T') {
 				bookmarks = bookmarkDao.findByTitle(searchTerm);
 			} else {
-				// TODO: Uncomment and change once findByUrl is done.
-				bookmarks = bookmarkDao.findByTitle(searchTerm);
-				//bookmarks = bookmarkDao.findByUrl(searchTerm);
+				bookmarks = bookmarkDao.findByURL(searchTerm);
 			}
 
 			if (bookmarks.isEmpty()) {
