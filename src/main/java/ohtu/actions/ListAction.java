@@ -59,11 +59,13 @@ public class ListAction extends Action {
 			assert bookmarks != null;
 			for (Bookmark bookmark : bookmarks) {
 				// Since Bookmarks may have unique fields, each must be handled separately.
-				if (bookmark instanceof Blogpost) {
+				if (bookmark.isBlogpost()) {
 					ouputBlogpost((Blogpost) bookmark);
-				} else if (bookmark instanceof Video) {
+				} else if (bookmark.isVideo()) {
 					outputVideo((Video) bookmark);
-				}
+				} else if (bookmark.isBook()) {
+                                        outputBook((Book) bookmark);
+                                }
 			}
 		} catch (Exception e) {
 			Main.LOG.warning(e.getMessage());

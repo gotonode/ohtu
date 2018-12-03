@@ -28,7 +28,7 @@ public class App {
 		VideoDao videoDao = new VideoDao(db);
 		BookDao bookDao = new BookDao(db);
 
-		BookmarkDao bookmarkDao = new BookmarkDao(db, blogpostDao, videoDao);
+		BookmarkDao bookmarkDao = new BookmarkDao(db, blogpostDao, videoDao, bookDao);
 
 		uiController = new UiController(io); // Either ConsoleIO or StubIO.
 

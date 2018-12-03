@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package ohtu.dao;
 
 import java.io.File;
@@ -23,10 +19,7 @@ import org.junit.rules.TemporaryFolder;
 
 import static org.junit.Assert.*;
 
-/**
- *
- * @author luoyumo
- */
+
 public class BookmarkDaoTest {
 
     private static TemporaryFolder tempFolder;
@@ -36,6 +29,7 @@ public class BookmarkDaoTest {
     private static BlogpostDao blogpostDao;
     private static BookmarkDao bookmarkDao;
     private static VideoDao videoDao;
+    private static BookDao bookDao;
     private static Blogpost b1;
     private static Video v1, v2;
 
@@ -54,7 +48,8 @@ public class BookmarkDaoTest {
         BookmarkDaoTest.database = new Database(databaseFile);
         BookmarkDaoTest.blogpostDao = new BlogpostDao(database);
         BookmarkDaoTest.videoDao = new VideoDao(database);
-        BookmarkDaoTest.bookmarkDao = new BookmarkDao(database, blogpostDao, videoDao);
+        BookmarkDaoTest.bookDao = new BookDao(database);
+        BookmarkDaoTest.bookmarkDao = new BookmarkDao(database, blogpostDao, videoDao, bookDao);
         BookmarkDaoTest.b1 = new Blogpost(-1, "Data Mining", null, "navamani saravanan", "http://notescompsci.blogspot.com/2013/04/data-mining.html");
         BookmarkDaoTest.v1 = new Video(-1, "Map of Computer Science", null, "https://www.youtube.com/watch?v=SzJ46YA_RaA");
         BookmarkDaoTest.v2 = new Video(-1, "Big Data Analytics", null, "https://www.youtube.com/watch?v=LtScY2guZpo");

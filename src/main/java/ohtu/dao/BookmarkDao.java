@@ -14,16 +14,16 @@ import java.util.stream.Collectors;
 import ohtu.database.Database;
 
 public class BookmarkDao {
-
-    // If possible, this class could return all results, when we don't want to get e.g. just the blog posts.
     private final Database database;
     private final BlogpostDao blogpostDao;
     private final VideoDao videoDao;
+    private final BookDao bookDao;
 
-    public BookmarkDao(Database database, BlogpostDao blogpostDao, VideoDao videoDao) {
+    public BookmarkDao(Database database, BlogpostDao blogpostDao, VideoDao videoDao, BookDao bookDao) {
         this.database = database;
         this.blogpostDao = blogpostDao;
         this.videoDao = videoDao;
+        this.bookDao = bookDao;
     }
     
     /**
@@ -38,6 +38,7 @@ public class BookmarkDao {
         List<Bookmark> bookmarks = new ArrayList<>();
         bookmarks.addAll(blogpostDao.findAll());
         bookmarks.addAll(videoDao.findAll());
+        bookmarks.addAll(bookDao.findAll());
         
         bookmarks.sort(Comparator.comparing(b -> b.getId()));
         
@@ -56,6 +57,7 @@ public class BookmarkDao {
         List<Bookmark> bookmarks = new ArrayList<>();
         bookmarks.addAll(blogpostDao.findAllOrderByTitle());
         bookmarks.addAll(videoDao.findAllOrderByTitle());
+        bookmarks.addAll(bookDao.findAllOrderByTitle());
         // Add here in similar manner the new types of Bookmarks (the method FindAllOrderByTitle)
         
         return bookmarks.stream().sorted((b1, b2) -> b1.getTitle().compareToIgnoreCase(b2.getTitle()))
@@ -105,7 +107,6 @@ public class BookmarkDao {
         return bookmarks;
     }
     
-    // TODO: Still needed for something?
     private Bookmark findCertainBookmarkByType(ResultSet rs) throws SQLException, ParseException {
         if (rs.getString("type").equals("B")) {
             return blogpostDao.findById(rs.getInt("id"));
@@ -113,7 +114,9 @@ public class BookmarkDao {
         if (rs.getString("type").equals("V")) {
             return videoDao.findById(rs.getInt("id"));
         }
-        // other types will be added later
+        if (rs.getString("type").equals("K")) {
+            return bookDao.findById(rs.getInt("id"));
+        }
         return null;
     }
     
