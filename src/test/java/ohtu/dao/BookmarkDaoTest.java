@@ -8,6 +8,7 @@ import java.text.ParseException;
 import java.util.List;
 import ohtu.database.Database;
 import ohtu.domain.Blogpost;
+import ohtu.domain.Book;
 import ohtu.domain.Bookmark;
 import ohtu.domain.Video;
 import org.junit.After;
@@ -32,6 +33,7 @@ public class BookmarkDaoTest {
     private static BookDao bookDao;
     private static Blogpost b1;
     private static Video v1, v2;
+    private static Book k1;
 
     @BeforeClass
     public static void setUpClass() throws SQLException, ParseException, IOException {
@@ -53,9 +55,11 @@ public class BookmarkDaoTest {
         BookmarkDaoTest.b1 = new Blogpost(-1, "Data Mining", null, "navamani saravanan", "http://notescompsci.blogspot.com/2013/04/data-mining.html");
         BookmarkDaoTest.v1 = new Video(-1, "Map of Computer Science", null, "https://www.youtube.com/watch?v=SzJ46YA_RaA");
         BookmarkDaoTest.v2 = new Video(-1, "Big Data Analytics", null, "https://www.youtube.com/watch?v=LtScY2guZpo");
+        BookmarkDaoTest.k1=new Book(-1,"Introdiction to Algorithms",null,"Thomas H. Cormen","9-780-262-0338-48");
         blogpostDao.create(b1);
         videoDao.create(v1);
         videoDao.create(v2);
+        bookDao.create(k1);
 
     }
 
@@ -77,7 +81,7 @@ public class BookmarkDaoTest {
     @Test
     public void canListAllBookmarks() throws SQLException, ParseException {
         List<Bookmark> bookmarks = bookmarkDao.findAll();
-        assertEquals(3, bookmarks.size());
+        assertEquals(4, bookmarks.size());
     }
 
     @Test
@@ -105,6 +109,7 @@ public class BookmarkDaoTest {
         List<Bookmark> allBookmarks = bookmarkDao.findAllOrderByTitle();
         assertEquals(v2.getTitle(), allBookmarks.get(0).getTitle());
         assertEquals(b1.getTitle(), allBookmarks.get(1).getTitle());
-        assertEquals(v1.getTitle(), allBookmarks.get(2).getTitle());
+        assertEquals(k1.getTitle(), allBookmarks.get(2).getTitle());
+        assertEquals(v1.getTitle(), allBookmarks.get(3).getTitle());
     }
 }
