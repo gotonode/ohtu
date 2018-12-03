@@ -6,7 +6,16 @@ import java.util.Objects;
 public class Video extends Bookmark {
 
     private String url;
-
+    
+    /**
+     * Creates a new Video object with the given parameters as the corresponding 
+     * values of the fields of the object.
+     * 
+     * @param id the id of the object to be created
+     * @param title the title of the object to be created
+     * @param addDate the date of creation of the object to be created
+     * @param url the url of the object to be created
+     */
     public Video(int id, String title, Date addDate, String url) {
             super(id, title, addDate, 'V'); // V for video.
             this.url = url;
@@ -14,9 +23,9 @@ public class Video extends Bookmark {
 
     @Override
     public String toString() {
-            return "Video{" +
-                            "url='" + url + '\'' +
-                            '}';
+        return "Video{" +
+                        "url='" + url + '\'' +
+                        '}';
     }
 
     public String getUrl() {

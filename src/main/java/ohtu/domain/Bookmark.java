@@ -65,6 +65,5 @@ public abstract class Bookmark {
         return type;
     }
 
-    // Override this on a per-object basis.
     public abstract String toString();
 }
