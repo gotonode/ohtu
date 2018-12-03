@@ -15,10 +15,15 @@ Feature: User can add a bookmark of type blogpost
 
   Scenario: user cannot add a blogpost or a video with invalid url
     Given command adding a video is selected
-    When title "Map of Computer Science" and an invalid url "youtube.com" are entered 
+    When title "Map of Computer Science" and an invalid url "youtube.com" are entered
     Then sysytem will ask user to enter a valid url by responding with "The URL is not valid. Please remember to add 'http://' at the beginning of it."
 
   Scenario: user can add a video with valid information
     Given command adding a video is selected
     When title "Map of Computer Science" and url "https://www.youtube.com/watch?v=SzJ46YA_RaA" are entered
     Then system will respond with "A new Video has been created and saved to the database."
+
+  Scenario: use can add a book with valide information
+    Given command adding a book is selected
+    When title "Introduction to algorithms" and author "Thomas H. Cormen" and ISBN "9-780-262-0338-48" are entered
+    Then system will respond with "A new Book has been created and saved to the database."

@@ -5,14 +5,21 @@ Feature: User can modify a bookmark of type blogpost by given id
     And command modifying is selected
     When existed id 1 is entered to be modified
     And new title "Data mining for beginners" and new author"Tavish Srivastava" and new url "http://www.analyticsvidhya.com/blog/2018/11/4-secrets-for-a-future-ready-career-in-data-science/" are entered
-    Then blogpost with given id will be modified with given data and system will respond with "Successfully updated your bookmark."
+    Then bookmark with given id will be modified with given data and system will respond with "Successfully updated your bookmark."
 
-Scenario: user can modify a video by giving existed id
+  Scenario: user can modify a video by giving existed id
     Given a video has been created and saved to the database
     And command modifying is selected
     When existed id 1 is entered to be modified
     And new title "Java tutorial" and new url "https://www.youtube.com/watch?v=grEKMHGYyns" are entered
-    Then video with given id will be modified with given data and system will respond with "Successfully updated your bookmark."
+    Then bookmark with given id will be modified with given data and system will respond with "Successfully updated your bookmark."
+
+  Scenario: user can modify a book by giving existed id
+    Given a book has been created and saved to the database
+    And command modifying is selected
+    When existed id 1 is entered to be modified
+    And new title "Python tutorial" and new author "Guido van Rossum" and new ISBN " 9-789-888-4069-06" are entered
+    Then bookmark with given id will be modified with given data and system will respond with "Successfully updated your bookmark."
 
   Scenario: the field of the bookmark which is left empty won't be modified
     Given a blogpost has been created and saved to the database
