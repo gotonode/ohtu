@@ -1,6 +1,6 @@
-Feature: User can delete a bookmark of type blogpost by given id
+Feature: User can delete a bookmark of type blogpost by given id (US3)
 
-  Scenario: user can delete a blogpost by giving existed id and a confirmation
+  Scenario: user can delete a blogpost by giving existed id and a confirmation 
     Given two blogposts have been created and saved to the database
     And command deleting is selected
     When existed id 1 is entered to be deleted
