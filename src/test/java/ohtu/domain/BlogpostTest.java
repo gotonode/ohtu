@@ -57,7 +57,7 @@ public class BlogpostTest {
         
         @Test
         public void equalsReturnsFalseWhenWrongClass() {
-            assertFalse(blogpost.equals(new Date()));
+            assertFalse(blogpost.equals(new Object()));
         }
         
         @Test
