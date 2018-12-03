@@ -1,4 +1,4 @@
-Feature: User can modify a bookmark of type blogpost by given id
+Feature: User can modify a bookmark of type blogpost by given id (US4)
 
   Scenario: user can modify a blogpost by giving existed id
     Given a blogpost has been created and saved to the database
