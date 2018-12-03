@@ -17,15 +17,13 @@ import java.util.Date;
 public class AddAction extends Action {
 
 	private UiController uiController;
-	private BookmarkDao bookmarkDao;
 	private BlogpostDao blogpostDao;
 	private VideoDao videoDao;
 	private BookDao bookDao;
 
-	public AddAction(IO io, UiController uiController, BookmarkDao bookmarkDao, BlogpostDao blogpostDao, VideoDao videoDao, BookDao bookDao) {
+	public AddAction(IO io, UiController uiController, BlogpostDao blogpostDao, VideoDao videoDao, BookDao bookDao) {
 		super(io);
 		this.uiController = uiController;
-		this.bookmarkDao = bookmarkDao;
 		this.blogpostDao = blogpostDao;
 		this.videoDao = videoDao;
 		this.bookDao = bookDao;
@@ -59,10 +57,7 @@ public class AddAction extends Action {
 				throw new RuntimeException("Got an illegal value.");
 		}
 
-
-
 		uiController.printEmptyLine();
-
 	}
 
 	// Contains code repetition, will be fixed later.

@@ -7,11 +7,19 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * This class handles the UI-facing aspects of the app. It asks
+ * the user for data via the console, and outputs data to the console as well.
+ */
 public class UiController {
 
-	private IO io;
+	private final IO io;
 
-	public UiController(IO io) {
+	/**
+	 * Creates a new UiController.
+	 * @param io The IO object to be used (either production or testing version).
+	 */
+	public UiController(final IO io) {
 		this.io = io;
 	}
 
@@ -23,7 +31,7 @@ public class UiController {
 		io.println("Thanks for using " + ohtu.main.Main.APP_NAME + ".");
 	}
 
-	public void addSuccess(String type) {
+	public void addSuccess(final String type) {
 		io.println("A new " + type.trim() + " has been created and saved to the database.");
 	}
 
@@ -64,7 +72,7 @@ public class UiController {
 
 	private String askForValidUrl() {
 
-		String url = "";
+		String url;
 
 		while (true) {
 			url = askForString("URL: ", false);
@@ -102,9 +110,9 @@ public class UiController {
 	 * @param allowEmpty If true, the string can be empty. Otherwise it cannot.
 	 * @return The string the user typed in.
 	 */
-	public String askForString(String prompt, boolean allowEmpty) {
+	public String askForString(final String prompt, final boolean allowEmpty) {
 
-		String data = "";
+		String data;
 
 		while (true) {
 			data = io.readLine(prompt);
@@ -148,7 +156,7 @@ public class UiController {
 	 * @param allowedChars A list of chars that are accepted.
 	 * @return A valid uppercase character.
 	 */
-	public char askForCharacter(char[] allowedChars, String prompt) {
+	public char askForCharacter(final char[] allowedChars, final String prompt) {
 
 		while (true) {
 
@@ -192,9 +200,9 @@ public class UiController {
 	 * @param max Max value for the integer.
 	 * @return A valid integer between min and max.
 	 */
-	public int askForInt(int min, int max, String prompt) {
+	private int askForInt(final int min, final int max, final String prompt) {
 
-		int value = 0;
+		int value;
 
 		while (true) {
 
@@ -224,7 +232,6 @@ public class UiController {
 		}
 
 		return value;
-
 	}
 
 	/**
@@ -232,8 +239,7 @@ public class UiController {
 	 *
 	 * @param printableData The data IN ORDER.
 	 */
-	public void printBlogpost(List<String> printableData) {
-
+	public void printBlogpost(final List<String> printableData) {
 
 		String firstLine = "  ===== " + printableData.get(5) + " =====";
 
@@ -258,7 +264,7 @@ public class UiController {
 	 *
 	 * @param printableData The data IN ORDER.
 	 */
-	public void printVideo(List<String> printableData) {
+	public void printVideo(final List<String> printableData) {
 
 
 		String firstLine = "  ===== " + printableData.get(4) + " =====";
@@ -278,50 +284,12 @@ public class UiController {
 		printEmptyLine(); // An empty line to tidy things up.
 	}
 
-	public void printEmptyLine() {
-		io.println("");
-	}
-
-	public void printDeleteConfirmation(int id, String title, String type) {
-		io.println("Bookmark with ID " + id + " has a title of '" + title + "' and is of type " + type + ".");
-		io.println("Please confirm that you want to delete this bookmark? Type 'Y' for yes, 'N' for no.");
-	}
-
-	public void printAbortDelete() {
-		io.println("Bookmark will not be deleted.");
-	}
-
-	public void printDeleteSuccessful(int id) {
-		io.println("Successfully deleted bookmark with ID " + id + ".");
-	}
-
-	public void printNoBookmarks() {
-		io.println("No bookmarks have been saved in the database.");
-	}
-
-	public void printBookmarkNotFound() {
-		io.println("Could not find a bookmark with that ID. Please re-check it.");
-	}
-
-	public void printDeleteFailed(int id) {
-		io.println("Could not remove bookmark with ID " + id + ". Please try again.");
-	}
-
-	public void printUrlNotValid() {
-		io.println("The URL is not valid. Please remember to add 'http://' at the beginning of it.");
-	}
-
-	public String[] askBookData() {
-		io.println("Adding a new book.");
-
-		String title = askForString("Title:", false);
-		String author = askForString("Author:", false);
-		String isbn = askForString("ISBN:", false);
-
-		return new String[]{title, author, isbn};
-	}
-
-	public void printBook(ArrayList<String> printableData) {
+	/**
+	 * Prints the Book's data into console.
+	 *
+	 * @param printableData The data IN ORDER.
+	 */
+	public void printBook(final ArrayList<String> printableData) {
 		String firstLine = "  ===== " + printableData.get(5) + " =====";
 
 		io.println(firstLine);
@@ -338,5 +306,48 @@ public class UiController {
 
 		io.println(block);
 		printEmptyLine(); // An empty line to tidy things up.
+	}
+
+	public void printEmptyLine() {
+		io.println("");
+	}
+
+	public void printDeleteConfirmation(final int id, final String title, final String type) {
+		io.println("Bookmark with ID " + id + " has a title of '" + title + "' and is of type " + type + ".");
+		io.println("Please confirm that you want to delete this bookmark? Type 'Y' for yes, 'N' for no.");
+	}
+
+	public void printAbortDelete() {
+		io.println("Bookmark will not be deleted.");
+	}
+
+	public void printDeleteSuccessful(final int id) {
+		io.println("Successfully deleted bookmark with ID " + id + ".");
+	}
+
+	public void printNoBookmarks() {
+		io.println("No bookmarks have been saved in the database.");
+	}
+
+	public void printBookmarkNotFound() {
+		io.println("Could not find a bookmark with that ID. Please re-check it.");
+	}
+
+	public void printDeleteFailed(final int id) {
+		io.println("Could not remove bookmark with ID " + id + ". Please try again.");
+	}
+
+	public void printUrlNotValid() {
+		io.println("The URL is not valid. Please remember to add 'http://' at the beginning of it.");
+	}
+
+	public String[] askBookData() {
+		io.println("Adding a new book.");
+
+		String title = askForString("Title:", false);
+		String author = askForString("Author:", false);
+		String isbn = askForString("ISBN:", false);
+
+		return new String[]{title, author, isbn};
 	}
 }

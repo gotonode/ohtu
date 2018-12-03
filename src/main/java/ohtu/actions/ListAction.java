@@ -64,8 +64,8 @@ public class ListAction extends Action {
 				} else if (bookmark.isVideo()) {
 					outputVideo((Video) bookmark);
 				} else if (bookmark.isBook()) {
-                                        outputBook((Book) bookmark);
-                                }
+					outputBook((Book) bookmark);
+				}
 			}
 		} catch (Exception e) {
 			Main.LOG.warning(e.getMessage());
@@ -75,6 +75,9 @@ public class ListAction extends Action {
 	}
 
 	public void search() {
+
+		uiController.printEmptyLine();
+
 		super.getIo().println("Would you like to search for bookmarks by title or by URL? Choose 'T' or 'U'.");
 
 		char c = uiController.askForCharacter(new char[]{'T', 'U'}, "Title or URL");
@@ -91,7 +94,7 @@ public class ListAction extends Action {
 
 		try {
 
-			List<Bookmark> bookmarks = null;
+			List<Bookmark> bookmarks;
 			if (c == 'T') {
 				bookmarks = bookmarkDao.findByTitle(searchTerm);
 			} else {
@@ -122,6 +125,7 @@ public class ListAction extends Action {
 	}
 
 	private void outputBook(Book book) {
+
 		// Create an ArrayList of Strings that contains the printable data IN ORDER.
 		ArrayList<String> printableData = new ArrayList<>();
 		printableData.add(book.getClass().getSimpleName());
@@ -171,7 +175,7 @@ public class ListAction extends Action {
 
 		char c = uiController.askForCharacter(new char[]{'I', 'T'}, "How to order");
 
-		OrderBy orderBy = OrderBy.ID;
+		OrderBy orderBy = null;
 
 		if (c == 'I') {
 			orderBy = OrderBy.ID; // Strictly not necessary but here for clarity.
