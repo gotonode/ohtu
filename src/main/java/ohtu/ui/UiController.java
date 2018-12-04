@@ -137,7 +137,7 @@ public class UiController {
 		printEmptyLine();
 
 		io.println("L: List all bookmarks");
-		io.println("S: Search for a bookmark by title or by URL (currently only title works)");
+		io.println("S: Search for a bookmark by title or by URL");
 		io.println("A: Add a new bookmark");
 		io.println("M: Modify an existing bookmark");
 		io.println("D: Delete an existing bookmark");
