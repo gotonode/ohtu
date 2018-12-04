@@ -1,4 +1,4 @@
-Feature: User can list all bookmarks that were found from the database (US2,US5,US9)
+Feature: User can list all bookmarks that were found from the database (US2,US5,US8,US9)
 
   Scenario: User can list all bookmarks and order the list by id (US2)
     Given new bookmarks have been created and saved to the database
@@ -19,11 +19,25 @@ Feature: User can list all bookmarks that were found from the database (US2,US5,
     And keyword "computer" is entered
     Then bookmarks whose titles contain the given keywords will be listed
 
+  Scenario: User can list bookmarks whose urls contain given keywords (US8)
+    Given new bookmarks have been created and saved to the database
+    And commmand searching bookmarks is selected
+    And command "U" is chosen to search bookmarks by url
+    And keyword "http" is entered
+    Then bookmarks whose urls contain the given keywords will be listed
+
   Scenario: No bookmark will be listed if user wants to search bookmarks by title but the given keyword doesn't exist in any title (US9)
     Given new bookmarks have been created and saved to the database
     And commmand searching bookmarks is selected
     And command "T" is chosen to search bookmarks by title
     And keyword "Math" is entered
+    Then system will report no bookmark is found and respond with "No bookmarks found with those search terms."
+
+  Scenario: No bookmark will be listed if user wants to search bookmarks by url but the given keyword doesn't exist in any url (US8)
+    Given new bookmarks have been created and saved to the database
+    And commmand searching bookmarks is selected
+    And command "U" is chosen to search bookmarks by title
+    And keyword "file" is entered
     Then system will report no bookmark is found and respond with "No bookmarks found with those search terms."
 
   Scenario: User will be told that the database is empty when trying to list an empty database (US2,US5)
