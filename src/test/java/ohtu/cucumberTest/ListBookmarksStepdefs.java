@@ -27,14 +27,14 @@ public class ListBookmarksStepdefs extends AbstractStepdefs {
         inputs.add("L");
     }
 
-    @Given("^command \"([^\"]*)\" is chosen to order the list by id$")
-    public void command_is_chosen_to_list_bookmarks_by_id(String listById) throws Throwable {
-        inputs.add(listById);
+    @Given("^command to order the list by id is chosen$")
+    public void command_is_chosen_to_list_bookmarks_by_id() throws Throwable {
+        inputs.add("I");
     }
 
-    @Given("^command \"([^\"]*)\" is chosen to order the list by title$")
-    public void command_is_chosen_to_order_the_list_by_title(String listByTitle) throws Throwable {
-        inputs.add(listByTitle);
+    @Given("^command to order the list by title is chosen$")
+    public void command_is_chosen_to_order_the_list_by_title() throws Throwable {
+        inputs.add("T");
     }
 
     @Then("^system will start to list all bookmarks and respond with \"([^\"]*)\"$")
@@ -54,9 +54,9 @@ public class ListBookmarksStepdefs extends AbstractStepdefs {
         inputs.add("S");
     }
 
-    @Given("^command \"([^\"]*)\" is chosen to search bookmarks by title$")
-    public void command_is_chosen_to_search_bookmarks_by_title(String searchByTitle) throws Throwable {
-        inputs.add(searchByTitle);
+    @Given("^command to search bookmarks by title is chosen$")
+    public void command_is_chosen_to_search_bookmarks_by_title() throws Throwable {
+        inputs.add("T");
     }
 
     @Given("^keyword \"([^\"]*)\" is entered$")
@@ -76,9 +76,9 @@ public class ListBookmarksStepdefs extends AbstractStepdefs {
         assertTrue(io.getPrints().contains(expectedOutput));
     }
 
-    @Given("^command \"([^\"]*)\" is chosen to search bookmarks by url$")
-    public void command_is_chosen_to_search_bookmarks_by_url(String searchByUrl) throws Throwable {
-        inputs.add(searchByUrl);
+    @Given("^command to search bookmarks by url is chosen$")
+    public void command_is_chosen_to_search_bookmarks_by_url() throws Throwable {
+        inputs.add("U");
     }
 
     @Then("^bookmarks whose urls contain the given keywords will be listed$")

@@ -1,6 +1,4 @@
 package ohtu.dao;
-
-import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.text.ParseException;
@@ -14,16 +12,10 @@ import ohtu.domain.Video;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
-
 import static org.junit.Assert.*;
 
-public class BookmarkDaoTest {
+public class BookmarkDaoTest extends AbstractDaoTest {
 
-    private static TemporaryFolder tempFolder;
-
-    private static Database database;
-    private static File databaseFile;
     private static BlogpostDao blogpostDao;
     private static BookmarkDao bookmarkDao;
     private static VideoDao videoDao;
@@ -34,17 +26,8 @@ public class BookmarkDaoTest {
 
     @BeforeClass
     public static void setUpClass() throws SQLException, ParseException, IOException {
-
-        tempFolder = new TemporaryFolder();
-        tempFolder.create();
-
-        // Assign a test database into the newly created temporary folder.
-        databaseFile = new File(tempFolder.getRoot() + "/test.db");
-
-        if (databaseFile.exists()) {
-            databaseFile.delete();
-        }
-        BookmarkDaoTest.database = new Database(databaseFile);
+        initialize();
+        database = new Database(databaseFile);
         BookmarkDaoTest.blogpostDao = new BlogpostDao(database);
         BookmarkDaoTest.videoDao = new VideoDao(database);
         BookmarkDaoTest.bookDao = new BookDao(database);
