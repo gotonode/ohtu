@@ -38,3 +38,10 @@ Feature: User can modify a bookmark of type blogpost by given id (US4)
     Given command modifying is selected
     When unexisted id 10 is entered to be modified
     Then system will report there's nothing can be modified by responding with "No bookmarks have been saved in the database."
+
+  Scenario: Url cannot be updated if the new one is invalid
+    Given a video has been created and saved to the database
+    And command modifying is selected
+    When existed id 1 is entered to be modified
+    But a new but invalid url "youtube" is given
+    Then system will warn about the invalid url by responding with "The URL is not valid. Please remember to add 'http://' at the beginning of it."
