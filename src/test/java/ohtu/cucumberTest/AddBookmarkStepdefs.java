@@ -8,7 +8,9 @@ import cucumber.api.java.en.When;
 import java.io.IOException;
 
 import static org.junit.Assert.assertTrue;
-
+/**
+ * Cucumber tests for adding features
+ */
 public class AddBookmarkStepdefs extends AbstractStepdefs {
 
 	@Before

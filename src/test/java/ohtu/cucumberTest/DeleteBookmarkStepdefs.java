@@ -4,13 +4,13 @@ import cucumber.api.java.Before;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
-import ohtu.io.StubIO;
-import ohtu.main.App;
-
 import java.io.IOException;
 
 import static org.junit.Assert.assertTrue;
 
+/**
+ * Cucumber tests for deleting features
+ */
 public class DeleteBookmarkStepdefs extends AbstractStepdefs {
 
 	@Before

@@ -9,6 +9,9 @@ import java.io.IOException;
 
 import static org.junit.Assert.assertTrue;
 
+/**
+ * Cucumber tests for listing and searching features
+ */
 public class ListBookmarksStepdefs extends AbstractStepdefs {
 
     @Before
