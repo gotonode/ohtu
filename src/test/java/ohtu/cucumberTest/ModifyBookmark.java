@@ -9,6 +9,9 @@ import java.io.IOException;
 
 import static org.junit.Assert.assertTrue;
 
+/**
+ * Cucumber tests for modifying features
+ */
 public class ModifyBookmark extends AbstractStepdefs {
 
     @Before

@@ -10,51 +10,55 @@ import ohtu.io.StubIO;
 import ohtu.main.App;
 import org.junit.rules.TemporaryFolder;
 
+/**
+ * An abstract class including methods of initialisation before each scenario
+ * and some other methods that are commonly used in cucumber tests
+ */
 public class AbstractStepdefs {
 
-	private TemporaryFolder tempFolder;
-	protected StubIO io;
-	private Database db = null;
-	List<String> inputs;
+    private TemporaryFolder tempFolder;
+    protected StubIO io;
+    private Database db = null;
+    List<String> inputs;
 
-	protected void initialize() throws IOException {
+    protected void initialize() throws IOException {
 
-		if (tempFolder == null) {
-			tempFolder = new TemporaryFolder();
-			tempFolder.create();
-			File databaseFile = new File(tempFolder.getRoot() + "/test.db");
-			db = new Database(databaseFile);
-			inputs = new ArrayList<>();
-		}
-	}
+        if (tempFolder == null) {
+            tempFolder = new TemporaryFolder();
+            tempFolder.create();
+            File databaseFile = new File(tempFolder.getRoot() + "/test.db");
+            db = new Database(databaseFile);
+            inputs = new ArrayList<>();
+        }
+    }
 
-	void runAndExit() {
-		inputs.add("E");
-		io = new StubIO(inputs);
-		App app = new App(io, db);
-		app.run();
-	}
+    void runAndExit() {
+        inputs.add("E");
+        io = new StubIO(inputs);
+        App app = new App(io, db);
+        app.run();
+    }
 
-	void addNewBlogpost(String title, String author, String url) {
-		inputs.add("A");
-		inputs.add("B");
-		inputs.add(title);
-		inputs.add(author);
-		inputs.add(url);
-	}
+    void addNewBlogpost(String title, String author, String url) {
+        inputs.add("A");
+        inputs.add("B");
+        inputs.add(title);
+        inputs.add(author);
+        inputs.add(url);
+    }
 
-	void addNewVideo(String title, String url) {
-		inputs.add("A");
-		inputs.add("V");
-		inputs.add(title);
-		inputs.add(url);
-	}
+    void addNewVideo(String title, String url) {
+        inputs.add("A");
+        inputs.add("V");
+        inputs.add(title);
+        inputs.add(url);
+    }
 
-	void addNewBook(String title, String author, String isbn) {
-		inputs.add("A");
-		inputs.add("K");
-		inputs.add(title);
-		inputs.add(author);
-		inputs.add(isbn);
-	}
+    void addNewBook(String title, String author, String isbn) {
+        inputs.add("A");
+        inputs.add("K");
+        inputs.add(title);
+        inputs.add(author);
+        inputs.add(isbn);
+    }
 }

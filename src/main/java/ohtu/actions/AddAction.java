@@ -64,7 +64,7 @@ public class AddAction extends Action {
 	private void createVideo() {
 		String[] values = uiController.askVideoData();
 		String title = values[0]; // Care should be taken so as not to mix these indices up.
-		String url = values[1];
+		String url = values[1].replaceAll("\\s","");
 
 		// Database will handle assigning correct ID to the object, and decides the addDate value.
 		Date date = null; // This is here just as a reference that it is null.
@@ -88,7 +88,7 @@ public class AddAction extends Action {
 		String[] values = uiController.askBlogpostData();
 		String title = values[0]; // Care should be taken so as not to mix these indices up.
 		String author = values[1];
-		String url = values[2];
+		String url = values[2].replaceAll("\\s", "");
 
 		// Database will handle assigning correct ID to the object, and decides the addDate value.
 		Date date = null; // This is here just as a reference that it is null.

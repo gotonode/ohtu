@@ -117,7 +117,7 @@ public class ModifyAction extends Action {
 
 		while (true) {
 			super.getIo().println("Current URL: " + blogpost.getUrl());
-			String newUrl = uiController.askForString("New URL: ", true);
+			String newUrl = uiController.askForString("New URL: ", true).replaceAll("\\s", "");
 			boolean isValidUrl = Validator.isValidUrl(newUrl);
 
 			if (newUrl.isEmpty()) {
@@ -140,7 +140,7 @@ public class ModifyAction extends Action {
 		// Code repetition here. Feel free to reduce it.
 		while (true) {
 			super.getIo().println("Current URL: " + video.getUrl());
-			String newUrl = uiController.askForString("New URL: ", true);
+			String newUrl = uiController.askForString("New URL: ", true).replaceAll("\\s", "");
 			boolean isValidUrl = Validator.isValidUrl(newUrl);
 
 			if (newUrl.isEmpty()) {
