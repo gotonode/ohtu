@@ -221,7 +221,15 @@ public class BlogpostDao implements ObjectDao<Blogpost, Integer> {
 		conn.close();
 		return success == 1;
 	}
-
+        
+        /**
+	 * Retrieves all information of Blogpost objects stored in the database and creates a list
+	 * of corresponding Blogpost objects ordered alphabetically by title.
+	 *
+	 * @return alphabetically ordered (by title) list of Video objects.
+	 * @throws SQLException
+	 * @throws ParseException
+	 */
 	public List<Blogpost> findAllOrderByTitle() throws SQLException, ParseException {
 		String s = "SELECT * FROM bookmark, blogpost WHERE bookmark.id = blogpost.id ORDER BY title";
 		List<Blogpost> blogposts = new ArrayList<>();

@@ -30,125 +30,109 @@ public class VideoDao implements ObjectDao<Video, Integer> {
 
 	@Override
 	public List<Video> findAll() throws SQLException, ParseException {
-		List<Video> videos = new ArrayList<>();
-		String s = "SELECT * FROM bookmark, video WHERE bookmark.id = video.id";
+            Connection conn = database.getConnection();
+            PreparedStatement stmt = conn.prepareStatement("SELECT * FROM bookmark, video WHERE bookmark.id = video.id");
+    
+            List<Video> videos = createAndHandleResulSet(stmt);
+            closeStatementAndConnection(stmt, conn);
 
-		try (Connection conn = database.getConnection(); ResultSet rs = conn.prepareStatement(s).executeQuery()) {
-			while (rs.next()) {
-				videos.add(constructVideoFromResultSet(rs));
-			}
-		}
-
-		return videos;
+            return videos;
 	}
 
 	@Override
 	public Video findById(Integer id) throws SQLException, ParseException {
-		String s = "SELECT * FROM bookmark, video WHERE bookmark.id = ? AND bookmark.id = video.id";
+            Connection conn = database.getConnection();
+            PreparedStatement stmt = conn.prepareStatement("SELECT * FROM bookmark, video WHERE bookmark.id = ? "
+                    + "AND bookmark.id = video.id");
+            stmt.setInt(1, id);
+            
+            ResultSet rs = stmt.executeQuery();
 
-		try (Connection conn = database.getConnection(); PreparedStatement stmt = conn.prepareStatement(s)) {
-			stmt.setInt(1, id);
-			ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                Video video = constructVideoFromResultSet(rs);
+                close(stmt, conn, rs);
+                return video;
+            }
 
-			if (rs.next()) {
-				Video video = constructVideoFromResultSet(rs);
-				rs.close();
-				return video;
-			}
-
-			rs.close();
-		}
-
-		return null;
+            close(stmt, conn, rs);
+            return null;
 	}
 
 	@Override
 	public List<Video> findByTitle(String title) throws SQLException, ParseException {
-		List<Video> videos = new ArrayList<>();
-		String pattern = "%" + title + "%";
-		String s = "SELECT * FROM bookmark, video WHERE bookmark.title LIKE ? AND bookmark.id = video.id";
-
-		try (Connection conn = database.getConnection(); PreparedStatement stmt = conn.prepareStatement(s)) {
-			stmt.setString(1, pattern);
-			ResultSet rs = stmt.executeQuery();
-
-			while (rs.next()) {
-				Video video = constructVideoFromResultSet(rs);
-				videos.add(video);
-			}
-
-			rs.close();
-		}
-
-		return videos;
+            Connection conn = database.getConnection();
+            PreparedStatement stmt = conn.prepareStatement("SELECT * FROM bookmark, video WHERE bookmark.title "
+                    + "LIKE ? AND bookmark.id = video.id");
+            stmt.setString(1, "%" + title + "%");
+            
+            List<Video> videos = createAndHandleResulSet(stmt);
+            
+            closeStatementAndConnection(stmt, conn);
+            return videos;
 	}
 
 	@Override
 	public Video create(Video video) throws SQLException, ParseException {
-		String s1 = "INSERT INTO bookmark (title, type) VALUES (?, 'V')";
-		String s2 = "INSERT INTO video (id, url) VALUES (?, ?)";
+            Connection conn = database.getConnection();
+            PreparedStatement stmt1 = conn.prepareStatement("INSERT INTO bookmark (title, type) VALUES (?, 'V')");
+            stmt1.setString(1, video.getTitle());
+            stmt1.execute();
 
-		try (Connection conn = database.getConnection(); PreparedStatement stmt1 = conn.prepareStatement(s1);
-			PreparedStatement stmt2 = conn.prepareStatement(s2)) {
-			stmt1.setString(1, video.getTitle());
-			stmt1.execute();
+            int id = getLatestId();
+            if (id == -1) {
+                closeStatementAndConnection(stmt1, conn);
+                return null; // Something went wrong when adding the new Bookmark.
+            }
+            
+            PreparedStatement stmt2 = conn.prepareStatement("INSERT INTO video (id, url) VALUES (?, ?)");
+            stmt2.setInt(1, id);
+            stmt2.setString(2, video.getUrl());
+            stmt2.execute();
 
-			int id = getLatestId();
-			if (id == -1) {
-				return null; // Something went wrong when adding the new Bookmark.
-			}
+            Video added = findById(id);
+            if (added.equals(video)) {
+                return added;
+            }
 
-			stmt2.setInt(1, id);
-			stmt2.setString(2, video.getUrl());
-			stmt2.execute();
-
-			Video added = findById(id);
-			if (added.equals(video)) {
-				return added;
-			}
-		}
-
-		return null;
+            return null;
 	}
 
 	@Override
 	public boolean delete(Integer id) throws SQLException {
-		String s1 = "DELETE FROM bookmark WHERE id = ?";
-		String s2 = "DELETE FROM video WHERE id = ?";
-
-		try (Connection conn = database.getConnection(); PreparedStatement stmt1 = conn.prepareStatement(s1);
-			PreparedStatement stmt2 = conn.prepareStatement(s2)) {
-			stmt1.setInt(1, id);
-			stmt2.setInt(1, id);
-
-			/* Video is deleted only if the Bookmark was successfully deleted */
-			if (stmt1.executeUpdate() == 1) {
-				return stmt2.executeUpdate() == 1;
-			}
-		}
-
-		return false;
+            Connection conn = database.getConnection();
+            PreparedStatement stmt1 = conn.prepareStatement("DELETE FROM bookmark WHERE id = ?");
+            PreparedStatement stmt2 = conn.prepareStatement("DELETE FROM video WHERE id = ?");
+            stmt1.setInt(1, id);
+            stmt2.setInt(1, id);
+            
+            int updated = 0;
+            if (stmt1.executeUpdate() == 1) { /* Video is deleted only if the Bookmark was successfully deleted */
+                updated = stmt2.executeUpdate();
+                stmt2.close();
+            }
+            
+            closeStatementAndConnection(stmt1, conn);
+            return updated == 1;
 	}
 
 	@Override
 	public boolean update(Video video) throws SQLException {
-		String s1 = "UPDATE bookmark SET title = ? WHERE id = ?";
-		String s2 = "UPDATE video SET url = ? WHERE id = ?";
+            Connection conn = database.getConnection();
+            PreparedStatement stmt1 = conn.prepareStatement("UPDATE bookmark SET title = ? WHERE id = ?");
+            PreparedStatement stmt2 = conn.prepareStatement("UPDATE video SET url = ? WHERE id = ?");
+            stmt1.setString(1, video.getTitle());
+            stmt1.setInt(2, video.getId());
+            stmt2.setString(1, video.getUrl());
+            stmt2.setInt(2, video.getId());
+            
+            int updated = 0;
+            if (stmt1.executeUpdate() == 1) { /* Video is updated only if the Bookmark was successfully updated */
+                updated = stmt2.executeUpdate();
+                stmt2.close();
+            }
 
-		try (Connection conn = database.getConnection(); PreparedStatement stmt1 = conn.prepareStatement(s1);
-			PreparedStatement stmt2 = conn.prepareStatement(s2)) {
-			stmt1.setString(1, video.getTitle());
-			stmt1.setInt(2, video.getId());
-			stmt2.setString(1, video.getUrl());
-			stmt2.setInt(2, video.getId());
-
-			/* Video is updated only if the Bookmark was successfully updated */
-			if (stmt1.executeUpdate() == 1) {
-				return stmt2.executeUpdate() == 1;
-			}
-		}
-
-		return false;
+            closeStatementAndConnection(stmt1, conn);
+            return updated == 1;
 	}
 
 	/**
@@ -161,10 +145,10 @@ public class VideoDao implements ObjectDao<Video, Integer> {
 	 * @throws ParseException
 	 */
 	private Video constructVideoFromResultSet(ResultSet rs) throws SQLException, ParseException {
-		Date date = new Date(new SimpleDateFormat("yyyy-MM-dd").parse(rs.getString("addDate")).getTime());
-		Video video = new Video(rs.getInt("id"), rs.getString("title"), date, rs.getString("url"));
+            Date date = new Date(new SimpleDateFormat("yyyy-MM-dd").parse(rs.getString("addDate")).getTime());
+            Video video = new Video(rs.getInt("id"), rs.getString("title"), date, rs.getString("url"));
 
-		return video;
+            return video;
 	}
 
 	/**
@@ -174,15 +158,18 @@ public class VideoDao implements ObjectDao<Video, Integer> {
 	 * @throws SQLException
 	 */
 	private int getLatestId() throws SQLException {
-		String s = "SELECT MAX(id) FROM bookmark";
-
-		try (Connection conn = database.getConnection(); ResultSet rs = conn.prepareStatement(s).executeQuery()) {
-			if (rs.next()) {
-				return rs.getInt("MAX(id)");
-			}
-		}
-
-		return -1;
+            Connection conn = database.getConnection();
+            PreparedStatement stmt = conn.prepareStatement("SELECT MAX(id) FROM bookmark");
+            ResultSet rs = stmt.executeQuery();
+            
+            int latest = -1;
+            
+            if (rs.next()) {
+                latest = rs.getInt("MAX(id)");
+            }
+            
+            close(stmt, conn, rs);
+            return latest;
 	}
 
 	/**
@@ -194,21 +181,15 @@ public class VideoDao implements ObjectDao<Video, Integer> {
 	 * @throws ParseException
 	 */
 	public List<Video> findAllOrderByTitle() throws SQLException, ParseException {
-		String s = "SELECT * FROM bookmark, video WHERE bookmark.id = video.id ORDER BY title";
-		List<Video> videos = new ArrayList<>();
+            Connection conn = database.getConnection();
+            PreparedStatement stmt = conn.prepareStatement(
+                    "SELECT * FROM bookmark, video WHERE bookmark.id = video.id ORDER BY title");
+            
+            List<Video> videos = createAndHandleResulSet(stmt);
+            
+            closeStatementAndConnection(stmt, conn);
 
-		// Having the try-with-resources block only contain one command helps with test coverage.
-		// For an example, only have database.getConnection inside of try(), and handle the rest later.
-		// Remove these comments once done.
-		try (Connection conn = database.getConnection()) {
-			ResultSet rs = conn.prepareStatement(s).executeQuery();
-			while (rs.next()) {
-				Video video = constructVideoFromResultSet(rs);
-				videos.add(video);
-			}
-		}
-
-		return videos;
+            return videos;
 	}
 
 	/**
@@ -221,22 +202,49 @@ public class VideoDao implements ObjectDao<Video, Integer> {
 	 * @throws ParseException
 	 */
 	public List<Video> findByURL(String url) throws SQLException, ParseException {
-		List<Video> videos = new ArrayList<>();
-		String s = "SELECT * FROM bookmark, video WHERE video.url LIKE ? "
-				+ "AND bookmark.id = video.id";
-
-		try (Connection conn = database.getConnection(); PreparedStatement stmt = conn.prepareStatement(s)) {
-			stmt.setString(1, "%" + url + "%");
-			ResultSet rs = stmt.executeQuery();
-
-			while (rs.next()) {
-				Video video = constructVideoFromResultSet(rs);
-				videos.add(video);
-			}
-
-			rs.close();
-		}
-
-		return videos;
+            Connection conn = database.getConnection();
+            PreparedStatement stmt = conn.prepareStatement("SELECT * FROM bookmark, video WHERE video.url LIKE ? "
+                    + "AND bookmark.id = video.id");
+            stmt.setString(1, "%" + url + "%");
+            
+            List<Video> videos = createAndHandleResulSet(stmt);
+            
+            closeStatementAndConnection(stmt, conn);
+            
+            return videos;
 	}
+        
+        /**
+         * Executes the PreparedStatement given as parameter and creates a list of Video objects from the data
+         * that was recieved from the database as a ResultSet in response to executing the PreparedStatement.
+         * 
+         * @param stmt the Preparedstatement to be executed
+         * @return List of Video object gotten as the result of the executed PreparedStatement
+         * @throws SQLException
+         * @throws ParseException 
+         */
+        private List<Video> createAndHandleResulSet(PreparedStatement stmt) throws SQLException, ParseException {
+            List<Video> videos = new ArrayList<>();
+            
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                    Video video = constructVideoFromResultSet(rs);
+                    videos.add(video);
+            }
+
+            rs.close();
+            return videos;
+        }
+        
+        private void closeStatementAndConnection(Statement stmt, Connection conn) throws SQLException {
+            stmt.close();
+            conn.close();
+        }
+        
+        private void close(Statement stmt, Connection conn, ResultSet rs) throws SQLException {
+            rs.close();
+            stmt.close();
+            conn.close();
+        }
 }
