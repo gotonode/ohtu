@@ -53,7 +53,7 @@ public class AppTest {
 
 		lines.add("E");
 
-		App app = new App(stubIo, database);
+		App app = new App(stubIo, database, false);
 		app.run();
 
 		ArrayList<String> prints = stubIo.getPrints(); // When debugging tests, this is an interesting variable to read.
