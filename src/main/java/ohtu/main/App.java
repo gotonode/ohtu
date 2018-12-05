@@ -89,6 +89,7 @@ public class App {
 					}
 
 					// Once the user is logged in, you can use "UserController.getUserId()" to get their ID.
+					// Notice the uppercase 'U'. It's a static method.
 					int id = UserController.getUserId(); // Like this.
 				}
 

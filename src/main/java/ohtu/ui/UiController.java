@@ -352,6 +352,6 @@ public class UiController {
 	}
 
 	public void printLoginInstructions() {
-		io.println("Please either log in (command L), register for an account (command R), or exit (command E).");
+		io.println("Please either log in (command 'L'), register for an account (command 'R'), or exit (command 'E').");
 	}
 }

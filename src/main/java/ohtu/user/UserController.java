@@ -6,10 +6,12 @@ import ohtu.io.IO;
 
 public class UserController {
 
-	private static boolean isLoggedIn = false;
+	// Set to true once the user (real or test) has been logged in.
+	private static boolean loggedIn = false;
 
 	// ID -1 means no user is logged in.
 	private static int userId = -1;
+
 	private UiController uiController;
 	private Database database;
 	private IO io;
@@ -21,7 +23,7 @@ public class UserController {
 	}
 
 	public static boolean isLoggedIn() {
-		return isLoggedIn;
+		return loggedIn;
 	}
 
 	public static int getUserId() {
@@ -29,7 +31,7 @@ public class UserController {
 	}
 
 	public static void autoLoginDefaultUser() {
-		isLoggedIn = true;
+		loggedIn = true;
 		userId = Integer.MAX_VALUE;
 	}
 
@@ -46,7 +48,7 @@ public class UserController {
 		} else {
 			io.println("You have been logged in! Your user ID is " + id + ".");
 			userId = id;
-			isLoggedIn = true;
+			loggedIn = true;
 		}
 	}
 
@@ -81,7 +83,7 @@ public class UserController {
 
 			String passwordAgain = uiController.askForString("Password (again):", false);
 			if (!password.equals(passwordAgain)) {
-				io.println("Your passwords didn't match. Please try again.");
+				io.println("The passwords didn't match. Please try again.");
 				continue;
 			} else {
 				break; // The passwords were a match.
@@ -90,17 +92,16 @@ public class UserController {
 
 		// At this point, we have a valid username and a valid password.
 
-		// TODO: Uncomment once implemented.
 		// Return -1 if the registration fails, otherwise the user's ID.
 		int newUserId = database.registerUser(username, password);
 
-		// I'll hash the password here later, for now, you can use plaintext.
+		// I'll hash the password here later. For now, you can use plaintext.
 
 		if (newUserId != -1) {
 			io.println("Your new account was created and you have been logged in! Your user ID is " + newUserId + ".");
-			isLoggedIn = true;
+			loggedIn = true;
 			userId = newUserId;
-			// New user was created and was logged in.
+			// New user was created and logged in.
 
 		} else {
 			io.println("Could not create your account. Please try again later.");
