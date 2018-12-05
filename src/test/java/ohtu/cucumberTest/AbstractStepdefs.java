@@ -35,7 +35,7 @@ public class AbstractStepdefs {
     void runAndExit() {
         inputs.add("E");
         io = new StubIO(inputs);
-        App app = new App(io, db);
+        App app = new App(io, db, false);
         app.run();
     }
 

@@ -29,7 +29,7 @@ public class Main {
 
 		ConsoleIO consoleIo = new ConsoleIO(scanner);
 
-		App app = new App(consoleIo, db); // Dependency injection. For tests, pass a StubIO.
+		App app = new App(consoleIo, db, true); // Dependency injection. For tests, pass a StubIO.
 		app.run(); // Run the app. It contains a loop, and once it breaks, the app will terminate.
 	}
 }

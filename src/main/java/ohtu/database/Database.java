@@ -121,7 +121,7 @@ public class Database {
 	}
 
 	public boolean userOwnsBookmarkWithId(int id) {
-    	
+
     	int userId = UserController.getUserId();
 
     	return true; // TODO: Either implement this here or somewhere else.

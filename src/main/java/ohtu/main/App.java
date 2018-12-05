@@ -27,10 +27,12 @@ public class App {
 	private boolean hasPrintedInitialInstructions = false;
 	private IO io;
 	private Database database;
+	private final boolean requireLogin;
 
-	public App(IO io, Database db) {
+	public App(IO io, Database db, boolean requireLogin) {
 		this.io = io;
 		database = db;
+		this.requireLogin = requireLogin;
 
 		BlogpostDao blogpostDao = new BlogpostDao(db);
 		VideoDao videoDao = new VideoDao(db);
@@ -57,34 +59,39 @@ public class App {
 		outer:
 		while (appRunning) {
 
-			inner:
-			while (!UserController.isLoggedIn()) {
-				// Loop this until the user has logged in or exited the app.
-				// Will never enter this section again. I just wanted to include this in the main logic loop.
+			// Only if this has been set, we'll require the user to log in.
+			if (requireLogin) {
 
-				uiController.printEmptyLine();
-				uiController.printLoginInstructions();
+				inner:
+				while (!UserController.isLoggedIn()) {
+					// Loop this until the user has logged in or exited the app.
+					// Will never enter this section again. I just wanted to include this in the main logic loop.
 
-				char code = uiController.askForCharacter(new char[]{'L', 'R', 'E'}, "Your choice");
+					uiController.printEmptyLine();
+					uiController.printLoginInstructions();
 
-				if (code == 'E') {
-					appRunning = false;
-					exit.act();
-					break outer;
+					char code = uiController.askForCharacter(new char[]{'L', 'R', 'E'}, "Your choice");
+
+					if (code == 'E') {
+						appRunning = false;
+						exit.act();
+						break outer;
+					}
+
+					UserController userController = new UserController(uiController, database, io);
+
+					if (code == 'L') {
+						// Login functionality.
+						userController.login();
+					} else if (code == 'R') {
+						// Registration and immediate login.
+						userController.registerAndLogin();
+					}
+
+					// Once the user is logged in, you can use "UserController.getUserId()" to get their ID.
+					int id = UserController.getUserId(); // Like this.
 				}
 
-				UserController userController = new UserController(uiController, database, io);
-
-				if (code == 'L') {
-					// Login functionality.
-					userController.login();
-				} else if (code == 'R') {
-					// Registration and immediate login.
-					userController.registerAndLogin();
-				}
-
-				// Once the user is logged in, you can use "UserController.getUserId()" to get their ID.
-				int id = UserController.getUserId(); // Like this.
 			}
 
 			if (!hasPrintedInitialInstructions) {
