@@ -34,7 +34,7 @@ public class VideoDao implements ObjectDao<Video, Integer> {
             PreparedStatement stmt = conn.prepareStatement("SELECT * FROM bookmark, video WHERE bookmark.id = video.id");
     
             List<Video> videos = createAndHandleResulSet(stmt);
-            closeStatementAndConnection(stmt, conn);
+            database.close(stmt, conn, null);
 
             return videos;
 	}
@@ -50,11 +50,11 @@ public class VideoDao implements ObjectDao<Video, Integer> {
 
             if (rs.next()) {
                 Video video = constructVideoFromResultSet(rs);
-                close(stmt, conn, rs);
+                database.close(stmt, conn, rs);
                 return video;
             }
 
-            close(stmt, conn, rs);
+            database.close(stmt, conn, rs);
             return null;
 	}
 
@@ -67,7 +67,7 @@ public class VideoDao implements ObjectDao<Video, Integer> {
             
             List<Video> videos = createAndHandleResulSet(stmt);
             
-            closeStatementAndConnection(stmt, conn);
+            database.close(stmt, conn,null);
             return videos;
 	}
 
@@ -80,7 +80,7 @@ public class VideoDao implements ObjectDao<Video, Integer> {
 
             int id = getLatestId();
             if (id == -1) {
-                closeStatementAndConnection(stmt1, conn);
+                database.close(stmt1, conn,null);
                 return null; // Something went wrong when adding the new Bookmark.
             }
             
@@ -111,7 +111,7 @@ public class VideoDao implements ObjectDao<Video, Integer> {
                 stmt2.close();
             }
             
-            closeStatementAndConnection(stmt1, conn);
+            database.close(stmt1, conn,null);
             return updated == 1;
 	}
 
@@ -131,7 +131,7 @@ public class VideoDao implements ObjectDao<Video, Integer> {
                 stmt2.close();
             }
 
-            closeStatementAndConnection(stmt1, conn);
+            database.close(stmt1, conn,null);
             return updated == 1;
 	}
 
@@ -168,7 +168,7 @@ public class VideoDao implements ObjectDao<Video, Integer> {
                 latest = rs.getInt("MAX(id)");
             }
             
-            close(stmt, conn, rs);
+           database. close(stmt, conn, rs);
             return latest;
 	}
 
@@ -187,7 +187,7 @@ public class VideoDao implements ObjectDao<Video, Integer> {
             
             List<Video> videos = createAndHandleResulSet(stmt);
             
-            closeStatementAndConnection(stmt, conn);
+            database.close(stmt, conn,null);
 
             return videos;
 	}
@@ -209,7 +209,7 @@ public class VideoDao implements ObjectDao<Video, Integer> {
             
             List<Video> videos = createAndHandleResulSet(stmt);
             
-            closeStatementAndConnection(stmt, conn);
+            database.close(stmt, conn,null);
             
             return videos;
 	}
@@ -237,14 +237,5 @@ public class VideoDao implements ObjectDao<Video, Integer> {
             return videos;
         }
         
-        private void closeStatementAndConnection(Statement stmt, Connection conn) throws SQLException {
-            stmt.close();
-            conn.close();
-        }
-        
-        private void close(Statement stmt, Connection conn, ResultSet rs) throws SQLException {
-            rs.close();
-            stmt.close();
-            conn.close();
-        }
+
 }
