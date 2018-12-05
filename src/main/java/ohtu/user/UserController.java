@@ -28,6 +28,11 @@ public class UserController {
 		return userId;
 	}
 
+	public static void autoLoginDefaultUser() {
+		isLoggedIn = true;
+		userId = Integer.MAX_VALUE;
+	}
+
 	public void login() {
 		String username = uiController.askForString("Username:", false);
 		String password = uiController.askForString("Password:", false);

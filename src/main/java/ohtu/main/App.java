@@ -92,6 +92,10 @@ public class App {
 					int id = UserController.getUserId(); // Like this.
 				}
 
+			} else {
+				// This will log in the user with ID of Integer.MAX_VALUE.
+				// Use that user for tests.
+				UserController.autoLoginDefaultUser();
 			}
 
 			if (!hasPrintedInitialInstructions) {
