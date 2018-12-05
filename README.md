@@ -44,6 +44,7 @@ Backlogs (GitHub Projects):
 * [Sprint 1 Backlog](https://github.com/gotonode/ohtu/projects/1)
 * [Sprint 2 Backlog](https://github.com/gotonode/ohtu/projects/2)
 * [Sprint 3 Backlog](https://github.com/gotonode/ohtu/projects/4)
+* [Sprint 4 Backlog](https://github.com/gotonode/ohtu/projects/5)
 
 External resources:
 * [Travis](https://travis-ci.org/gotonode/ohtu) (continuous integration & tests)
