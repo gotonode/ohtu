@@ -1,6 +1,7 @@
 package ohtu.database;
 
 import ohtu.main.Main;
+import ohtu.user.UserController;
 
 import java.io.File;
 import java.sql.Connection;
@@ -106,4 +107,24 @@ public class Database {
             statement.close();
         }
     }
+
+    public int checkCredentials(String username, String password) {
+    	return Integer.MAX_VALUE; // TODO: Fake user always logs in now.
+	}
+
+	public int registerUser(String username, String password) {
+    	return Integer.MAX_VALUE; // TODO: Fake user always registers successfully.
+	}
+
+	public boolean isUsernameAvailable(String username) {
+    	return true; // TODO: Now it's always available.
+	}
+
+	public boolean userOwnsBookmarkWithId(int id) {
+    	
+    	int userId = UserController.getUserId();
+
+    	return true; // TODO: Either implement this here or somewhere else.
+		// Only pass the ID to this function, as the user ID we already know.
+	}
 }

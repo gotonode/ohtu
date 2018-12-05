@@ -350,4 +350,8 @@ public class UiController {
 
 		return new String[]{title, author, isbn};
 	}
+
+	public void printLoginInstructions() {
+		io.println("Please either log in (command L), register for an account (command R), or exit (command E).");
+	}
 }

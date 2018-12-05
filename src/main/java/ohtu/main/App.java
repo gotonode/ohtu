@@ -9,6 +9,7 @@ import ohtu.database.Database;
 import ohtu.enums.Commands;
 import ohtu.io.IO;
 import ohtu.ui.UiController;
+import ohtu.user.UserController;
 
 import java.util.Arrays;
 
@@ -23,7 +24,13 @@ public class App {
 	private final ModifyAction modify;
 	private final HelpAction help;
 
+	private boolean hasPrintedInitialInstructions = false;
+	private IO io;
+	private Database database;
+
 	public App(IO io, Database db) {
+		this.io = io;
+		database = db;
 
 		BlogpostDao blogpostDao = new BlogpostDao(db);
 		VideoDao videoDao = new VideoDao(db);
@@ -46,9 +53,45 @@ public class App {
 		boolean appRunning = true;
 
 		uiController.printGreeting();
-		uiController.printInstructions();
 
+		outer:
 		while (appRunning) {
+
+			inner:
+			while (!UserController.isLoggedIn()) {
+				// Loop this until the user has logged in or exited the app.
+				// Will never enter this section again. I just wanted to include this in the main logic loop.
+
+				uiController.printEmptyLine();
+				uiController.printLoginInstructions();
+
+				char code = uiController.askForCharacter(new char[]{'L', 'R', 'E'}, "Your choice");
+
+				if (code == 'E') {
+					appRunning = false;
+					exit.act();
+					break outer;
+				}
+
+				UserController userController = new UserController(uiController, database, io);
+
+				if (code == 'L') {
+					// Login functionality.
+					userController.login();
+				} else if (code == 'R') {
+					// Registration and immediate login.
+					userController.registerAndLogin();
+				}
+
+				// Once the user is logged in, you can use "UserController.getUserId()" to get their ID.
+				int id = UserController.getUserId(); // Like this.
+			}
+
+			if (!hasPrintedInitialInstructions) {
+				// We'll only print these once, at the beginning. User can manually print them again.
+				uiController.printInstructions();
+				hasPrintedInitialInstructions = true;
+			}
 
 			char character = uiController.askForCharacter(new char[]{'A', 'L', 'E', 'D', 'M', 'X', 'S'}, "Choose a command ('X' lists them)");
 
