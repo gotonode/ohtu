@@ -42,7 +42,7 @@ public class BlogpostDao implements ObjectDao<Blogpost, Integer> {
 			blogposts.add(output);
 
 		}
-		close(rs, stmt, conn);
+		database.close(stmt, conn, rs);
 		return blogposts;
 	}
 
@@ -94,7 +94,7 @@ public class BlogpostDao implements ObjectDao<Blogpost, Integer> {
 			Blogpost blogpost = constructBlogpostFromResultSet(rs);
 			outputs.add(blogpost);
 		}
-		close(rs, stmt, conn);
+		database.close(stmt, conn, rs);
 		return outputs;
 	}
 
@@ -107,10 +107,10 @@ public class BlogpostDao implements ObjectDao<Blogpost, Integer> {
 		ResultSet rs = stmt.executeQuery();
 		if (rs.next()) {
 			Blogpost output = constructBlogpostFromResultSet(rs);
-			close(rs, stmt, conn);
+			database.close(stmt, conn, rs);
 			return output;
 		}
-		close(rs, stmt, conn);
+		database.close(stmt, conn, rs);
 		return null;
 	}
 
@@ -151,18 +151,11 @@ public class BlogpostDao implements ObjectDao<Blogpost, Integer> {
 		ResultSet rs = stmt.executeQuery();
 		if (rs.next()) {
 			int id = rs.getInt("MAX(id)");
-			close(rs, stmt, conn);
+			database.close(stmt, conn, rs);
 			return id;
 		}
-		close(rs, stmt, conn);
+		database.close(stmt, conn, rs);
 		return -1;
-	}
-
-	//method to close connection to database,PreparesStatement and ResultSet
-	private void close(ResultSet rs, PreparedStatement stmt, Connection conn) throws SQLException {
-		rs.close();
-		stmt.close();
-		conn.close();
 	}
 
 	/**
@@ -177,8 +170,7 @@ public class BlogpostDao implements ObjectDao<Blogpost, Integer> {
 		PreparedStatement stmt = conn.prepareStatement("DELETE FROM bookmark where id=?");
 		stmt.setInt(1, id);
 		int success = stmt.executeUpdate();
-		stmt.close();
-		conn.close();
+		database.close(stmt, conn, null);
 		return success == 1;
 	}
 
@@ -194,8 +186,7 @@ public class BlogpostDao implements ObjectDao<Blogpost, Integer> {
 		PreparedStatement stmt = conn.prepareStatement("DELETE FROM blogpost where id=?");
 		stmt.setInt(1, id);
 		int success = stmt.executeUpdate();
-		stmt.close();
-		conn.close();
+		database.close(stmt, conn, null);
 		return success == 1;
 	}
 
@@ -205,8 +196,7 @@ public class BlogpostDao implements ObjectDao<Blogpost, Integer> {
 		stmt.setString(1, title);
 		stmt.setInt(2, id);
 		int success = stmt.executeUpdate();
-		stmt.close();
-		conn.close();
+		database.close(stmt, conn, null);
 		return success == 1;
 	}
 
@@ -217,8 +207,7 @@ public class BlogpostDao implements ObjectDao<Blogpost, Integer> {
 		stmt.setString(2, url);
 		stmt.setInt(3, id);
 		int success = stmt.executeUpdate();
-		stmt.close();
-		conn.close();
+		database.close(stmt, conn, null);
 		return success == 1;
 	}
         

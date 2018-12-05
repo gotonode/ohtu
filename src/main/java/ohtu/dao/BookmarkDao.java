@@ -84,10 +84,10 @@ public class BookmarkDao {
 		ResultSet rs = stmt.executeQuery();
 		if (rs.next()) {
 			Bookmark found = findCertainBookmarkByType(rs);
-			close(rs, stmt, conn);
+			database.close(stmt, conn,rs);
 			return found;
 		}
-		close(rs, stmt, conn);
+		database.close(stmt, conn, rs);
 		return null;
 	}
 
@@ -104,7 +104,7 @@ public class BookmarkDao {
 			Bookmark found = findCertainBookmarkByType(rs);
 			bookmarks.add(found);
 		}
-		close(rs, stmt, conn);
+		database.close(stmt, conn, rs);
 		return bookmarks;
 	}
 
@@ -121,14 +121,6 @@ public class BookmarkDao {
 		return null;
 	}
 
-	/**
-	 * Closes the connection to database, PreparedStatement and ResultSet.
-	 */
-	private void close(ResultSet rs, PreparedStatement stmt, Connection conn) throws SQLException {
-		rs.close();
-		stmt.close();
-		conn.close();
-	}
 
 	/**
 	 * Searches for Bookmarks that have an URL matching the given whole or partial url from
