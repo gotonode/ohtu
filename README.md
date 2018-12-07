@@ -38,7 +38,7 @@ From our wiki:
 * [Code Style](https://github.com/gotonode/ohtu/wiki/Code-Style)
 * [Database](https://github.com/gotonode/ohtu/wiki/Database)
 * [Sprint Charts](https://github.com/gotonode/ohtu/wiki/Sprint-Charts)
-* [Project & Miniproject Report](https://github.com/gotonode/ohtu/wiki/Course-and-Miniproject-Report)
+* [Course & Miniproject Report](https://github.com/gotonode/ohtu/wiki/Course-and-Miniproject-Report)
 
 Backlogs (GitHub Projects):
 * [Product Backlog](https://github.com/gotonode/ohtu/projects/3)
