@@ -3,6 +3,7 @@ package ohtu.cucumberTest;
 import cucumber.api.java.Before;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
+import cucumber.api.java.en.When;
 import java.io.IOException;
 import static org.junit.Assert.assertTrue;
 
@@ -19,7 +20,7 @@ public class registerStepdefs extends AbstractStepdefs {
         inputs.add("R");
     }
 
-    @Given("^valid username \"([^\"]*)\" and password \"([^\"]*)\" and matched password confirmation are given$")
+    @When("^valid username \"([^\"]*)\" and password \"([^\"]*)\" and matched password confirmation are given$")
     public void valid_username_and_password_and_matched_password_confirmation_are_given(String username, String password) throws Throwable {
         inputs.add(username);
         inputs.add(password);
@@ -32,7 +33,7 @@ public class registerStepdefs extends AbstractStepdefs {
         assertTrue(io.getPrints().contains(expectedOutput));
     }
 
-    @Given("^too short username \"([^\"]*)\" is given$")
+    @When("^too short username \"([^\"]*)\" is given$")
     public void too_short_username_and_valid_password_and_matched_password_confirmation_is_given(String tooShortUsername) throws Throwable {
         inputs.add(tooShortUsername);
         String validUsername = "user";
@@ -42,7 +43,7 @@ public class registerStepdefs extends AbstractStepdefs {
         inputs.add(password);
     }
 
-    @Given("^valid username \"([^\"]*)\" and too short password \"([^\"]*)\" are given$")
+    @When("^valid username \"([^\"]*)\" and too short password \"([^\"]*)\" are given$")
     public void valid_username_and_too_short_password_are_given(String username, String tooShortPassword) throws Throwable {
         inputs.add(username);
         inputs.add(tooShortPassword);
@@ -52,7 +53,7 @@ public class registerStepdefs extends AbstractStepdefs {
 
     }
 
-    @Given("^valid username \"([^\"]*)\" and password \"([^\"]*)\" but unmatched password confirmation \"([^\"]*)\" are given$")
+    @When("^valid username \"([^\"]*)\" and password \"([^\"]*)\" but unmatched password confirmation \"([^\"]*)\" are given$")
     public void valid_username_and_password_but_unmatched_password_confirmation_are_given(String username, String password, String unmatchedConfirm) throws Throwable {
         inputs.add(username);
         inputs.add(password);
