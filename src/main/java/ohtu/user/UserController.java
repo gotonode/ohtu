@@ -1,6 +1,7 @@
 package ohtu.user;
 
 import ohtu.database.Database;
+import ohtu.tools.HashGenerator;
 import ohtu.ui.UiController;
 import ohtu.io.IO;
 
@@ -32,7 +33,7 @@ public class UserController {
 
 	public static void autoLoginDefaultUser() {
 		loggedIn = true;
-		userId = Integer.MAX_VALUE;
+		userId = 0; // ID 0 is for the testing user. ID's 1 and above are for real users. ID -1 means no user or a failure.
 	}
         
         /**
@@ -47,9 +48,11 @@ public class UserController {
 		String username = uiController.askForString("Username:", false);
 		String password = uiController.askForString("Password:", false);
 
+		String hashedPassword = HashGenerator.getHashedString(password);
+
 		// Check that the username and associated password are a match.
 		// Return the user's ID, or -1 if the details are invalid.
-		int id = database.checkCredentials(username, password);
+		int id = database.checkCredentials(username, hashedPassword);
 
 		if (id == -1) {
 			io.println("Could not log in. Please check your username and password.");
@@ -76,7 +79,7 @@ public class UserController {
 
 			if (!database.isUsernameAvailable(username)) {
 				io.println("That username is already taken. Please try a different one.");
-				continue;
+				continue; // Strictly not necessary but here for clarity.
 			} else {
 				break; // We got everything.
 			}
@@ -100,8 +103,10 @@ public class UserController {
 
 		// At this point, we have a valid username and a valid password.
 
+		String hashedPassword = HashGenerator.getHashedString(password);
+
 		// Return -1 if the registration fails, otherwise the user's ID.
-		int newUserId = database.registerUser(username, password);
+		int newUserId = database.registerUser(username, hashedPassword);
 
 		// I'll hash the password here later. For now, you can use plaintext.
 

@@ -8,13 +8,27 @@ import static org.junit.Assert.*;
 public class UrlValidatorTest {
 
 	@Test
-	public void urlStartsWithProtocolIsValid() {
-		String url1 = "https://validurl.com";
-		String url2 = "ftp://validurl.com";
-		String url3 = "file://validurl.com";
-		assertTrue(Validator.isValidUrl(url1));
-		assertTrue(Validator.isValidUrl(url2));
-		assertTrue(Validator.isValidUrl(url3));
+	public void urlStartsWithProtocolHttpIsValid() {
+		String url = "http://validurl.com";
+		assertTrue(Validator.isValidUrl(url));
+	}
+
+	@Test
+	public void urlStartsWithProtocolHttpsIsValid() {
+		String url = "https://validurl.com";
+		assertTrue(Validator.isValidUrl(url));
+	}
+
+	@Test
+	public void urlStartsWithProtocolFileIsValid() {
+		String url = "file://validurl.com";
+		assertTrue(Validator.isValidUrl(url));
+	}
+
+	@Test
+	public void urlStartsWithProtocolFtpIsValid() {
+		String url = "ftp://validurl.com";
+		assertTrue(Validator.isValidUrl(url));
 	}
 
 	@Test
