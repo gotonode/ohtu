@@ -17,6 +17,7 @@ public class UiController {
 
 	/**
 	 * Creates a new UiController.
+	 *
 	 * @param io The IO object to be used (either production or testing version).
 	 */
 	public UiController(final IO io) {
@@ -106,7 +107,7 @@ public class UiController {
 	/**
 	 * Asks the user for a string. Optionally doesn't allow empty strings.
 	 *
-	 * @param prompt     What to ask (prompt) from the user.
+	 * @param prompt What to ask (prompt) from the user.
 	 * @param allowEmpty If true, the string can be empty. Otherwise it cannot.
 	 * @return The string the user typed in.
 	 */
@@ -353,5 +354,14 @@ public class UiController {
 
 	public void printLoginInstructions() {
 		io.println("Please either log in (command 'L'), register for an account (command 'R'), or exit (command 'E').");
+	}
+
+	public void printWhereToGetLatestVersion(String url) {
+		io.println("You can always get the latest version of this app from GitHub.");
+		io.println(url);
+	}
+
+	public void printVersion(int version) {
+		io.println("You are running version " + version + ".");
 	}
 }

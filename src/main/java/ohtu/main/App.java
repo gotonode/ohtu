@@ -55,6 +55,9 @@ public class App {
 		boolean appRunning = true;
 
 		uiController.printGreeting();
+		uiController.printVersion(Main.APP_VERSION);
+		uiController.printEmptyLine();
+		uiController.printWhereToGetLatestVersion(Main.APP_URL);
 
 		outer:
 		while (appRunning) {
