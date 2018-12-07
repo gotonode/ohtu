@@ -4,7 +4,6 @@ import cucumber.api.java.Before;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import java.io.IOException;
-import ohtu.user.UserController;
 import static org.junit.Assert.assertTrue;
 
 public class registerStepdefs extends AbstractStepdefs {
@@ -58,7 +57,7 @@ public class registerStepdefs extends AbstractStepdefs {
         inputs.add(username);
         inputs.add(password);
         inputs.add(unmatchedConfirm);
-        
+
         inputs.add(password);
         inputs.add(password);//right password cofirmation
     }
