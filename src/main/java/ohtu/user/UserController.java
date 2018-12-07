@@ -34,6 +34,14 @@ public class UserController {
 		loggedIn = true;
 		userId = Integer.MAX_VALUE;
 	}
+        
+        /**
+         * Only used in cucumber test, because once the user successfully registered,loggedIn will always be true since it's static.
+         * If we want to test other scenario connected to register, we have to set loggedIn as false
+         */
+        public static void setLogInStatusAsFalse(){
+            loggedIn=false;
+        }
 
 	public void login() {
 		String username = uiController.askForString("Username:", false);

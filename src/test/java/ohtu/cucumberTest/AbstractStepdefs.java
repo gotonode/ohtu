@@ -8,6 +8,7 @@ import java.util.List;
 import ohtu.database.Database;
 import ohtu.io.StubIO;
 import ohtu.main.App;
+import ohtu.user.UserController;
 import org.junit.rules.TemporaryFolder;
 
 /**
@@ -18,7 +19,7 @@ public class AbstractStepdefs {
 
     private TemporaryFolder tempFolder;
     protected StubIO io;
-    private Database db = null;
+    protected Database db = null;
     List<String> inputs;
 
     protected void initialize() throws IOException {
@@ -35,7 +36,8 @@ public class AbstractStepdefs {
     void runAndExit() {
         inputs.add("E");
         io = new StubIO(inputs);
-        App app = new App(io, db, false);
+        UserController.setLogInStatusAsFalse();
+        App app = new App(io, db, true);
         app.run();
     }
 
