@@ -1,7 +1,9 @@
+
 Feature: User can add a bookmark of type blogpost (US1,US7,US10)
 
   Background: 
-    Given command adding a bookmark is selected
+    Given user has registered and logged in with username "user" and password "password"
+    And command adding a bookmark is selected
 
   Scenario: user can add a blogpost with valid information (US1)
     Given command adding a blogpost is selected

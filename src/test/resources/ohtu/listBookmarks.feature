@@ -1,5 +1,8 @@
 Feature: User can list all bookmarks that were found from the database (US2,US5,US8,US9)
 
+  Background: 
+    Given user has registered and logged in with username "user" and password "password"
+
   Scenario: User can list all bookmarks and order the list by id (US2)
     Given new bookmarks have been created and saved to the database
     And command listing all bookmarks is selected
@@ -43,4 +46,4 @@ Feature: User can list all bookmarks that were found from the database (US2,US5,
   Scenario: User will be told that the database is empty when trying to list an empty database (US2,US5)
     Given command listing all bookmarks is selected
     And command to order the list by id is chosen
-    Then system won't list anything and will respond with "No bookmarks have been saved in the database."
+    Then system will report about the empty database by responding with "No bookmarks have been saved in the database."

@@ -1,6 +1,9 @@
 Feature: User can delete a bookmark of type blogpost by given id (US3)
 
-  Scenario: user can delete a blogpost by giving existed id and a confirmation 
+  Background: 
+    Given user has registered and logged in with username "user" and password "password"
+
+  Scenario: user can delete a blogpost by giving existed id and a confirmation
     Given two blogposts have been created and saved to the database
     And command deleting is selected
     When existed id 1 is entered to be deleted
@@ -37,4 +40,4 @@ Feature: User can delete a bookmark of type blogpost by given id (US3)
   Scenario: system will remind the user of the empty database if user tries to delete something from an empty database
     Given command deleting is selected
     When unexisted id 10 is entered to be deleted
-    Then system will report there's nothing can be deleted by responding with "No bookmarks have been saved in the database."
+    Then system will report about the empty database by responding with "No bookmarks have been saved in the database."

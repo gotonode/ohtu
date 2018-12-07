@@ -15,12 +15,12 @@ import org.junit.rules.TemporaryFolder;
  * An abstract class including methods of initialisation before each scenario
  * and some other methods that are commonly used in cucumber tests
  */
-public class AbstractStepdefs {
-
+public abstract class AbstractStepdefs{
+    
     private TemporaryFolder tempFolder;
-    protected StubIO io;
-    protected Database db = null;
-    List<String> inputs;
+    protected static StubIO io;
+    protected static Database db = null;
+    protected static List<String> inputs;
 
     protected void initialize() throws IOException {
 
@@ -33,7 +33,7 @@ public class AbstractStepdefs {
         }
     }
 
-    void runAndExit() {
+    protected void runAndExit() {
         inputs.add("E");
         io = new StubIO(inputs);
         UserController.setLogInStatusAsFalse();
@@ -41,26 +41,5 @@ public class AbstractStepdefs {
         app.run();
     }
 
-    void addNewBlogpost(String title, String author, String url) {
-        inputs.add("A");
-        inputs.add("B");
-        inputs.add(title);
-        inputs.add(author);
-        inputs.add(url);
-    }
-
-    void addNewVideo(String title, String url) {
-        inputs.add("A");
-        inputs.add("V");
-        inputs.add(title);
-        inputs.add(url);
-    }
-
-    void addNewBook(String title, String author, String isbn) {
-        inputs.add("A");
-        inputs.add("K");
-        inputs.add(title);
-        inputs.add(author);
-        inputs.add(isbn);
-    }
+    
 }

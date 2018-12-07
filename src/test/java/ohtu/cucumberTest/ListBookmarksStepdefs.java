@@ -1,11 +1,8 @@
 package ohtu.cucumberTest;
 
-import cucumber.api.java.Before;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import ohtu.io.StubIO;
-
-import java.io.IOException;
 
 import static org.junit.Assert.assertTrue;
 
@@ -14,16 +11,6 @@ import static org.junit.Assert.assertTrue;
  */
 public class ListBookmarksStepdefs extends AbstractStepdefs {
 
-    @Before
-    public void before() throws IOException {
-        initialize();
-        inputs.clear(); // Maybe it's faster to just clear this than to re-initialize?
-    }
-
-    @Given("^new bookmarks have been created and saved to the database$")
-    public void new_bookmarks_have_been_created_and_saved_to_the_database() throws Throwable {
-        addNewBookmarks();
-    }
 
     @Given("^command listing all bookmarks is selected$")
     public void command_L_is_selected() throws Throwable {
@@ -42,12 +29,6 @@ public class ListBookmarksStepdefs extends AbstractStepdefs {
 
     @Then("^system will start to list all bookmarks and respond with \"([^\"]*)\"$")
     public void system_will_start_to_list_all_bookmarks_and_respond_with(String expectedOutput) throws Throwable {
-        runAndExit();
-        assertTrue(io.getPrints().contains(expectedOutput));
-    }
-
-    @Then("^system won't list anything and will respond with \"([^\"]*)\"$")
-    public void system_will_tell_the_user_that_the_database_is_empty_by_responding_with(String expectedOutput) throws Throwable {
         runAndExit();
         assertTrue(io.getPrints().contains(expectedOutput));
     }
@@ -89,12 +70,6 @@ public class ListBookmarksStepdefs extends AbstractStepdefs {
         runAndExit();
         assertTrue(containKeyword(io, "URL", "http"));
 
-    }
-
-    private void addNewBookmarks() { //other types will be added soon
-        addNewBlogpost("Data Mining in computer science", "navamani saravanan", "http://notescompsci.blogspot.com/2013/04/data-mining.html");
-        addNewVideo("Map of Computer Science", "https://www.youtube.com/watch?v=SzJ46YA_RaA");
-        addNewBook("Learning Python", "Mark Lutz", "9-781-593-2760-34");
     }
 
     private boolean containKeyword(StubIO io, String column, String keyword) {

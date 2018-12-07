@@ -13,12 +13,6 @@ import static org.junit.Assert.assertTrue;
  */
 public class AddBookmarkStepdefs extends AbstractStepdefs {
 
-	@Before
-	public void before() throws IOException {
-		initialize();
-		inputs.clear(); // Maybe it's faster to just clear this than to re-initialize?
-	}
-
 	@Given("^command adding a bookmark is selected$")
 	public void command_A_selected() throws Throwable {
 		inputs.add("A");
@@ -76,12 +70,6 @@ public class AddBookmarkStepdefs extends AbstractStepdefs {
 		inputs.add(url);
 		String validUrl = "https://www.youtube.com/watch?v=SzJ46YA_RaA";
 		inputs.add(validUrl);
-	}
-
-	@Then("^sysytem will ask user to enter a valid url by responding with \"([^\"]*)\"$")
-	public void sysytem_will_ask_user_to_enter_a_valid_url_by_responding_with(String expectedOutput) {
-		runAndExit();
-		assertTrue(io.getPrints().contains(expectedOutput));
 	}
 
 	@Given("^command adding a book is selected$")
