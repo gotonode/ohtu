@@ -7,7 +7,7 @@
 
 ### Introduction
 
-Bookmarks Database is a simple app for creating, editing and viewing different types of bookmarks. It's a console-based *Java* application, built using *Gradle* and tested with *JUnit*. Code coverage is done by *JaCoCo* and code style enforcement by *Checkstyle*.
+**Bookmarks Database** is a simple app for creating, editing and viewing different types of bookmarks. It's a console-based *Java* application, built using *Gradle*. It is tested with *JUnit* and *Cucumber*. Code coverage is done by *Codecov* and *JaCoCo*. Code style enforcement is by *Checkstyle*.
 
 ### Instructions
 
@@ -15,17 +15,17 @@ Clone or download this repository to your computer. Unzip the archive into a fol
 
 To run Bookmarks Database, simple type in `gradle run`. This will download all required dependencies.
 
-Once the app starts, you'll be greeted with a list of commands at your disposal. Currently, these commands are available:
+Once the app starts, you'll either need to log in or register. After you have logged in with an account, you'll be presented with a list of commands. Currently, these commands are available:
 
 | | What will happen |
 | :-: | :- |
-| `A` | begins adding a new bookmark to the database by asking you for the bookmark's type and information |
-| `L` | lists all the bookmarks currently in the database (either by ID or by title) |
-| `S` | searches for bookmarks (either by title or by URL) |
-| `D` | delete an existing bookmark |
-| `M` | modify an existing bookmark's information |
-| `X` | lists all of the commands available to the user |
-| `E` | exits from the app |
+| `A` | begins adding a new bookmark to the database by asking for the bookmark's type and information |
+| `L` | lists all of your bookmarks currently in the database (either by ID or by title) |
+| `S` | searches for your bookmarks (either by title or by URL) |
+| `D` | delete your existing bookmark |
+| `M` | modify your existing bookmark's information |
+| `X` | lists all of the commands available to the you |
+| `E` | exits from the app (also logs you out) |
 
 #### Starting application from a jar file
 * If you have cloned our project, open your command console in the root folder of the loaded project and give the command `gradle jar` or `./gradlew jar` if using Windows. This creates the jar file that is now accessable by giving the command `java -jar build/libs/ohtu.jar` in the same root file.
