@@ -9,9 +9,9 @@ import java.util.Date;
 /**
  * A utility class to create new objects. Cannot be instantiated.
  */
-public class Builder {
+public class BookmarkBuilder {
 
-	private Builder() {
+	private BookmarkBuilder() {
 		throw new IllegalStateException("Builder should not be instantiated.");
 	}
 
