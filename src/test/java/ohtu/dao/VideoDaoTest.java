@@ -7,6 +7,8 @@ import java.util.List;
 
 import ohtu.database.Database;
 import ohtu.domain.Video;
+import ohtu.tools.BookmarkBuilder;
+import ohtu.tools.DaoBuilder;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -38,10 +40,10 @@ public class VideoDaoTest extends AbstractDaoTest {
         databaseFile.delete();
         setUpClass();
         database = new Database(databaseFile);
-        videoDao = new VideoDao(database);
-        v1 = new Video(-1, "Map of computer science", null, "https://www.youtube.com/watch?v=SzJ46YA_RaA");
-        v2 = new Video(-1, "Computer science for intermediate learner", null, "https://www.youtube.com/watch?v=ohyai6GIRZg");
-        v3 = new Video(-1, "Java programming", null, "https://www.youtube.com/watch?v=WPvGqX-TXP0");
+        videoDao = DaoBuilder.buildVideoDao(database);
+        v1 = BookmarkBuilder.buildVideo(-1, "Map of computer science", "https://www.youtube.com/watch?v=SzJ46YA_RaA", null);
+        v2 = BookmarkBuilder.buildVideo(-1, "Computer science for intermediate learner", "https://www.youtube.com/watch?v=ohyai6GIRZg", null);
+        v3 = BookmarkBuilder.buildVideo(-1, "Java programming", "https://www.youtube.com/watch?v=WPvGqX-TXP0", null);
         videoDao.create(v1);
         videoDao.create(v2);
         videoDao.create(v3);
@@ -54,7 +56,7 @@ public class VideoDaoTest extends AbstractDaoTest {
 
     @Test
     public void canCreateNewVideo() throws SQLException, ParseException {
-        Video v4 = new Video(-1, "C programming", null, "https://www.youtube.com/watch?v=KJgsSFOSQv0");
+        Video v4 = BookmarkBuilder.buildVideo(-1, "C programming", "https://www.youtube.com/watch?v=KJgsSFOSQv0", null);
         Video added = videoDao.create(v4);
         assertEquals(v4, added);
     }
@@ -118,7 +120,7 @@ public class VideoDaoTest extends AbstractDaoTest {
 
     @Test
     public void cannotUpdateNonexistedVideo() throws SQLException {
-        Video nonExisted = new Video(100, "Ruby programming", null, "https://www.youtube.com/watch?v=t_ispmWmdjY");
+        Video nonExisted = BookmarkBuilder.buildVideo(100, "Ruby programming", "https://www.youtube.com/watch?v=t_ispmWmdjY", null);
         nonExisted.setTitle("Ruby tutorial");
         boolean success = videoDao.update(nonExisted);
         assertFalse(success);

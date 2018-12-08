@@ -8,12 +8,13 @@ import java.util.List;
 
 import ohtu.database.Database;
 import ohtu.domain.Blogpost;
+import ohtu.tools.BookmarkBuilder;
+import ohtu.tools.DaoBuilder;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
 
 import static org.junit.Assert.*;
 
@@ -42,10 +43,10 @@ public class BlogpostDaoTest extends AbstractDaoTest {
         setUpClass();
 
         database = new Database(databaseFile);
-        blogpostDao = new BlogpostDao(database);
-        b1 = new Blogpost(-1, "Data Mining", null, "navamani saravanan", "http://notescompsci.blogspot.com/2013/04/data-mining.html");
-        b2 = new Blogpost(-1, "Data Mining For Beginners", null, "P.Fournier-Viger", "http://data-mining.philippe-fournier-viger.com/introduction-data-mining");
-        b3 = new Blogpost(-1, "Java TWO marks", null, "navamani saravanan", "http://notescompsci.blogspot.com/2013/04/java-two-marks.html");
+        blogpostDao = DaoBuilder.buildBlogpostDao(database);
+        b1 = BookmarkBuilder.buildBlogpost(-1, "Data Mining", "navamani saravanan", "http://notescompsci.blogspot.com/2013/04/data-mining.html", null);
+        b2 = BookmarkBuilder.buildBlogpost(-1, "Data Mining For Beginners", "P.Fournier-Viger", "http://data-mining.philippe-fournier-viger.com/introduction-data-mining", null);
+        b3 = BookmarkBuilder.buildBlogpost(-1, "Java TWO marks", "navamani saravanan", "http://notescompsci.blogspot.com/2013/04/java-two-marks.html", null);
 
         blogpostDao.create(b1);
         blogpostDao.create(b2);
@@ -59,7 +60,7 @@ public class BlogpostDaoTest extends AbstractDaoTest {
 
     @Test
     public void canCreateNewBlogpost() throws SQLException, ParseException {
-        Blogpost b4 = new Blogpost(-1, "How to learn computer science", null, "Karim", "https://www.afternerd.com/blog/learn-computer-science/");
+        Blogpost b4 = BookmarkBuilder.buildBlogpost(-1, "How to learn computer science", "Karim", "https://www.afternerd.com/blog/learn-computer-science/", null);
         Blogpost added = blogpostDao.create(b4);
         assertEquals(b4, added);
     }
@@ -123,7 +124,7 @@ public class BlogpostDaoTest extends AbstractDaoTest {
 
     @Test
     public void cannotUpdateNonexistedBlogpost() throws SQLException {
-        Blogpost nonExisted = new Blogpost(100, "Java Base64 URL Safe Encoding ", null, "Billy Yarosh", "https://keaplogik.blogspot.com/2016/01/java-base64-url-safe-encoding.html");
+        Blogpost nonExisted = BookmarkBuilder.buildBlogpost(100, "Java Base64 URL Safe Encoding ", "Billy Yarosh", "https://keaplogik.blogspot.com/2016/01/java-base64-url-safe-encoding.html", null);
         nonExisted.setTitle("Safe Encoding for beginners");
         boolean success = blogpostDao.update(nonExisted);
         assertFalse(success);

@@ -12,6 +12,7 @@ import ohtu.ui.UiController;
 import ohtu.user.UserController;
 
 import java.util.Arrays;
+import ohtu.tools.DaoBuilder;
 
 public class App {
 
@@ -34,11 +35,12 @@ public class App {
 		database = db;
 		this.requireLogin = requireLogin;
 
-		BlogpostDao blogpostDao = new BlogpostDao(db);
-		VideoDao videoDao = new VideoDao(db);
-		BookDao bookDao = new BookDao(db);
+		//BlogpostDao blogpostDao = new BlogpostDao(db);
+                BlogpostDao blogpostDao = DaoBuilder.buildBlogpostDao(db);
+		VideoDao videoDao = DaoBuilder.buildVideoDao(db);
+		BookDao bookDao = DaoBuilder.buildBookDao(db);
 
-		BookmarkDao bookmarkDao = new BookmarkDao(db, blogpostDao, videoDao, bookDao);
+		BookmarkDao bookmarkDao = DaoBuilder.buildBookmarkDao(db, blogpostDao, videoDao, bookDao);
 
 		uiController = new UiController(io); // Either ConsoleIO or StubIO.
 

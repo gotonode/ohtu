@@ -9,7 +9,7 @@ import ohtu.domain.Book;
 import ohtu.domain.Video;
 import ohtu.io.IO;
 import ohtu.main.Main;
-import ohtu.tools.Builder;
+import ohtu.tools.BookmarkBuilder;
 import ohtu.ui.UiController;
 
 import java.util.Date;
@@ -70,7 +70,7 @@ public class AddAction extends Action {
 		Date date = null; // This is here just as a reference that it is null.
 		int id = -1; // When creating new Bookmarks from user input, assign -1 as the ID.
 
-		Video newVideo = Builder.buildVideo(id, title, url, date);
+		Video newVideo = BookmarkBuilder.buildVideo(id, title, url, date);
 		try {
 			final Video success = videoDao.create(newVideo);
 			if (success != null) {
@@ -94,7 +94,7 @@ public class AddAction extends Action {
 		Date date = null; // This is here just as a reference that it is null.
 		int id = -1; // When creating new Bookmarks from user input, assign -1 as the ID.
 
-		Blogpost newBlogpost = Builder.buildBlogpost(id, title, author, url, date);
+		Blogpost newBlogpost = BookmarkBuilder.buildBlogpost(id, title, author, url, date);
 		try {
 			final Blogpost success = blogpostDao.create(newBlogpost);
 			if (success != null) {
@@ -117,7 +117,7 @@ public class AddAction extends Action {
 		Date date = null; // This is here just as a reference that it is null.
 		int id = -1; // When creating new Bookmarks from user input, assign -1 as the ID.
 
-		Book newBook = Builder.buildBook(id, title, author, isbn, date);
+		Book newBook = BookmarkBuilder.buildBook(id, title, author, isbn, date);
 		try {
 			final Book success = bookDao.create(newBook);
 			if (success != null) {
