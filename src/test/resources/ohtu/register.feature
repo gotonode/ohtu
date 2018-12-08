@@ -19,3 +19,5 @@ Feature: User can register an account
   Scenario: Register will fail if the password confirmation doesn't match
     When valid username "user1" and password "password1" but unmatched password confirmation "unmatchedconfirmation" are given
     Then register will fail and system will respond with "The passwords didn't match. Please try again."
+
+# TODO scenario where username is already existed
