@@ -19,6 +19,8 @@ public class Main {
 
 	// Declare final variables here.
 	public static final String APP_NAME = "Bookmarks Database";
+	public static final String APP_URL = "https://github.com/gotonode/ohtu/releases/latest";
+	public static final int APP_VERSION = 4; // As per our sprint numbering. This is the final version.
 
 	public static void main(String[] args) {
 

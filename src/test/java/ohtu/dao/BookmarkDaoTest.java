@@ -1,4 +1,5 @@
 package ohtu.dao;
+
 import java.io.IOException;
 import java.sql.SQLException;
 import java.text.ParseException;
@@ -9,6 +10,8 @@ import ohtu.domain.Blogpost;
 import ohtu.domain.Book;
 import ohtu.domain.Bookmark;
 import ohtu.domain.Video;
+import ohtu.tools.BookmarkBuilder;
+import ohtu.tools.DaoBuilder;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -28,14 +31,14 @@ public class BookmarkDaoTest extends AbstractDaoTest {
     public static void setUpClass() throws SQLException, ParseException, IOException {
         initialize();
         database = new Database(databaseFile);
-        BookmarkDaoTest.blogpostDao = new BlogpostDao(database);
-        BookmarkDaoTest.videoDao = new VideoDao(database);
-        BookmarkDaoTest.bookDao = new BookDao(database);
-        BookmarkDaoTest.bookmarkDao = new BookmarkDao(database, blogpostDao, videoDao, bookDao);
-        BookmarkDaoTest.b1 = new Blogpost(-1, "Data Mining", null, "navamani saravanan", "http://notescompsci.blogspot.com/2013/04/data-mining.html");
-        BookmarkDaoTest.v1 = new Video(-1, "Map of Computer Science", null, "https://www.youtube.com/watch?v=SzJ46YA_RaA");
-        BookmarkDaoTest.v2 = new Video(-1, "Big Data Analytics", null, "https://www.youtube.com/watch?v=LtScY2guZpo");
-        BookmarkDaoTest.k1 = new Book(-1, "Introdiction to Algorithms", null, "Thomas H. Cormen", "9-780-262-0338-48");
+        BookmarkDaoTest.blogpostDao = DaoBuilder.buildBlogpostDao(database);
+        BookmarkDaoTest.videoDao = DaoBuilder.buildVideoDao(database);
+        BookmarkDaoTest.bookDao = DaoBuilder.buildBookDao(database);
+        BookmarkDaoTest.bookmarkDao = DaoBuilder.buildBookmarkDao(database, blogpostDao, videoDao, bookDao);
+        BookmarkDaoTest.b1 = BookmarkBuilder.buildBlogpost(-1, "Data Mining", "navamani saravanan", "http://notescompsci.blogspot.com/2013/04/data-mining.html", null);
+        BookmarkDaoTest.v1 = BookmarkBuilder.buildVideo(-1, "Map of Computer Science", "https://www.youtube.com/watch?v=SzJ46YA_RaA", null);
+        BookmarkDaoTest.v2 = BookmarkBuilder.buildVideo(-1, "Big Data Analytics", "https://www.youtube.com/watch?v=LtScY2guZpo", null);
+        BookmarkDaoTest.k1 = BookmarkBuilder.buildBook(-1, "Introdiction to Algorithms", "Thomas H. Cormen", "9-780-262-0338-48", null);
         blogpostDao.create(b1);
         videoDao.create(v1);
         videoDao.create(v2);
