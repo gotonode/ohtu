@@ -2,6 +2,7 @@ package ohtu.main;
 
 import java.io.File;
 import java.io.IOException;
+import java.sql.SQLException;
 
 import ohtu.database.Database;
 import ohtu.io.StubIO;
@@ -49,7 +50,7 @@ public class AppTest {
 	 * @throws AssertionError
 	 */
 	@Test
-	public void appExitsWhenExitCommandGiven() throws AssertionError {
+	public void appExitsWhenExitCommandGiven() throws AssertionError, SQLException {
 
 		lines.add("E");
 

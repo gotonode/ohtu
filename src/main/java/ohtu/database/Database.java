@@ -6,6 +6,7 @@ import ohtu.user.UserController;
 import java.io.File;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -50,6 +51,10 @@ public class Database {
     
     /**
      * close statement,connection and resultset that were used in dao classes
+     * @param stmt The Statement to be closed
+     * @param conn The Connection to be closed
+     * @param rs The ResultSet to be closed
+     * @throws java.sql.SQLException
      */
     public void close(Statement stmt, Connection conn, ResultSet rs) throws SQLException {
         if (rs != null) {
@@ -110,21 +115,50 @@ public class Database {
 
     public int checkCredentials(String username, String password) {
     	return Integer.MAX_VALUE; // TODO: Fake user always logs in now.
-	}
+    }
 
-	public int registerUser(String username, String password) {
+    public int registerUser(String username, String password) throws SQLException {
+        // TODO: Remove this when real registration is completed
+        createDefaultUser();
+        
     	return Integer.MAX_VALUE; // TODO: Fake user always registers successfully.
-	}
+    }
+    
+    public boolean isUsernameAvailable(String username) throws SQLException {
+        Connection conn = getConnection();
+        PreparedStatement stmt = conn.prepareStatement("SELECT * FROM User WHERE username = ?");
+        stmt.setString(1, username);
+        ResultSet rs = stmt.executeQuery();
+    	boolean available = !rs.next();
+        
+        close(stmt, conn, rs);
+        return available;
+    }
 
-	public boolean isUsernameAvailable(String username) {
-    	return true; // TODO: Now it's always available.
-	}
-
-	public boolean userOwnsBookmarkWithId(int id) {
+    public boolean userOwnsBookmarkWithId(int id) {
 
     	int userId = UserController.getUserId();
 
     	return true; // TODO: Either implement this here or somewhere else.
 		// Only pass the ID to this function, as the user ID we already know.
-	}
+    }
+    
+    // TODO: REMOVE THIS method later, when daos can handle user_id checking and such
+    public boolean createDefaultUser() throws SQLException {
+        boolean created = false;
+        Connection conn = getConnection();
+        PreparedStatement stmt1 = conn.prepareStatement("SELECT * FROM User WHERE id = ?");
+        stmt1.setInt(1, Integer.MAX_VALUE);
+        ResultSet rs = stmt1.executeQuery();
+        
+        if (!rs.next()) {
+            PreparedStatement stmt2 = conn.prepareStatement("INSERT INTO User (id) VALUES ( ? )");
+            stmt2.setInt(1, Integer.MAX_VALUE);
+            created = stmt2.executeUpdate() == 1;
+            stmt2.close();
+        }
+        
+        close(stmt1, conn, rs);
+        return created;
+    }
 }

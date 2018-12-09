@@ -1,5 +1,6 @@
 package ohtu.user;
 
+import java.sql.SQLException;
 import ohtu.database.Database;
 import ohtu.tools.HashGenerator;
 import ohtu.ui.UiController;
@@ -63,7 +64,7 @@ public class UserController {
 		}
 	}
 
-	public void registerAndLogin() {
+	public void registerAndLogin() throws SQLException {
 		io.println("Next you'll choose a unique (not taken) username and a password.");
 
 		String username, password;

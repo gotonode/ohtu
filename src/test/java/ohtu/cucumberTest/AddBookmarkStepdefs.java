@@ -6,6 +6,7 @@ import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 import java.io.IOException;
+import java.sql.SQLException;
 
 import static org.junit.Assert.assertTrue;
 /**
@@ -42,13 +43,13 @@ public class AddBookmarkStepdefs extends AbstractStepdefs {
 	}
 
 	@Then("^system will respond with \"([^\"]*)\"$")
-	public void system_will_respond_with(String expectedOutput) {
+	public void system_will_respond_with(String expectedOutput) throws SQLException {
 		runAndExit();
 		assertTrue(io.getPrints().contains(expectedOutput));
 	}
 
 	@Then("^system will ask the user to enter something by responding with \"([^\"]*)\"$")
-	public void system_will_ask_the_user_to_enter_something_by_responding_with(String expectedOutput) {
+	public void system_will_ask_the_user_to_enter_something_by_responding_with(String expectedOutput) throws SQLException {
 		runAndExit();
 		assertTrue(io.getPrints().contains(expectedOutput));
 	}

@@ -1,6 +1,7 @@
 package ohtu.cucumberTest;
 
 import cucumber.api.java.en.Then;
+import java.sql.SQLException;
 import static ohtu.cucumberTest.AbstractStepdefs.io;
 import static org.junit.Assert.assertTrue;
 
@@ -19,7 +20,7 @@ public class commonRespondStepdefs extends AbstractStepdefs {
     }
 
     @Then("^sysytem will ask user to enter a valid url by responding with \"([^\"]*)\"$")
-    public void sysytem_will_ask_user_to_enter_a_valid_url_by_responding_with(String expectedOutput) {
+    public void sysytem_will_ask_user_to_enter_a_valid_url_by_responding_with(String expectedOutput) throws SQLException {
         runAndExit();
         assertTrue(io.getPrints().contains(expectedOutput));
     }

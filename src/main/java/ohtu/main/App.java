@@ -1,5 +1,6 @@
 package ohtu.main;
 
+import java.sql.SQLException;
 import ohtu.actions.*;
 import ohtu.dao.BlogpostDao;
 import ohtu.dao.BookDao;
@@ -52,7 +53,7 @@ public class App {
 		help = new HelpAction(io, uiController);
 	}
 
-	public void run() {
+	public void run() throws SQLException {
 
 		boolean appRunning = true;
 

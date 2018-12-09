@@ -2,6 +2,7 @@ package ohtu.cucumberTest;
 
 import java.io.File;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,7 +34,7 @@ public abstract class AbstractStepdefs{
         }
     }
 
-    protected void runAndExit() {
+    protected void runAndExit() throws SQLException {
         inputs.add("E");
         io = new StubIO(inputs);
         UserController.setLogInStatusAsFalse();

@@ -81,12 +81,13 @@ public class BookDao implements ObjectDao<Book, Integer> {
 
 	@Override
 	public Book create(Book book) throws SQLException, ParseException {
-		String s1 = "INSERT INTO bookmark (title, type) VALUES (?, 'K')";
+		String s1 = "INSERT INTO bookmark (title, type, user_id) VALUES (?, 'K', ?)";
 		String s2 = "INSERT INTO book (id, author, isbn) VALUES (?, ?, ?)";
 
 		try (Connection conn = database.getConnection(); PreparedStatement stmt1 = conn.prepareStatement(s1);
 			 PreparedStatement stmt2 = conn.prepareStatement(s2)) {
 			stmt1.setString(1, book.getTitle());
+                        stmt1.setInt(2, Integer.MAX_VALUE); // this will be removed soon and replaced with proper user_id
 			stmt1.execute();
 
 			int id = getLatestId();

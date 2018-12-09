@@ -1,6 +1,7 @@
 package ohtu.main;
 
 import java.io.File;
+import java.sql.SQLException;
 
 import ohtu.io.ConsoleIO;
 
@@ -22,7 +23,7 @@ public class Main {
 	public static final String APP_URL = "https://github.com/gotonode/ohtu/releases/latest";
 	public static final int APP_VERSION = 4; // As per our sprint numbering. This is the final version.
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws SQLException {
 
 		File databaseFile = new File(System.getProperty("user.dir") + "/bookmarks.db");
 		Database db = new Database(databaseFile);
