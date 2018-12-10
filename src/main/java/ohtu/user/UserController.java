@@ -15,12 +15,12 @@ public class UserController {
 	private static int userId = -1;
 
 	private UiController uiController;
-	private Database database;
+        private UserDbController userDbController;
 	private IO io;
 
-	public UserController(UiController uiController, Database database, IO io) {
+	public UserController(UiController uiController, UserDbController userDbController, IO io) {
 		this.uiController = uiController;
-		this.database = database;
+		this.userDbController = userDbController;
 		this.io = io;
 	}
 
@@ -53,7 +53,8 @@ public class UserController {
 
 		// Check that the username and associated password are a match.
 		// Return the user's ID, or -1 if the details are invalid.
-		int id = database.checkCredentials(username, hashedPassword);
+		int id = userDbController.checkCredentials(username, hashedPassword);
+                
 
 		if (id == -1) {
 			io.println("Could not log in. Please check your username and password.");
@@ -76,7 +77,7 @@ public class UserController {
 				continue;
 			}
 
-			if (!database.isUsernameAvailable(username)) {
+			if (!userDbController.isUsernameAvailable(username)) {
 				io.println("That username is already taken. Please try a different one.");
 			} else {
 				break; // We got everything.
@@ -103,7 +104,8 @@ public class UserController {
 		String hashedPassword = HashGenerator.getHashedString(password);
 
 		// Return -1 if the registration fails, otherwise the user's ID.
-		int newUserId = database.registerUser(username, hashedPassword);
+		int newUserId = userDbController.registerUser(username, hashedPassword);
+                
 
 		// I'll hash the password here later. For now, you can use plaintext.
 

@@ -15,145 +15,149 @@ import ohtu.user.UserController;
 
 import java.util.Arrays;
 import ohtu.tools.DaoBuilder;
+import ohtu.user.UserDbController;
 
 public class App {
 
-	private UiController uiController;
+    private UiController uiController;
 
-	private final ExitAction exit;
-	private final ListAction browse;
-	private final DeleteAction delete;
-	private final AddAction add;
-	private final ModifyAction modify;
-	private final HelpAction help;
+    private UserDbController userDbController;
 
-	private boolean hasPrintedInitialInstructions = false;
-	private IO io;
-	private Database database;
-	private final boolean requireLogin;
+    private final ExitAction exit;
+    private final ListAction browse;
+    private final DeleteAction delete;
+    private final AddAction add;
+    private final ModifyAction modify;
+    private final HelpAction help;
 
-	public App(IO io, Database db, boolean requireLogin) {
-		this.io = io;
-		database = db;
-		this.requireLogin = requireLogin;
+    private boolean hasPrintedInitialInstructions = false;
+    private IO io;
+    private Database database;
+    private final boolean requireLogin;
 
-		//BlogpostDao blogpostDao = new BlogpostDao(db);
+    public App(IO io, Database db, boolean requireLogin) {
+        this.io = io;
+        database = db;
+        this.requireLogin = requireLogin;
+
         BlogpostDao blogpostDao = DaoBuilder.buildBlogpostDao(db);
-		VideoDao videoDao = DaoBuilder.buildVideoDao(db);
-		BookDao bookDao = DaoBuilder.buildBookDao(db);
+        VideoDao videoDao = DaoBuilder.buildVideoDao(db);
+        BookDao bookDao = DaoBuilder.buildBookDao(db);
 
-		BookmarkDao bookmarkDao = DaoBuilder.buildBookmarkDao(db, blogpostDao, videoDao, bookDao);
+        BookmarkDao bookmarkDao = DaoBuilder.buildBookmarkDao(db, blogpostDao, videoDao, bookDao);
 
-		uiController = new UiController(io); // Either ConsoleIO or StubIO.
+        uiController = new UiController(io); // Either ConsoleIO or StubIO.
 
-		exit = new ExitAction(io, uiController);
-		delete = new DeleteAction(io, uiController, database, bookmarkDao, blogpostDao, videoDao, bookDao);
-		browse = new ListAction(io, uiController, bookmarkDao);
-		add = new AddAction(io, uiController, blogpostDao, videoDao, bookDao);
-		modify = new ModifyAction(io, uiController, database, bookmarkDao, blogpostDao, videoDao, bookDao);
-		help = new HelpAction(io, uiController);
-	}
+        userDbController = new UserDbController(db);
 
-	public void run() throws SQLException {
+        exit = new ExitAction(io, uiController);
+        delete = new DeleteAction(io, uiController, database, bookmarkDao, blogpostDao, videoDao, bookDao);
+        browse = new ListAction(io, uiController, bookmarkDao);
+        add = new AddAction(io, uiController, blogpostDao, videoDao, bookDao);
+        modify = new ModifyAction(io, uiController, database, bookmarkDao, blogpostDao, videoDao, bookDao);
+        help = new HelpAction(io, uiController);
+    }
 
-		boolean appRunning = true;
+    public void run() throws SQLException {
 
-		uiController.printGreeting();
-		uiController.printVersion(Main.APP_VERSION);
-		uiController.printEmptyLine();
-		uiController.printWhereToGetLatestVersion(Main.APP_URL);
+        boolean appRunning = true;
 
-		outer:
-		while (appRunning) {
+        uiController.printGreeting();
+        uiController.printVersion(Main.APP_VERSION);
+        uiController.printEmptyLine();
+        uiController.printWhereToGetLatestVersion(Main.APP_URL);
 
-			// Only if this has been set, we'll require the user to log in.
-			if (requireLogin) {
+        outer:
+        while (appRunning) {
 
-				inner:
-				while (!UserController.isLoggedIn()) {
-					// Loop this until the user has logged in or exited the app.
-					// Will never enter this section again. I just wanted to include this in the main logic loop.
+            // Only if this has been set, we'll require the user to log in.
+            if (requireLogin) {
 
-					uiController.printEmptyLine();
-					uiController.printLoginInstructions();
+                inner:
+                while (!UserController.isLoggedIn()) {
+                    // Loop this until the user has logged in or exited the app.
+                    // Will never enter this section again. I just wanted to include this in the main logic loop.
 
-					char code = uiController.askForCharacter(new char[]{'L', 'R', 'E'}, "Your choice");
+                    uiController.printEmptyLine();
+                    uiController.printLoginInstructions();
 
-					if (code == 'E') {
-						appRunning = false;
-						exit.act();
-						break outer;
-					}
+                    char code = uiController.askForCharacter(new char[]{'L', 'R', 'E'}, "Your choice");
 
-					UserController userController = new UserController(uiController, database, io);
+                    if (code == 'E') {
+                        appRunning = false;
+                        exit.act();
+                        break outer;
+                    }
 
-					if (code == 'L') {
-						// Login functionality.
-						userController.login();
-					} else if (code == 'R') {
-						// Registration and immediate login.
-						userController.registerAndLogin();
-					}
+                    UserController userController = new UserController(uiController, userDbController, io);
 
-					// Once the user is logged in, you can use "UserController.getUserId()" to get their ID.
-					// Notice the uppercase 'U'. It's a static method.
-					int id = UserController.getUserId(); // Like this.
-				}
+                    if (code == 'L') {
+                        // Login functionality.
+                        userController.login();
+                    } else if (code == 'R') {
+                        // Registration and immediate login.
+                        userController.registerAndLogin();
+                    }
 
-			} else {
-				// This will log in the user with ID of Integer.MAX_VALUE.
-				// Use that user for tests.
-				UserController.autoLoginDefaultUser();
-			}
+                    // Once the user is logged in, you can use "UserController.getUserId()" to get their ID.
+                    // Notice the uppercase 'U'. It's a static method.
+                    int id = UserController.getUserId(); // Like this.
+                }
 
-			if (!hasPrintedInitialInstructions) {
-				// We'll only print these once, at the beginning. User can manually print them again.
-				uiController.printInstructions();
-				hasPrintedInitialInstructions = true;
-			}
+            } else {
+                // This will log in the user with ID of Integer.MAX_VALUE.
+                // Use that user for tests.
+                UserController.autoLoginDefaultUser();
+            }
 
-			char character = uiController.askForCharacter(
-					new char[]{'A', 'L', 'E', 'D', 'M', 'X', 'S'}, "Choose a command ('" + Color.commandText('X') + "' lists them)"
-			);
+            if (!hasPrintedInitialInstructions) {
+                // We'll only print these once, at the beginning. User can manually print them again.
+                uiController.printInstructions();
+                hasPrintedInitialInstructions = true;
+            }
 
-			Commands command = Arrays.stream(Commands.values()).filter(a -> a.getCommand() == character).findFirst().get();
+            char character = uiController.askForCharacter(
+                    new char[]{'A', 'L', 'E', 'D', 'M', 'X', 'S'}, "Choose a command ('" + Color.commandText('X') + "' lists them)"
+            );
 
-			switch (command) {
+            Commands command = Arrays.stream(Commands.values()).filter(a -> a.getCommand() == character).findFirst().get();
 
-				case SEARCH:
-					browse.search();
-					break;
+            switch (command) {
 
-				case LIST:
-					browse.act();
-					break;
+                case SEARCH:
+                    browse.search();
+                    break;
 
-				case ADD:
-					add.act();
-					break;
+                case LIST:
+                    browse.act();
+                    break;
 
-				case DELETE:
-					delete.act();
-					break;
+                case ADD:
+                    add.act();
+                    break;
 
-				case MODIFY:
-					modify.act();
-					break;
+                case DELETE:
+                    delete.act();
+                    break;
 
-				case HELP:
-					help.act();
-					break;
+                case MODIFY:
+                    modify.act();
+                    break;
 
-				case EXIT:
-					appRunning = false;
-					exit.act();
-					break;
+                case HELP:
+                    help.act();
+                    break;
 
-				default:
-					throw new IllegalArgumentException("This method was called with an illegal argument.");
-			}
-		}
+                case EXIT:
+                    appRunning = false;
+                    exit.act();
+                    break;
 
-		// The main loop has exited, so the program will terminate.
-	}
+                default:
+                    throw new IllegalArgumentException("This method was called with an illegal argument.");
+            }
+        }
+
+        // The main loop has exited, so the program will terminate.
+    }
 }
