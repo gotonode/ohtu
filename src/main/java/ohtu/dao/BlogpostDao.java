@@ -126,9 +126,8 @@ public class BlogpostDao implements ObjectDao<Blogpost, Integer> {
 	private void createToBookmarkTable(String title) throws SQLException {
 		Connection conn = database.getConnection();
 		// insert into bookmark-table
-		PreparedStatement stmtBookmark = conn.prepareStatement("INSERT INTO bookmark(title,type, user_id) VALUES(?,'B', ?)");
+		PreparedStatement stmtBookmark = conn.prepareStatement("INSERT INTO bookmark(title,type, user_id) VALUES(?,'B', 0)");
 		stmtBookmark.setString(1, title);
-                stmtBookmark.setInt(2, Integer.MAX_VALUE); // this will be removed soon and replaced with proper user_id
 		stmtBookmark.execute();
 		stmtBookmark.close();
 		conn.close();

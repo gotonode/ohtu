@@ -74,9 +74,8 @@ public class VideoDao implements ObjectDao<Video, Integer> {
 	@Override
 	public Video create(Video video) throws SQLException, ParseException {
             Connection conn = database.getConnection();
-            PreparedStatement stmt1 = conn.prepareStatement("INSERT INTO bookmark (title, type, user_id) VALUES (?, 'V', ?)");
+            PreparedStatement stmt1 = conn.prepareStatement("INSERT INTO bookmark (title, type, user_id) VALUES (?, 'V', 0)");
             stmt1.setString(1, video.getTitle());
-            stmt1.setInt(2, Integer.MAX_VALUE); // this will be removed soon and replaced with proper user_id
             stmt1.execute();
 
             int id = getLatestId();

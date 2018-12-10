@@ -5,7 +5,7 @@ Feature: User can register an account
 
   Scenario: User can register an account with a valid username and password and password confirmation matches to the given password
     When valid username "user1" and password "password1" and matched password confirmation are given
-    Then register will success and systen will respond with "Your new account was created and you have been logged in! Your user ID is 2147483647."
+    Then register will success and systen will respond with "Your new account was created and you have been logged in! Your user ID is 1."
     # TODO: Change the user ID above to an actual value that the system would return, most likely 1.
 
   Scenario: Register will fail if the given username is too short or too long
