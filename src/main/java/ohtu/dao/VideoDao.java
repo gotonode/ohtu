@@ -36,41 +36,27 @@ public class VideoDao extends ObjectDaoTemplate<Video> {
         if (id == -1) {
             database.close(stmt1, conn, null);
             return null; // Something went wrong when adding the new Bookmark.
-        }
 
-        PreparedStatement stmt2 = conn.prepareStatement("INSERT INTO video (id, url) VALUES (?, ?)");
-        stmt2.setInt(1, id);
-        stmt2.setString(2, video.getUrl());
-        stmt2.execute();
+	  @Override
+	  public boolean update(Video video) throws SQLException {
+            Connection conn = database.getConnection();
+            PreparedStatement stmt1 = conn.prepareStatement("UPDATE bookmark SET title = ? WHERE id = ?");
+            PreparedStatement stmt2 = conn.prepareStatement("UPDATE video SET url = ? WHERE id = ?");
+            stmt1.setString(1, video.getTitle());
+            stmt1.setInt(2, video.getId());
+            stmt2.setString(1, video.getUrl());
+            stmt2.setInt(2, video.getId());
+            
+            int updated = 0;
+            if (stmt1.executeUpdate() == 1) { /* Video is updated only if the Bookmark was successfully updated */
+                updated = stmt2.executeUpdate();
+                stmt2.close();
+            }
 
-        Video added = findById(id);
-        if (added.equals(video)) {
-            return added;
-        }
+            database.close(stmt1, conn,null);
+            return updated == 1;
+	}
 
-        return null;
-    }
-
-    @Override
-    public boolean update(Video video) throws SQLException {
-        Connection conn = database.getConnection();
-        PreparedStatement stmt1 = conn.prepareStatement("UPDATE bookmark SET title = ? WHERE id = ?");
-        PreparedStatement stmt2 = conn.prepareStatement("UPDATE video SET url = ? WHERE id = ?");
-        stmt1.setString(1, video.getTitle());
-        stmt1.setInt(2, video.getId());
-        stmt2.setString(1, video.getUrl());
-        stmt2.setInt(2, video.getId());
-
-        int updated = 0;
-        if (stmt1.executeUpdate() == 1) {
-            /* Video is updated only if the Bookmark was successfully updated */
-            updated = stmt2.executeUpdate();
-            stmt2.close();
-        }
-
-        database.close(stmt1, conn, null);
-        return updated == 1;
-    }
 
     @Override
     public Video constructBookmarkFromResultSet(ResultSet rs) throws SQLException, ParseException {

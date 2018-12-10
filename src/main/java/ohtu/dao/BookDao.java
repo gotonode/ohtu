@@ -104,4 +104,5 @@ public class BookDao extends ObjectDaoTemplate<Book> {
 
         return book;
     }
+
 }

@@ -45,7 +45,7 @@ public class UserController {
             loggedIn=false;
         }
 
-	public void login() {
+	public void login() throws SQLException {
 		String username = uiController.askForString("Username:", false);
 		String password = uiController.askForString("Password:", false);
 
@@ -76,11 +76,8 @@ public class UserController {
 				continue;
 			}
 
-			// TODO: Check here if the username is taken.
-
 			if (!database.isUsernameAvailable(username)) {
 				io.println("That username is already taken. Please try a different one.");
-				continue; // Strictly not necessary but here for clarity.
 			} else {
 				break; // We got everything.
 			}
@@ -96,7 +93,6 @@ public class UserController {
 			String passwordAgain = uiController.askForString("Password (again):", false);
 			if (!password.equals(passwordAgain)) {
 				io.println("The passwords didn't match. Please try again.");
-				continue;
 			} else {
 				break; // The passwords were a match.
 			}

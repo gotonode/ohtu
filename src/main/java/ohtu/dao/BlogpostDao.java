@@ -114,4 +114,5 @@ public class BlogpostDao extends ObjectDaoTemplate<Blogpost> {
         return blogpost;
     }
 
+
 }
