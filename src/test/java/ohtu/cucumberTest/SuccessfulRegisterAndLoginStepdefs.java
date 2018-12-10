@@ -4,7 +4,7 @@ import cucumber.api.java.Before;
 import cucumber.api.java.en.Given;
 import java.io.IOException;
 
-public class successfulRegisterAndLoginStepdefs extends AbstractStepdefs {
+public class SuccessfulRegisterAndLoginStepdefs extends AbstractStepdefs {
 
     @Before
     public void before() throws IOException {

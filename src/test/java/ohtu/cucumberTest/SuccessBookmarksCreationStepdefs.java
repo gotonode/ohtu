@@ -2,7 +2,7 @@ package ohtu.cucumberTest;
 
 import cucumber.api.java.en.Given;
 
-public class successBookmarksCreationStepdefs extends AbstractStepdefs {
+public class SuccessBookmarksCreationStepdefs extends AbstractStepdefs {
 
     @Given("^two blogposts have been created and saved to the database$")
     public void two_blogposts_have_been_created_and_saved_to_the_database() throws Throwable {

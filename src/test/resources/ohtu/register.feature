@@ -6,7 +6,6 @@ Feature: User can register an account
   Scenario: User can register an account with a valid username and password and password confirmation matches to the given password
     When valid username "user1" and password "password1" and matched password confirmation are given
     Then register will success and systen will respond with "Your new account was created and you have been logged in! Your user ID is 1."
-    # TODO: Change the user ID above to an actual value that the system would return, most likely 1.
 
   Scenario: Register will fail if the given username is too short or too long
     When too short username "u" is given
@@ -20,4 +19,8 @@ Feature: User can register an account
     When valid username "user1" and password "password1" but unmatched password confirmation "unmatchedconfirmation" are given
     Then register will fail and system will respond with "The passwords didn't match. Please try again."
 
-# TODO scenario where username is already existed
+  Scenario: Register will fail if the given username is already existed
+    Given a user has registerd with username "user"
+    And logged out
+    When another user tries to register existed with username "user"
+    Then register will fail and system will respond with "That username is already taken. Please try a different one."
