@@ -9,6 +9,7 @@ import ohtu.dao.VideoDao;
 import ohtu.database.Database;
 import ohtu.enums.Commands;
 import ohtu.io.IO;
+import ohtu.ui.Color;
 import ohtu.ui.UiController;
 import ohtu.user.UserController;
 
@@ -37,7 +38,7 @@ public class App {
 		this.requireLogin = requireLogin;
 
 		//BlogpostDao blogpostDao = new BlogpostDao(db);
-                BlogpostDao blogpostDao = DaoBuilder.buildBlogpostDao(db);
+        BlogpostDao blogpostDao = DaoBuilder.buildBlogpostDao(db);
 		VideoDao videoDao = DaoBuilder.buildVideoDao(db);
 		BookDao bookDao = DaoBuilder.buildBookDao(db);
 
@@ -46,10 +47,10 @@ public class App {
 		uiController = new UiController(io); // Either ConsoleIO or StubIO.
 
 		exit = new ExitAction(io, uiController);
-		delete = new DeleteAction(io, uiController, bookmarkDao, blogpostDao, videoDao, bookDao);
+		delete = new DeleteAction(io, uiController, database, bookmarkDao, blogpostDao, videoDao, bookDao);
 		browse = new ListAction(io, uiController, bookmarkDao);
 		add = new AddAction(io, uiController, blogpostDao, videoDao, bookDao);
-		modify = new ModifyAction(io, uiController, bookmarkDao, blogpostDao, videoDao, bookDao);
+		modify = new ModifyAction(io, uiController, database, bookmarkDao, blogpostDao, videoDao, bookDao);
 		help = new HelpAction(io, uiController);
 	}
 
@@ -111,7 +112,9 @@ public class App {
 				hasPrintedInitialInstructions = true;
 			}
 
-			char character = uiController.askForCharacter(new char[]{'A', 'L', 'E', 'D', 'M', 'X', 'S'}, "Choose a command ('X' lists them)");
+			char character = uiController.askForCharacter(
+					new char[]{'A', 'L', 'E', 'D', 'M', 'X', 'S'}, "Choose a command ('" + Color.commandText('X') + "' lists them)"
+			);
 
 			Commands command = Arrays.stream(Commands.values()).filter(a -> a.getCommand() == character).findFirst().get();
 

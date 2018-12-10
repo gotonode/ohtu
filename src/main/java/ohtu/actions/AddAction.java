@@ -2,7 +2,6 @@ package ohtu.actions;
 
 import ohtu.dao.BlogpostDao;
 import ohtu.dao.BookDao;
-import ohtu.dao.BookmarkDao;
 import ohtu.dao.VideoDao;
 import ohtu.domain.Blogpost;
 import ohtu.domain.Book;
@@ -10,6 +9,7 @@ import ohtu.domain.Video;
 import ohtu.io.IO;
 import ohtu.main.Main;
 import ohtu.tools.BookmarkBuilder;
+import ohtu.ui.Color;
 import ohtu.ui.UiController;
 
 import java.util.Date;
@@ -39,7 +39,7 @@ public class AddAction extends Action {
 		uiController.printEmptyLine();
 
 		super.getIo().println("What kind of a bookmark you'd like to create?");
-		super.getIo().println("Choose 'B' for Blogpost, 'V' for video, 'K' for book.");
+		super.getIo().println("Choose '" + Color.commandText('B') + "' for Blogpost, '" + Color.commandText('V') + "' for Video, '" + Color.commandText('K') + "' for Kook.");
 
 		char type = uiController.askForCharacter(new char[]{'B', 'V', 'K'}, "Bookmark type");
 
@@ -60,15 +60,13 @@ public class AddAction extends Action {
 		uiController.printEmptyLine();
 	}
 
-	// Contains code repetition, will be fixed later.
 	private void createVideo() {
 		String[] values = uiController.askVideoData();
-		String title = values[0]; // Care should be taken so as not to mix these indices up.
+		String title = values[0];
 		String url = values[1].replaceAll("\\s","");
 
-		// Database will handle assigning correct ID to the object, and decides the addDate value.
-		Date date = null; // This is here just as a reference that it is null.
-		int id = -1; // When creating new Bookmarks from user input, assign -1 as the ID.
+		Date date = null;
+		int id = -1;
 
 		Video newVideo = BookmarkBuilder.buildVideo(id, title, url, date);
 		try {
@@ -83,16 +81,14 @@ public class AddAction extends Action {
 		}
 	}
 
-	// Contains code repetition, will be fixed later.
 	private void createBlogpost() {
 		String[] values = uiController.askBlogpostData();
-		String title = values[0]; // Care should be taken so as not to mix these indices up.
+		String title = values[0];
 		String author = values[1];
 		String url = values[2].replaceAll("\\s", "");
 
-		// Database will handle assigning correct ID to the object, and decides the addDate value.
-		Date date = null; // This is here just as a reference that it is null.
-		int id = -1; // When creating new Bookmarks from user input, assign -1 as the ID.
+		Date date = null;
+		int id = -1;
 
 		Blogpost newBlogpost = BookmarkBuilder.buildBlogpost(id, title, author, url, date);
 		try {
@@ -109,13 +105,12 @@ public class AddAction extends Action {
 
 	private void createBook() {
 		String[] values = uiController.askBookData();
-		String title = values[0]; // Care should be taken so as not to mix these indices up.
+		String title = values[0];
 		String author = values[1];
 		String isbn = values[2];
 
-		// Database will handle assigning correct ID to the object, and decides the addDate value.
-		Date date = null; // This is here just as a reference that it is null.
-		int id = -1; // When creating new Bookmarks from user input, assign -1 as the ID.
+		Date date = null;
+		int id = -1;
 
 		Book newBook = BookmarkBuilder.buildBook(id, title, author, isbn, date);
 		try {

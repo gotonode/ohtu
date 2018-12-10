@@ -4,6 +4,7 @@ import ohtu.dao.BlogpostDao;
 import ohtu.dao.BookDao;
 import ohtu.dao.BookmarkDao;
 import ohtu.dao.VideoDao;
+import ohtu.database.Database;
 import ohtu.domain.Blogpost;
 import ohtu.domain.Book;
 import ohtu.domain.Bookmark;
@@ -18,14 +19,16 @@ import java.sql.SQLException;
 public class ModifyAction extends Action {
 
 	private UiController uiController;
+	private Database database;
 	private BookmarkDao bookmarkDao;
 	private BlogpostDao blogpostDao;
 	private VideoDao videoDao;
 	private BookDao bookDao;
 
-	public ModifyAction(IO io, UiController uiController, BookmarkDao bookmarkDao, BlogpostDao blogpostDao, VideoDao videoDao, BookDao bookDao) {
+	public ModifyAction(IO io, UiController uiController, Database database, BookmarkDao bookmarkDao, BlogpostDao blogpostDao, VideoDao videoDao, BookDao bookDao) {
 		super(io);
 		this.uiController = uiController;
+		this.database = database;
 		this.bookmarkDao = bookmarkDao;
 		this.blogpostDao = blogpostDao;
 		this.videoDao = videoDao;
@@ -50,6 +53,13 @@ public class ModifyAction extends Action {
 		}
 
 		int id = uiController.askForIdToModify();
+
+		// If the user tries to modify a Bookmark that he/she doesn't own, abort the modify operation.
+		if (!database.userOwnsBookmarkWithId(id)) {
+			uiController.printAccessDenied();
+			return;
+		}
+
 		Bookmark bookmark;
 		try {
 			bookmark = bookmarkDao.findById(id);

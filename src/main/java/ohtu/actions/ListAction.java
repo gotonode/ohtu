@@ -7,6 +7,7 @@ import ohtu.domain.Bookmark;
 import ohtu.domain.Video;
 import ohtu.io.IO;
 import ohtu.main.Main;
+import ohtu.ui.Color;
 import ohtu.ui.UiController;
 
 import java.util.ArrayList;
@@ -78,7 +79,8 @@ public class ListAction extends Action {
 
 		uiController.printEmptyLine();
 
-		super.getIo().println("Would you like to search for bookmarks by title or by URL? Choose 'T' or 'U'.");
+		super.getIo().println("Would you like to search for bookmarks by title or by URL? Choose '"
+				+ Color.commandText('T') + "' or '" + Color.commandText('U') + "'.");
 
 		char c = uiController.askForCharacter(new char[]{'T', 'U'}, "Title or URL");
 
@@ -125,8 +127,6 @@ public class ListAction extends Action {
 	}
 
 	private void outputBook(Book book) {
-
-		// Create an ArrayList of Strings that contains the printable data IN ORDER.
 		ArrayList<String> printableData = new ArrayList<>();
 		printableData.add(book.getClass().getSimpleName());
 		printableData.add(book.getAddDate().toString());
@@ -135,13 +135,10 @@ public class ListAction extends Action {
 		printableData.add(book.getIsbn());
 		printableData.add(String.valueOf(book.getId()));
 
-		// Ask the controller to print the Bookmark's data to console.
 		uiController.printBook(printableData);
 	}
 
 	private void outputVideo(Video video) {
-
-		// Create an ArrayList of Strings that contains the printable data IN ORDER.
 		ArrayList<String> printableData = new ArrayList<>();
 		printableData.add(video.getClass().getSimpleName());
 		printableData.add(video.getAddDate().toString());
@@ -149,13 +146,10 @@ public class ListAction extends Action {
 		printableData.add(video.getUrl());
 		printableData.add(String.valueOf(video.getId()));
 
-		// Ask the controller to print the Bookmark's data to console.
 		uiController.printVideo(printableData);
 	}
 
 	private void ouputBlogpost(Blogpost blogpost) {
-
-		// Create an ArrayList of Strings that contains the printable data IN ORDER.
 		ArrayList<String> printableData = new ArrayList<>();
 		printableData.add(blogpost.getClass().getSimpleName());
 		printableData.add(blogpost.getAddDate().toString());
@@ -164,14 +158,13 @@ public class ListAction extends Action {
 		printableData.add(blogpost.getUrl());
 		printableData.add(String.valueOf(blogpost.getId()));
 
-		// Ask the controller to print the Bookmark's data to console.
 		uiController.printBlogpost(printableData);
 	}
 
 	private OrderBy getOrderBy() {
 		uiController.printEmptyLine();
 
-		super.getIo().println("How to sort your bookmarks? Choose 'I' for ID, 'T' for title.");
+		super.getIo().println("How to sort your bookmarks? Choose '" + Color.commandText('I') + "' for ID, '" + Color.commandText('T') + "' for title.");
 
 		char c = uiController.askForCharacter(new char[]{'I', 'T'}, "How to order");
 
