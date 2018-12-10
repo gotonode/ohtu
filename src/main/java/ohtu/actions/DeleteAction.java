@@ -4,6 +4,7 @@ import ohtu.dao.BlogpostDao;
 import ohtu.dao.BookDao;
 import ohtu.dao.BookmarkDao;
 import ohtu.dao.VideoDao;
+import ohtu.database.Database;
 import ohtu.domain.Blogpost;
 import ohtu.domain.Book;
 import ohtu.domain.Bookmark;
@@ -21,14 +22,16 @@ public class DeleteAction extends Action {
 	private BlogpostDao blogpostDao;
 	private VideoDao videoDao;
 	private BookDao bookDao;
+	private Database database;
 
-	public DeleteAction(IO io, UiController uiController, BookmarkDao bookmarkDao, BlogpostDao blogpostDao, VideoDao videoDao, BookDao bookDao) {
+	public DeleteAction(IO io, UiController uiController, Database database, BookmarkDao bookmarkDao, BlogpostDao blogpostDao, VideoDao videoDao, BookDao bookDao) {
 		super(io);
 		this.uiController = uiController;
 		this.bookmarkDao = bookmarkDao;
 		this.blogpostDao = blogpostDao;
 		this.videoDao = videoDao;
 		this.bookDao = bookDao;
+		this.database = database;
 	}
 
 	@Override
@@ -49,6 +52,13 @@ public class DeleteAction extends Action {
 		}
 
 		int id = uiController.askForIdToRemove();
+
+		// If the user tries to delete a Bookmark that he/she doesn't own, abort the delete operation.
+		if (!database.userOwnsBookmarkWithId(id)) {
+			uiController.printAccessDenied();
+			return;
+		}
+
 		Bookmark bookmark;
 		try {
 			bookmark = bookmarkDao.findById(id);
@@ -68,40 +78,28 @@ public class DeleteAction extends Action {
 		char c = uiController.askForCharacter(new char[]{'Y', 'N'}, "Really delete");
 
 		if (c == 'Y') {
-			if (bookmark instanceof Blogpost) {
-				try {
-					boolean success = blogpostDao.delete(id);
-					if (success) {
-						uiController.printDeleteSuccessful(id);
-					} else {
-						uiController.printDeleteFailed(id);
-					}
-				} catch (SQLException e) {
-					Main.LOG.warning(e.getMessage());
+
+			boolean success = false;
+
+			try {
+				if (bookmark instanceof Blogpost) {
+					success = blogpostDao.delete(id);
+				} else if (bookmark instanceof Video) {
+					success = videoDao.delete(id);
+				} else if (bookmark instanceof Book) {
+					success = bookDao.delete(id);
 				}
-			} else if (bookmark instanceof Video) {
-				try {
-					boolean success = videoDao.delete(id);
-					if (success) {
-						uiController.printDeleteSuccessful(id);
-					} else {
-						uiController.printDeleteFailed(id);
-					}
-				} catch (SQLException e) {
-					Main.LOG.warning(e.getMessage());
+
+				if (success) {
+					uiController.printDeleteSuccessful(id);
+				} else {
+					uiController.printDeleteFailed(id);
 				}
-			} else if (bookmark instanceof Book) {
-				try {
-					boolean success = bookDao.delete(id);
-					if (success) {
-						uiController.printDeleteSuccessful(id);
-					} else {
-						uiController.printDeleteFailed(id);
-					}
-				} catch (SQLException e) {
-					Main.LOG.warning(e.getMessage());
-				}
+
+			} catch (SQLException e) {
+				Main.LOG.warning(e.getMessage());
 			}
+
 		} else {
 			uiController.printAbortDelete();
 		}

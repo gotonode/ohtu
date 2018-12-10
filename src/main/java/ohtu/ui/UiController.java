@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static ohtu.ui.Color.commandText;
+
 /**
  * This class handles the UI-facing aspects of the app. It asks
  * the user for data via the console, and outputs data to the console as well.
@@ -25,11 +27,11 @@ public class UiController {
 	}
 
 	public void printGreeting() {
-		io.println("Welcome to " + ohtu.main.Main.APP_NAME + "!");
+		io.println("Welcome to " + Color.stringWithColor(ohtu.main.Main.APP_NAME, Color.Blue) + "!");
 	}
 
 	public void printGoodbye() {
-		io.println("Thanks for using " + ohtu.main.Main.APP_NAME + ".");
+		io.println("Thanks for using " + Color.stringWithColor(ohtu.main.Main.APP_NAME, Color.Blue) + ".");
 	}
 
 	public void addSuccess(final String type) {
@@ -137,16 +139,16 @@ public class UiController {
 
 		printEmptyLine();
 
-		io.println("L: List all bookmarks");
-		io.println("S: Search for a bookmark by title or by URL");
-		io.println("A: Add a new bookmark");
-		io.println("M: Modify an existing bookmark");
-		io.println("D: Delete an existing bookmark");
+		io.println(commandText('L') + ": List all bookmarks");
+		io.println(commandText('S') + ": Search for a bookmark by title or by URL");
+		io.println(commandText('A') + ": Add a new bookmark");
+		io.println(commandText('M') + ": Modify an existing bookmark");
+		io.println(commandText('D') + ": Delete an existing bookmark");
 
 		printEmptyLine();
 
-		io.println("X: Print all of the available commands (this text)");
-		io.println("E: Exit from the app");
+		io.println(commandText('X') + ": Print all of the available commands (this text)");
+		io.println(commandText('E') + ": Exit from the app (logout)");
 
 		printEmptyLine();
 	}
@@ -315,7 +317,8 @@ public class UiController {
 
 	public void printDeleteConfirmation(final int id, final String title, final String type) {
 		io.println("Bookmark with ID " + id + " has a title of '" + title + "' and is of type " + type + ".");
-		io.println("Please confirm that you want to delete this bookmark? Type 'Y' for yes, 'N' for no.");
+		io.println("Please confirm that you want to delete this bookmark? Type '"
+				+ commandText('Y') + "' for yes, '" + commandText('N') + "' for no.");
 	}
 
 	public void printAbortDelete() {
@@ -353,7 +356,9 @@ public class UiController {
 	}
 
 	public void printLoginInstructions() {
-		io.println("Please either log in (command 'L'), register for an account (command 'R'), or exit (command 'E').");
+		io.println("Please either log in (command '" + commandText('L')
+				+ "'), register for an account (command '"
+				+ commandText('R') + "'), or exit (command '" + commandText('E') + "').");
 	}
 
 	public void printWhereToGetLatestVersion(String url) {
@@ -363,5 +368,9 @@ public class UiController {
 
 	public void printVersion(int version) {
 		io.println("You are running version " + version + ".");
+	}
+
+	public void printAccessDenied() {
+		io.println("This Bookmark belongs to a different user. Please try again with a Bookmark that you own.");
 	}
 }
