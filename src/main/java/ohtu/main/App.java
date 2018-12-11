@@ -14,6 +14,7 @@ import ohtu.ui.UiController;
 import ohtu.user.UserController;
 
 import java.util.Arrays;
+import ohtu.dao.ObjectDaoTemplate;
 import ohtu.tools.DaoBuilder;
 import ohtu.user.UserDbController;
 
@@ -113,10 +114,8 @@ public class App {
                 // Use that user for tests.
                 UserController.autoLoginDefaultUser();
             }
-            
-            blogpostDao.setUser_id(UserController.getUserId());
-            videoDao.setUser_id(UserController.getUserId());
-            bookDao.setUser_id(UserController.getUserId());
+
+            ObjectDaoTemplate.setUser_id(UserController.getUserId());
 
             if (!hasPrintedInitialInstructions) {
                 // We'll only print these once, at the beginning. User can manually print them again.
