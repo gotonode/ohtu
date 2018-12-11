@@ -1,4 +1,4 @@
-Feature: User can register an account
+Feature: User can register an account (US11)
 
   Background: 
     Given command to register is selected
