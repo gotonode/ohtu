@@ -31,9 +31,6 @@ public class UserDbController {
     }
 
     public int registerUser(String username, String password) throws SQLException {
-        // TODO: Remove this line when real user_id of logged user is used in Daos.
-        createDefaultUser();
-
         Connection conn = database.getConnection();
         PreparedStatement stmt = conn.prepareStatement("INSERT INTO User (username, password) VALUES (?, ?)");
         stmt.setString(1, username);
@@ -42,7 +39,6 @@ public class UserDbController {
 
         database.close(stmt, conn, null);
         return getUserId(username);
-        // TODO: Fake user always registers successfully. ?
     }
 
     private int getUserId(String username) throws SQLException {
@@ -86,23 +82,5 @@ public class UserDbController {
         
         database.close(stmt, conn, rs);
         return owns;
-    }
-
-    // TODO: REMOVE THIS method later, when daos can handle user_id checking and such
-    public boolean createDefaultUser() throws SQLException {
-        boolean created = false;
-        Connection conn = database.getConnection();
-        PreparedStatement stmt1 = conn.prepareStatement("SELECT * FROM User WHERE id = 0");
-        ResultSet rs = stmt1.executeQuery();
-
-        if (!rs.next()) {
-            PreparedStatement stmt2 = conn.prepareStatement("INSERT INTO User (id) VALUES (0)");
-            created = stmt2.executeUpdate() == 1;
-            stmt2.close();
-        }
-
-        database.close(stmt1, conn, rs);
-        return created;
-    }
-    
+    } 
 }
