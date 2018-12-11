@@ -5,12 +5,14 @@ import ohtu.domain.Blogpost;
 import ohtu.domain.Book;
 import ohtu.domain.Bookmark;
 import ohtu.domain.Video;
+import ohtu.enums.Keys;
 import ohtu.io.IO;
 import ohtu.main.Main;
 import ohtu.ui.Color;
 import ohtu.ui.UiController;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class ListAction extends Action {
@@ -59,14 +61,7 @@ public class ListAction extends Action {
 			// Loop through all of the Bookmarks and ask them to be printed to the console.
 			assert bookmarks != null;
 			for (Bookmark bookmark : bookmarks) {
-				// Since Bookmarks may have unique fields, each must be handled separately.
-				if (bookmark.isBlogpost()) {
-					ouputBlogpost((Blogpost) bookmark);
-				} else if (bookmark.isVideo()) {
-					outputVideo((Video) bookmark);
-				} else if (bookmark.isBook()) {
-					outputBook((Book) bookmark);
-				}
+				outputBookmark(bookmark);
 			}
 		} catch (Exception e) {
 			Main.LOG.warning(e.getMessage());
@@ -112,53 +107,35 @@ public class ListAction extends Action {
 			// Loop through all of the Bookmarks and ask them to be printed to the console.
 			assert bookmarks != null;
 			for (Bookmark bookmark : bookmarks) {
-				// Since Bookmarks may have unique fields, each must be handled separately.
-				if (bookmark instanceof Blogpost) {
-					ouputBlogpost((Blogpost) bookmark);
-				} else if (bookmark instanceof Video) {
-					outputVideo((Video) bookmark);
-				} else if (bookmark instanceof Book) {
-					outputBook((Book) bookmark);
-				}
+				outputBookmark(bookmark);
 			}
 		} catch (Exception e) {
 			Main.LOG.warning(e.getMessage());
 		}
 	}
 
-	private void outputBook(Book book) {
-		ArrayList<String> printableData = new ArrayList<>();
-		printableData.add(book.getClass().getSimpleName());
-		printableData.add(book.getAddDate().toString());
-		printableData.add(book.getTitle());
-		printableData.add(book.getAuthor());
-		printableData.add(book.getIsbn());
-		printableData.add(String.valueOf(book.getId()));
+	private void outputBookmark(Bookmark bookmark) {
+		HashMap<Keys, String> printableData = new HashMap<>();
+
+		printableData.put(Keys.ID, String.valueOf(bookmark.getId()));
+		printableData.put(Keys.Class, bookmark.getClass().getSimpleName());
+		printableData.put(Keys.Date, bookmark.getAddDate().toString());
+		printableData.put(Keys.Title, bookmark.getTitle());
+
+		if (bookmark.isBook()) {
+			Book book = (Book)bookmark;
+			printableData.put(Keys.Author, book.getAuthor());
+			printableData.put(Keys.ISBN, book.getIsbn());
+		} else if (bookmark.isBlogpost()) {
+			Blogpost blogpost = (Blogpost)bookmark;
+			printableData.put(Keys.Author, blogpost.getAuthor());
+			printableData.put(Keys.URL, blogpost.getUrl());
+		} else if (bookmark.isVideo()) {
+			Video video = (Video)bookmark;
+			printableData.put(Keys.URL, video.getUrl());
+		}
 
 		uiController.printBook(printableData);
-	}
-
-	private void outputVideo(Video video) {
-		ArrayList<String> printableData = new ArrayList<>();
-		printableData.add(video.getClass().getSimpleName());
-		printableData.add(video.getAddDate().toString());
-		printableData.add(video.getTitle());
-		printableData.add(video.getUrl());
-		printableData.add(String.valueOf(video.getId()));
-
-		uiController.printVideo(printableData);
-	}
-
-	private void ouputBlogpost(Blogpost blogpost) {
-		ArrayList<String> printableData = new ArrayList<>();
-		printableData.add(blogpost.getClass().getSimpleName());
-		printableData.add(blogpost.getAddDate().toString());
-		printableData.add(blogpost.getTitle());
-		printableData.add(blogpost.getAuthor());
-		printableData.add(blogpost.getUrl());
-		printableData.add(String.valueOf(blogpost.getId()));
-
-		uiController.printBlogpost(printableData);
 	}
 
 	private OrderBy getOrderBy() {
