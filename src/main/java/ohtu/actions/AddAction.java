@@ -39,7 +39,7 @@ public class AddAction extends Action {
 		uiController.printEmptyLine();
 
 		super.getIo().println("What kind of a bookmark you'd like to create?");
-		super.getIo().println("Choose '" + Color.commandText('B') + "' for Blogpost, '" + Color.commandText('V') + "' for Video, '" + Color.commandText('K') + "' for Kook.");
+		super.getIo().println("Choose '" + Color.commandText('B') + "' for Blogpost, '" + Color.commandText('V') + "' for Video, '" + Color.commandText('K') + "' for Book.");
 
 		char type = uiController.askForCharacter(new char[]{'B', 'V', 'K'}, "Bookmark type");
 

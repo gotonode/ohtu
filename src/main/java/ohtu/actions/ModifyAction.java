@@ -1,15 +1,19 @@
 package ohtu.actions;
 
-import ohtu.dao.*;
-import ohtu.domain.*;
+import ohtu.dao.BlogpostDao;
+import ohtu.dao.BookDao;
+import ohtu.dao.BookmarkDao;
+import ohtu.dao.VideoDao;
+import ohtu.domain.Blogpost;
+import ohtu.domain.Book;
+import ohtu.domain.Bookmark;
+import ohtu.domain.Video;
 import ohtu.io.IO;
 import ohtu.main.Main;
 import ohtu.tools.Validator;
 import ohtu.ui.UiController;
 
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import ohtu.user.UserDbController;
 
 public class ModifyAction extends Action {
@@ -56,8 +60,8 @@ public class ModifyAction extends Action {
                     uiController.printAccessDenied();
                     return;
                 }
-            } catch (SQLException ex) {
-                Logger.getLogger(ModifyAction.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (SQLException e) {
+                Main.LOG.warning(e.getMessage());
             }
 
 		Bookmark bookmark;
@@ -107,7 +111,6 @@ public class ModifyAction extends Action {
 			return;
 		}
 
-
 		if (success) {
 			super.getIo().println("Successfully updated your bookmark.");
 		} else {
@@ -147,7 +150,6 @@ public class ModifyAction extends Action {
 
 	private void modifyVideo(Video video) {
 
-		// Code repetition here. Feel free to reduce it.
 		while (true) {
 			super.getIo().println("Current URL: " + video.getUrl());
 			String newUrl = uiController.askForString("New URL: ", true).replaceAll("\\s", "");
@@ -170,7 +172,6 @@ public class ModifyAction extends Action {
 
 	private void modifyBook(Book book) {
 
-		// Code repetition here. Feel free to reduce it.
 		super.getIo().println("Current author: " + book.getAuthor());
 		String newAuthor = uiController.askForString("New author: ", true);
 		if (!newAuthor.isEmpty()) {
