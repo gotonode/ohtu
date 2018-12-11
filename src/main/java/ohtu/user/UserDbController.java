@@ -82,5 +82,5 @@ public class UserDbController {
         
         database.close(stmt, conn, rs);
         return owns;
-    } 
+    }
 }

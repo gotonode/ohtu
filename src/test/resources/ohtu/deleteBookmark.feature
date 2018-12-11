@@ -35,7 +35,7 @@ Feature: User can delete a bookmark of type blogpost by given id (US3)
     Given two blogposts have been created and saved to the database
     And command deleting is selected
     When unexisted id 10 is entered to be deleted
-    Then system will remind user of unvaluable id by responding with "Could not find a bookmark with that ID. Please re-check it."
+    Then system will remind user of unvaluable id by responding with "This Bookmark belongs to a different user. Please try again with a Bookmark that you own."
 
   Scenario: system will remind the user of the empty database if user tries to delete something from an empty database
     Given command deleting is selected
