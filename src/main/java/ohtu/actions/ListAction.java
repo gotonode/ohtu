@@ -11,7 +11,6 @@ import ohtu.main.Main;
 import ohtu.ui.Color;
 import ohtu.ui.UiController;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 

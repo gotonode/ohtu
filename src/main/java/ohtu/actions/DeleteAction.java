@@ -1,14 +1,18 @@
 package ohtu.actions;
 
-import ohtu.dao.*;
-import ohtu.domain.*;
+import ohtu.dao.BlogpostDao;
+import ohtu.dao.BookDao;
+import ohtu.dao.BookmarkDao;
+import ohtu.dao.VideoDao;
+import ohtu.domain.Blogpost;
+import ohtu.domain.Book;
+import ohtu.domain.Bookmark;
+import ohtu.domain.Video;
 import ohtu.io.IO;
 import ohtu.main.Main;
 import ohtu.ui.UiController;
 
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import ohtu.user.UserDbController;
 
 public class DeleteAction extends Action {
@@ -55,8 +59,8 @@ public class DeleteAction extends Action {
                     uiController.printAccessDenied();
                     return;
                 }
-            } catch (SQLException ex) {
-                Logger.getLogger(DeleteAction.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (SQLException e) {
+	            Main.LOG.warning(e.getMessage());
             }
 
 		Bookmark bookmark;
