@@ -12,7 +12,7 @@ import java.text.SimpleDateFormat;
  * adds, edits and removes the Video objects saved in the database.
  */
 public class VideoDao extends ObjectDaoTemplate<Video> {
-    private int user_id;
+    
     /**
      * Creates a new VideoDao object. The new VideoDao communicates with the
      * given database and adds, edits and removes the data concerning
@@ -125,7 +125,5 @@ public class VideoDao extends ObjectDaoTemplate<Video> {
         return stmt;
     }
     
-    public void setUser_id(int user_id) {
-        this.user_id = user_id;
-    }
+    
 }

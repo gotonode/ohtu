@@ -17,7 +17,6 @@ import java.util.Date;
  * creates (or updates/deletes) Blogpost objects.
  */
 public class BlogpostDao extends ObjectDaoTemplate<Blogpost> {
-    private int user_id;
 
     public BlogpostDao(Database database) {
         super(database);
@@ -128,7 +127,5 @@ public class BlogpostDao extends ObjectDaoTemplate<Blogpost> {
         return blogpost;
     }
 
-    public void setUser_id(int user_id) {
-        this.user_id = user_id;
-    }
+    
 }

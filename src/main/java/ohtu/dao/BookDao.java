@@ -8,7 +8,6 @@ import ohtu.database.Database;
 import ohtu.domain.Book;
 
 public class BookDao extends ObjectDaoTemplate<Book> {
-    private int user_id;
 
     public BookDao(Database database) {
         super(database);
@@ -117,7 +116,4 @@ public class BookDao extends ObjectDaoTemplate<Book> {
         return book;
     }
     
-    public void setUser_id(int user_id) {
-        this.user_id = user_id;
-    }
 }

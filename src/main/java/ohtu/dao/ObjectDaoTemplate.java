@@ -11,6 +11,7 @@ import ohtu.database.Database;
 public abstract class ObjectDaoTemplate<Bookmark> {
 
     protected final Database database;
+    protected static int user_id;
 
     ObjectDaoTemplate(Database database) {
         this.database = database;
@@ -153,6 +154,10 @@ public abstract class ObjectDaoTemplate<Bookmark> {
 
         database.close(stmt, conn, rs);
         return latest;
+    }
+
+    public static void setUser_id(int id) {
+        user_id = id;
     }
 
     /**
