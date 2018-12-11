@@ -92,19 +92,11 @@ public class BookmarkDao {
 	}
 
 	public List<Bookmark> findByTitle(String title) throws SQLException, ParseException {
-		List<Bookmark> bookmarks = new ArrayList<>();
-		Connection conn = database.getConnection();
+                List<Bookmark> bookmarks = new ArrayList<>();
+		bookmarks.addAll(blogpostDao.findByTitle(title));
+		bookmarks.addAll(videoDao.findByTitle(title));
+		bookmarks.addAll(bookDao.findByTitle(title));
 
-		PreparedStatement stmt = conn
-				.prepareStatement("SELECT id,type FROM bookmark where title LiKE ?");
-		String pattern = "%" + title + "%";
-		stmt.setString(1, pattern);
-		ResultSet rs = stmt.executeQuery();
-		while (rs.next()) {
-			Bookmark found = findCertainBookmarkByType(rs);
-			bookmarks.add(found);
-		}
-		database.close(stmt, conn, rs);
 		return bookmarks;
 	}
 

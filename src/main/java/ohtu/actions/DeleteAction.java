@@ -1,19 +1,13 @@
 package ohtu.actions;
 
-import ohtu.dao.BlogpostDao;
-import ohtu.dao.BookDao;
-import ohtu.dao.BookmarkDao;
-import ohtu.dao.VideoDao;
-import ohtu.database.Database;
-import ohtu.domain.Blogpost;
-import ohtu.domain.Book;
-import ohtu.domain.Bookmark;
-import ohtu.domain.Video;
+import ohtu.dao.*;
+import ohtu.domain.*;
 import ohtu.io.IO;
 import ohtu.main.Main;
 import ohtu.ui.UiController;
 
 import java.sql.SQLException;
+import ohtu.user.UserDbController;
 
 public class DeleteAction extends Action {
 
@@ -22,16 +16,16 @@ public class DeleteAction extends Action {
 	private BlogpostDao blogpostDao;
 	private VideoDao videoDao;
 	private BookDao bookDao;
-	private Database database;
+	private UserDbController userDbController;
 
-	public DeleteAction(IO io, UiController uiController, Database database, BookmarkDao bookmarkDao, BlogpostDao blogpostDao, VideoDao videoDao, BookDao bookDao) {
+	public DeleteAction(IO io, UiController uiController, UserDbController userDbController, BookmarkDao bookmarkDao, BlogpostDao blogpostDao, VideoDao videoDao, BookDao bookDao) {
 		super(io);
 		this.uiController = uiController;
 		this.bookmarkDao = bookmarkDao;
 		this.blogpostDao = blogpostDao;
 		this.videoDao = videoDao;
 		this.bookDao = bookDao;
-		this.database = database;
+		this.userDbController = userDbController;
 	}
 
 	@Override
@@ -54,7 +48,7 @@ public class DeleteAction extends Action {
 		int id = uiController.askForIdToRemove();
 
 		// If the user tries to delete a Bookmark that he/she doesn't own, abort the delete operation.
-		if (!database.userOwnsBookmarkWithId(id)) {
+		if (!userDbController.userOwnsBookmarkWithId(id)) {
 			uiController.printAccessDenied();
 			return;
 		}

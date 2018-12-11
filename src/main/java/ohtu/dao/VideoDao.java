@@ -12,7 +12,7 @@ import java.text.SimpleDateFormat;
  * adds, edits and removes the Video objects saved in the database.
  */
 public class VideoDao extends ObjectDaoTemplate<Video> {
-
+    private int user_id;
     /**
      * Creates a new VideoDao object. The new VideoDao communicates with the
      * given database and adds, edits and removes the data concerning
@@ -29,7 +29,7 @@ public class VideoDao extends ObjectDaoTemplate<Video> {
         Connection conn = database.getConnection();
         PreparedStatement stmt1 = conn.prepareStatement("INSERT INTO bookmark (title, type, user_id) VALUES (?, 'V', ?)");
         stmt1.setString(1, video.getTitle());
-        stmt1.setInt(2, Integer.MAX_VALUE); // this will be removed soon and replaced with proper user_id
+        stmt1.setInt(2, user_id);
         stmt1.execute();
 
         int id = getLatestId();
@@ -82,7 +82,10 @@ public class VideoDao extends ObjectDaoTemplate<Video> {
 
     @Override
     protected PreparedStatement createStmtWhenFindAll(Connection conn) throws SQLException {
-        return conn.prepareStatement("SELECT * FROM bookmark, video WHERE bookmark.id = video.id");
+        PreparedStatement stmt = conn.prepareStatement("SELECT * FROM bookmark, video WHERE bookmark.id = video.id "
+                + "AND bookmark.user_id = ?");
+        stmt.setInt(1, user_id);
+        return stmt;
     }
 
     @Override
@@ -111,5 +114,8 @@ public class VideoDao extends ObjectDaoTemplate<Video> {
     protected PreparedStatement createStmtWhenFindAllOrderByTitle(Connection conn) throws SQLException {
         return conn.prepareStatement("SELECT * FROM bookmark, video WHERE bookmark.id = video.id ORDER BY title");
     }
-
+    
+    public void setUser_id(int user_id) {
+        this.user_id = user_id;
+    }
 }

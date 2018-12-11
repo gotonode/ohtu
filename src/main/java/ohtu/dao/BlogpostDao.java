@@ -17,6 +17,7 @@ import java.util.Date;
  * creates (or updates/deletes) Blogpost objects.
  */
 public class BlogpostDao extends ObjectDaoTemplate<Blogpost> {
+    private int user_id;
 
     public BlogpostDao(Database database) {
         super(database);
@@ -27,7 +28,7 @@ public class BlogpostDao extends ObjectDaoTemplate<Blogpost> {
         Connection conn = database.getConnection();
         PreparedStatement stmt1 = conn.prepareStatement("INSERT INTO bookmark (title, type, user_id) VALUES (?, 'B', ?)");
         stmt1.setString(1, blogpost.getTitle());
-        stmt1.setInt(2, Integer.MAX_VALUE); // this will be removed soon and replaced with proper user_id
+        stmt1.setInt(2, user_id);
         stmt1.execute();
 
         int id = getLatestId();
@@ -114,4 +115,7 @@ public class BlogpostDao extends ObjectDaoTemplate<Blogpost> {
         return blogpost;
     }
 
+    public void setUser_id(int user_id) {
+        this.user_id = user_id;
+    }
 }

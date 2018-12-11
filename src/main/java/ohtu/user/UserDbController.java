@@ -95,6 +95,5 @@ public class UserDbController {
         database.close(stmt1, conn, rs);
         return created;
     }
-
     
 }

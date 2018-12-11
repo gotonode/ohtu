@@ -1,34 +1,28 @@
 package ohtu.actions;
 
-import ohtu.dao.BlogpostDao;
-import ohtu.dao.BookDao;
-import ohtu.dao.BookmarkDao;
-import ohtu.dao.VideoDao;
-import ohtu.database.Database;
-import ohtu.domain.Blogpost;
-import ohtu.domain.Book;
-import ohtu.domain.Bookmark;
-import ohtu.domain.Video;
+import ohtu.dao.*;
+import ohtu.domain.*;
 import ohtu.io.IO;
 import ohtu.main.Main;
 import ohtu.tools.Validator;
 import ohtu.ui.UiController;
 
 import java.sql.SQLException;
+import ohtu.user.UserDbController;
 
 public class ModifyAction extends Action {
 
 	private UiController uiController;
-	private Database database;
+	private UserDbController userDbController;
 	private BookmarkDao bookmarkDao;
 	private BlogpostDao blogpostDao;
 	private VideoDao videoDao;
 	private BookDao bookDao;
 
-	public ModifyAction(IO io, UiController uiController, Database database, BookmarkDao bookmarkDao, BlogpostDao blogpostDao, VideoDao videoDao, BookDao bookDao) {
+	public ModifyAction(IO io, UiController uiController, UserDbController userDbController, BookmarkDao bookmarkDao, BlogpostDao blogpostDao, VideoDao videoDao, BookDao bookDao) {
 		super(io);
 		this.uiController = uiController;
-		this.database = database;
+		this.userDbController = userDbController;
 		this.bookmarkDao = bookmarkDao;
 		this.blogpostDao = blogpostDao;
 		this.videoDao = videoDao;
@@ -55,7 +49,7 @@ public class ModifyAction extends Action {
 		int id = uiController.askForIdToModify();
 
 		// If the user tries to modify a Bookmark that he/she doesn't own, abort the modify operation.
-		if (!database.userOwnsBookmarkWithId(id)) {
+		if (!userDbController.userOwnsBookmarkWithId(id)) {
 			uiController.printAccessDenied();
 			return;
 		}

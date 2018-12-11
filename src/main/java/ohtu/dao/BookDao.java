@@ -8,6 +8,7 @@ import ohtu.database.Database;
 import ohtu.domain.Book;
 
 public class BookDao extends ObjectDaoTemplate<Book> {
+    private int user_id;
 
     public BookDao(Database database) {
         super(database);
@@ -21,7 +22,7 @@ public class BookDao extends ObjectDaoTemplate<Book> {
         try (Connection conn = database.getConnection(); PreparedStatement stmt1 = conn.prepareStatement(s1);
                 PreparedStatement stmt2 = conn.prepareStatement(s2)) {
             stmt1.setString(1, book.getTitle());
-            stmt1.setInt(2, Integer.MAX_VALUE); // this will be removed soon and replaced with proper user_id
+            stmt1.setInt(2, user_id);
             stmt1.execute();
 
             int id = getLatestId();
@@ -104,5 +105,8 @@ public class BookDao extends ObjectDaoTemplate<Book> {
 
         return book;
     }
-
+    
+    public void setUser_id(int user_id) {
+        this.user_id = user_id;
+    }
 }

@@ -34,15 +34,19 @@ public class App {
     private IO io;
     private Database database;
     private final boolean requireLogin;
+    
+    private final BlogpostDao blogpostDao;
+    private final VideoDao videoDao;
+    private final BookDao bookDao;
 
     public App(IO io, Database db, boolean requireLogin) {
         this.io = io;
         database = db;
         this.requireLogin = requireLogin;
 
-        BlogpostDao blogpostDao = DaoBuilder.buildBlogpostDao(db);
-        VideoDao videoDao = DaoBuilder.buildVideoDao(db);
-        BookDao bookDao = DaoBuilder.buildBookDao(db);
+        this.blogpostDao = DaoBuilder.buildBlogpostDao(db);
+        this.videoDao = DaoBuilder.buildVideoDao(db);
+        this.bookDao = DaoBuilder.buildBookDao(db);
 
         BookmarkDao bookmarkDao = DaoBuilder.buildBookmarkDao(db, blogpostDao, videoDao, bookDao);
 
@@ -51,10 +55,10 @@ public class App {
         userDbController = new UserDbController(db);
 
         exit = new ExitAction(io, uiController);
-        delete = new DeleteAction(io, uiController, database, bookmarkDao, blogpostDao, videoDao, bookDao);
+        delete = new DeleteAction(io, uiController, userDbController, bookmarkDao, blogpostDao, videoDao, bookDao);
         browse = new ListAction(io, uiController, bookmarkDao);
         add = new AddAction(io, uiController, blogpostDao, videoDao, bookDao);
-        modify = new ModifyAction(io, uiController, database, bookmarkDao, blogpostDao, videoDao, bookDao);
+        modify = new ModifyAction(io, uiController, userDbController, bookmarkDao, blogpostDao, videoDao, bookDao);
         help = new HelpAction(io, uiController);
     }
 
@@ -105,10 +109,14 @@ public class App {
                 }
 
             } else {
-                // This will log in the user with ID of Integer.MAX_VALUE.
+                // This will log in the user with ID of 0.
                 // Use that user for tests.
                 UserController.autoLoginDefaultUser();
             }
+            
+            blogpostDao.setUser_id(UserController.getUserId());
+            videoDao.setUser_id(UserController.getUserId());
+            bookDao.setUser_id(UserController.getUserId());
 
             if (!hasPrintedInitialInstructions) {
                 // We'll only print these once, at the beginning. User can manually print them again.
