@@ -37,7 +37,7 @@ public class BlogpostDao extends ObjectDaoTemplate<Blogpost> {
             return null; // Something went wrong when adding the new Bookmark.
         }
 
-        PreparedStatement stmt2 = conn.prepareStatement("INSERT INTO blogpost (id, author,url) VALUES (?, ?,?)");
+        PreparedStatement stmt2 = conn.prepareStatement("INSERT INTO blogpost (id, author, url) VALUES (?, ?, ?)");
         stmt2.setInt(1, id);
         stmt2.setString(2, blogpost.getAuthor());
         stmt2.setString(3, blogpost.getUrl());
@@ -75,7 +75,10 @@ public class BlogpostDao extends ObjectDaoTemplate<Blogpost> {
 
     @Override
     protected PreparedStatement createStmtWhenFindAll(Connection conn) throws SQLException {
-        return conn.prepareStatement("SELECT * FROM bookmark, blogpost WHERE bookmark.id = blogpost.id");
+        PreparedStatement stmt = conn.prepareStatement("SELECT * FROM bookmark, blogpost WHERE bookmark.id = blogpost.id "
+                + "AND bookmark.user_id = ?");
+        stmt.setInt(1, user_id);
+        return stmt;
     }
 
     @Override
@@ -85,24 +88,34 @@ public class BlogpostDao extends ObjectDaoTemplate<Blogpost> {
 
     @Override
     protected PreparedStatement createStmtWhenFindById(Connection conn) throws SQLException {
-        return conn.prepareStatement("SELECT * FROM bookmark, blogpost WHERE bookmark.id = ? And blogpost.id=bookmark.id");
+        PreparedStatement stmt = conn.prepareStatement("SELECT * FROM bookmark, blogpost WHERE bookmark.id = ? And blogpost.id=bookmark.id "
+                + "AND bookmark.user_id = ?");
+        stmt.setInt(2, user_id);
+        return stmt;
     }
 
     @Override
     protected PreparedStatement createStmtWhenFindByTitle(Connection conn) throws SQLException {
-        return conn.prepareStatement("SELECT * FROM bookmark, blogpost WHERE bookmark.title "
-                + "LIKE ? AND bookmark.id = blogpost.id");
+        PreparedStatement stmt = conn.prepareStatement("SELECT * FROM bookmark, blogpost WHERE bookmark.title "
+                + "LIKE ? AND bookmark.id = blogpost.id AND bookmark.user_id = ?");
+        stmt.setInt(2, user_id);
+        return stmt;
     }
 
     @Override
     protected PreparedStatement createStmtWhenFindByUrl(Connection conn) throws SQLException {
-        return conn.prepareStatement("SELECT * FROM bookmark, blogpost WHERE blogpost.url LIKE ? "
-                + "AND bookmark.id = blogpost.id");
+        PreparedStatement stmt = conn.prepareStatement("SELECT * FROM bookmark, blogpost WHERE blogpost.url LIKE ? "
+                + "AND bookmark.id = blogpost.id AND bookmark.user_id = ?");
+        stmt.setInt(2, user_id);
+        return stmt;
     }
 
     @Override
     protected PreparedStatement createStmtWhenFindAllOrderByTitle(Connection conn) throws SQLException {
-        return conn.prepareStatement("SELECT * FROM bookmark, blogpost WHERE bookmark.id = blogpost.id ORDER BY title");
+        PreparedStatement stmt = conn.prepareStatement("SELECT * FROM bookmark, blogpost WHERE bookmark.id = blogpost.id "
+                + "AND bookmark.user_id = ? ORDER BY title");
+        stmt.setInt(1, user_id);
+        return stmt;
     }
 
     @Override

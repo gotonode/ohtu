@@ -7,6 +7,8 @@ import ohtu.main.Main;
 import ohtu.ui.UiController;
 
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import ohtu.user.UserDbController;
 
 public class DeleteAction extends Action {
@@ -47,11 +49,15 @@ public class DeleteAction extends Action {
 
 		int id = uiController.askForIdToRemove();
 
-		// If the user tries to delete a Bookmark that he/she doesn't own, abort the delete operation.
-		if (!userDbController.userOwnsBookmarkWithId(id)) {
-			uiController.printAccessDenied();
-			return;
-		}
+            try {
+                // If the user tries to delete a Bookmark that he/she doesn't own, abort the delete operation.
+                if (!userDbController.userOwnsBookmarkWithId(id)) {
+                    uiController.printAccessDenied();
+                    return;
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(DeleteAction.class.getName()).log(Level.SEVERE, null, ex);
+            }
 
 		Bookmark bookmark;
 		try {

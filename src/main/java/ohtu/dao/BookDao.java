@@ -68,7 +68,10 @@ public class BookDao extends ObjectDaoTemplate<Book> {
 
     @Override
     protected PreparedStatement createStmtWhenFindAll(Connection conn) throws SQLException {
-        return conn.prepareStatement("SELECT * FROM bookmark, book WHERE bookmark.id = book.id");
+        PreparedStatement stmt = conn.prepareStatement("SELECT * FROM bookmark, book WHERE bookmark.id = book.id "
+                + "AND bookmark.user_id = ?");
+        stmt.setInt(1, user_id);
+        return stmt;
     }
 
     @Override
@@ -78,13 +81,18 @@ public class BookDao extends ObjectDaoTemplate<Book> {
 
     @Override
     protected PreparedStatement createStmtWhenFindById(Connection conn) throws SQLException {
-        return conn.prepareStatement("SELECT * FROM bookmark, book WHERE bookmark.id = ? And book.id=bookmark.id");
+        PreparedStatement stmt = conn.prepareStatement("SELECT * FROM bookmark, book WHERE bookmark.id = ? And book.id=bookmark.id "
+                + "AND bookmark.user_id = ?");
+        stmt.setInt(2, user_id);
+        return stmt;
     }
 
     @Override
     protected PreparedStatement createStmtWhenFindByTitle(Connection conn) throws SQLException {
-        return conn.prepareStatement("SELECT * FROM bookmark, book WHERE bookmark.title "
-                + "LIKE ? AND bookmark.id = book.id");
+        PreparedStatement stmt = conn.prepareStatement("SELECT * FROM bookmark, book WHERE bookmark.title "
+                + "LIKE ? AND bookmark.id = book.id AND bookmark.user_id = ?");
+        stmt.setInt(2, user_id);
+        return stmt;
     }
 
     @Override
@@ -94,7 +102,10 @@ public class BookDao extends ObjectDaoTemplate<Book> {
 
     @Override
     protected PreparedStatement createStmtWhenFindAllOrderByTitle(Connection conn) throws SQLException {
-        return conn.prepareStatement("SELECT * FROM bookmark, book WHERE bookmark.id = book.id ORDER BY title");
+        PreparedStatement stmt = conn.prepareStatement("SELECT * FROM bookmark, book WHERE bookmark.id = book.id "
+                + "AND bookmark.user_id = ? ORDER BY title");
+        stmt.setInt(1, user_id);
+        return stmt;
     }
 
     @Override

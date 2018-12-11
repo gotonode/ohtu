@@ -96,6 +96,8 @@ public class BookmarkDao {
 		bookmarks.addAll(blogpostDao.findByTitle(title));
 		bookmarks.addAll(videoDao.findByTitle(title));
 		bookmarks.addAll(bookDao.findByTitle(title));
+                
+                bookmarks.sort(Comparator.comparing(Bookmark::getId));
 
 		return bookmarks;
 	}

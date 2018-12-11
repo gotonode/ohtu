@@ -71,12 +71,21 @@ public class UserDbController {
         return available;
     }
 
-    public boolean userOwnsBookmarkWithId(int id) {
-
+    public boolean userOwnsBookmarkWithId(int id) throws SQLException {
+        boolean owns = false;
         int userId = UserController.getUserId();
-
-        return true; // TODO: Either implement this here or somewhere else.
-        // Only pass the ID to this function, as the user ID we already know.
+        Connection conn = database.getConnection();
+        PreparedStatement stmt = conn.prepareStatement("SELECT * FROM Bookmark WHERE id = ? AND user_id = ?");
+        stmt.setInt(1, id);
+        stmt.setInt(2, userId);
+        ResultSet rs = stmt.executeQuery();
+        
+        if (rs.next()) {
+            owns = true;
+        }
+        
+        database.close(stmt, conn, rs);
+        return owns;
     }
 
     // TODO: REMOVE THIS method later, when daos can handle user_id checking and such

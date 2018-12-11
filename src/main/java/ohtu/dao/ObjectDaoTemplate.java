@@ -182,6 +182,7 @@ public abstract class ObjectDaoTemplate<Bookmark> {
     /**
      * creates PreparedStatment which will be used in findAll-method
      *
+     * @param conn
      * @throws SQLException
      */
     protected abstract PreparedStatement createStmtWhenFindAll(Connection conn) throws SQLException;

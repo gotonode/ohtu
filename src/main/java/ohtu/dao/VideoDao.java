@@ -95,24 +95,34 @@ public class VideoDao extends ObjectDaoTemplate<Video> {
 
     @Override
     protected PreparedStatement createStmtWhenFindById(Connection conn) throws SQLException {
-        return conn.prepareStatement("SELECT * FROM bookmark, video WHERE bookmark.id = ? And video.id=bookmark.id");
+        PreparedStatement stmt = conn.prepareStatement("SELECT * FROM bookmark, video WHERE bookmark.id = ? "
+                + "AND video.id=bookmark.id AND bookmark.user_id = ?");
+        stmt.setInt(2, user_id);
+        return stmt;
     }
 
     @Override
     protected PreparedStatement createStmtWhenFindByTitle(Connection conn) throws SQLException {
-        return conn.prepareStatement("SELECT * FROM bookmark, video WHERE bookmark.title "
-                + "LIKE ? AND bookmark.id = video.id");
+        PreparedStatement stmt = conn.prepareStatement("SELECT * FROM bookmark, video WHERE bookmark.title "
+                + "LIKE ? AND bookmark.id = video.id AND bookmark.user_id = ?");
+        stmt.setInt(2, user_id);
+        return stmt;
     }
 
     @Override
     protected PreparedStatement createStmtWhenFindByUrl(Connection conn) throws SQLException {
-        return conn.prepareStatement("SELECT * FROM bookmark, video WHERE video.url LIKE ? "
-                + "AND bookmark.id = video.id");
+        PreparedStatement stmt = conn.prepareStatement("SELECT * FROM bookmark, video WHERE video.url LIKE ? "
+                + "AND bookmark.id = video.id AND bookmark.user_id = ?");
+        stmt.setInt(2, user_id);
+        return stmt;
     }
 
     @Override
     protected PreparedStatement createStmtWhenFindAllOrderByTitle(Connection conn) throws SQLException {
-        return conn.prepareStatement("SELECT * FROM bookmark, video WHERE bookmark.id = video.id ORDER BY title");
+        PreparedStatement stmt = conn.prepareStatement("SELECT * FROM bookmark, video WHERE bookmark.id = video.id "
+                + "AND bookmark.user_id = ? ORDER BY title");
+        stmt.setInt(1, user_id);
+        return stmt;
     }
     
     public void setUser_id(int user_id) {

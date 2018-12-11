@@ -8,6 +8,8 @@ import ohtu.tools.Validator;
 import ohtu.ui.UiController;
 
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import ohtu.user.UserDbController;
 
 public class ModifyAction extends Action {
@@ -48,11 +50,15 @@ public class ModifyAction extends Action {
 
 		int id = uiController.askForIdToModify();
 
-		// If the user tries to modify a Bookmark that he/she doesn't own, abort the modify operation.
-		if (!userDbController.userOwnsBookmarkWithId(id)) {
-			uiController.printAccessDenied();
-			return;
-		}
+            try {
+                // If the user tries to modify a Bookmark that he/she doesn't own, abort the modify operation.
+                if (!userDbController.userOwnsBookmarkWithId(id)) {
+                    uiController.printAccessDenied();
+                    return;
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(ModifyAction.class.getName()).log(Level.SEVERE, null, ex);
+            }
 
 		Bookmark bookmark;
 		try {
