@@ -3,21 +3,21 @@ Feature: User can modify a bookmark of type blogpost by given id (US4,US13)
   Background: 
     Given user has registered and logged in with username "user" and password "password"
 
-  Scenario: user can modify a blogpost by giving existed id (US4)
+  Scenario: user can modify a blogpost by giving existed id (US4, US13)
     Given two blogposts have been created and saved to the database
     And command modifying is selected
     When existed id 1 is entered to be modified
     And new title "Data mining for beginners" and new author"Tavish Srivastava" and new url "http://www.analyticsvidhya.com/blog/2018/11/4-secrets-for-a-future-ready-career-in-data-science/" are entered
     Then bookmark with given id will be modified with given data and system will respond with "Successfully updated your bookmark."
 
-  Scenario: user can modify a video by giving existed id (US4)
+  Scenario: user can modify a video by giving existed id (US4, US13)
     Given two videos have been created and saved to the database
     And command modifying is selected
     When existed id 1 is entered to be modified
     And new title "Java tutorial" and new url "https://www.youtube.com/watch?v=grEKMHGYyns" are entered
     Then bookmark with given id will be modified with given data and system will respond with "Successfully updated your bookmark."
 
-  Scenario: user can modify a book by giving existed id (US4)
+  Scenario: user can modify a book by giving existed id (US4, US13)
     Given two books have been created and saved to the database
     And command modifying is selected
     When existed id 1 is entered to be modified
