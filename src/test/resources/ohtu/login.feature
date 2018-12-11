@@ -1,4 +1,4 @@
-Feature: User can login with a valid account
+Feature: User can login with a valid account (US12)
 
   Background: 
     Given user has registered and logged in with username "username" and password "password"
