@@ -1,7 +1,6 @@
 package ohtu.user;
 
 import java.sql.SQLException;
-import ohtu.database.Database;
 import ohtu.tools.HashGenerator;
 import ohtu.ui.UiController;
 import ohtu.io.IO;

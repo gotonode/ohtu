@@ -1,11 +1,11 @@
 package ohtu.ui;
 
+import ohtu.enums.Keys;
 import ohtu.io.IO;
 import ohtu.tools.Validator;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
+import java.util.HashMap;
 
 import static ohtu.ui.Color.commandText;
 
@@ -238,71 +238,34 @@ public class UiController {
 	}
 
 	/**
-	 * Prints the Blogpost's data into console.
+	 * Prints the Bookmark's data into console.
 	 *
-	 * @param printableData The data IN ORDER.
+	 * @param printableData The data in a dictionary.
 	 */
-	public void printBlogpost(final List<String> printableData) {
-
-		String firstLine = "  ===== " + printableData.get(5) + " =====";
+	public void printBook(HashMap<Keys, String> printableData) {
+		final String spacer = " " + " ";
+		String firstLine = spacer + "===== " + printableData.get(Keys.ID) + " =====";
 
 		io.println(firstLine);
-		io.println("  Title: " + printableData.get(2));
-		io.println("  Type: " + printableData.get(0));
-		io.println("  Author: " + printableData.get(3));
-		io.println("  URL: " + printableData.get(4));
-		io.println("  Date added: " + printableData.get(1));
 
-		String block = "  ";
-		while (block.length() < firstLine.length()) {
-			block += "=";
+		io.println(spacer + "Title: " + printableData.get(Keys.Title));
+		io.println(spacer + "Type: " + printableData.get(Keys.Class));
+
+		if (printableData.containsKey(Keys.Author)) {
+			io.println(spacer + "Author: " + printableData.get(Keys.Author));
 		}
 
-		io.println(block);
-		printEmptyLine(); // An empty line to tidy things up.
-	}
-
-	/**
-	 * Prints the Video's data into console.
-	 *
-	 * @param printableData The data IN ORDER.
-	 */
-	public void printVideo(final List<String> printableData) {
-
-
-		String firstLine = "  ===== " + printableData.get(4) + " =====";
-
-		io.println(firstLine);
-		io.println("  Title: " + printableData.get(2));
-		io.println("  Type: " + printableData.get(0));
-		io.println("  URL: " + printableData.get(3));
-		io.println("  Date added: " + printableData.get(1));
-
-		String block = "  ";
-		while (block.length() < firstLine.length()) {
-			block += "=";
+		if (printableData.containsKey(Keys.ISBN)) {
+			io.println(spacer + "ISBN: " + printableData.get(Keys.ISBN));
 		}
 
-		io.println(block);
-		printEmptyLine(); // An empty line to tidy things up.
-	}
+		if (printableData.containsKey(Keys.URL)) {
+			io.println(spacer + "URL: " + printableData.get(Keys.URL));
+		}
 
-	/**
-	 * Prints the Book's data into console.
-	 *
-	 * @param printableData The data IN ORDER.
-	 */
-	public void printBook(final ArrayList<String> printableData) {
-		String firstLine = "  ===== " + printableData.get(5) + " =====";
+		io.println(spacer + "Date added: " + printableData.get(Keys.Date));
 
-		io.println(firstLine);
-		io.println("  Title: " + printableData.get(2));
-		io.println("  Type: " + printableData.get(0));
-		io.println("  Author: " + printableData.get(3));
-		io.println("  ISBN: " + printableData.get(4));
-		io.println("  Date added: " + printableData.get(1));
-
-		String block = "  ";
+		String block = spacer;
 		while (block.length() < firstLine.length()) {
 			block += "=";
 		}
@@ -356,9 +319,9 @@ public class UiController {
 	}
 
 	public void printLoginInstructions() {
-		io.println("Please either log in (command '" + commandText('L')
-				+ "'), register for an account (command '"
-				+ commandText('R') + "'), or exit (command '" + commandText('E') + "').");
+		io.println("Please either log in (command '" + commandText('L') + "'), "
+				+ "register for an account (command '" + commandText('R') + "'), "
+				+ "or exit (command '" + commandText('E') + "').");
 	}
 
 	public void printWhereToGetLatestVersion(String url) {
