@@ -7,41 +7,26 @@ package ohtu.user;
 
 import java.io.File;
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.ParseException;
+import ohtu.dao.BlogpostDao;
 import ohtu.database.Database;
+import ohtu.domain.Blogpost;
+import ohtu.tools.BookmarkBuilder;
+import ohtu.tools.DaoBuilder;
 import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import org.junit.rules.TemporaryFolder;
 
-/**
- *
- * @author luoyumo
- */
 public class UserDbControllerTest {
 
     private File databaseFile;
     private Database db;
     private UserDbController userDbController;
-    private final String username = "user";
-    private final String password = "password";
-
-    public UserDbControllerTest() {
-    }
-
-    @BeforeClass
-    public static void setUpClass() {
-    }
-
-    @AfterClass
-    public static void tearDownClass() {
-    }
+    private final String USERNAME = "user";
+    private final String PASSWORD = "password";
 
     @Before
     public void setUp() throws IOException, SQLException {
@@ -50,7 +35,7 @@ public class UserDbControllerTest {
         databaseFile = new File(tempFolder.getRoot() + "/test.db");
         db = new Database(databaseFile);
         userDbController = new UserDbController(db);
-        userDbController.registerUser(username, password);
+        userDbController.registerUser(USERNAME, PASSWORD);
     }
 
     @After
@@ -60,20 +45,23 @@ public class UserDbControllerTest {
 
     @Test
     public void canRegisterUser() throws SQLException {
-        assertEquals(1, userDbController.checkCredentials(username, password));
+        String username = "newUser";
+        String pwd = "newPassword";
+        userDbController.registerUser(username, pwd);
+        assertEquals(2, userDbController.checkCredentials(username, pwd));
     }
 
     @Test
     public void returnMinusOneWhenUsernameOrPasswordNotCorrect() throws SQLException {
         String wrongUsername = "wrongname";
         String wrongPassword = "wrongpassword";
-        assertEquals(-1, userDbController.checkCredentials(wrongUsername, password));
-        assertEquals(-1, userDbController.checkCredentials(username, wrongPassword));
+        assertEquals(-1, userDbController.checkCredentials(wrongUsername, PASSWORD));
+        assertEquals(-1, userDbController.checkCredentials(USERNAME, wrongPassword));
     }
 
     @Test
     public void returnUserIdWhenUsernameAndPasswordCorrect() throws SQLException {
-        assertEquals(1, userDbController.checkCredentials(username, password));
+        assertEquals(1, userDbController.checkCredentials(USERNAME, PASSWORD));
     }
 
     @Test
@@ -84,9 +72,21 @@ public class UserDbControllerTest {
 
     @Test
     public void rejectExistedUsername() throws SQLException {
-        assertFalse(userDbController.isUsernameAvailable(username));
+        assertFalse(userDbController.isUsernameAvailable(USERNAME));
     }
-    
-    //TODO: test userOwnsBookmarkWithId-method
+
+    @Test
+    public void canFigureOutWhetherUserOwnsBookmark() throws SQLException, ParseException {
+        BlogpostDao blogpostDao = DaoBuilder.buildBlogpostDao(db);
+        Blogpost blogpost = BookmarkBuilder.buildBlogpost(-1, "Data Mining", "navamani saravanan", "http://notescompsci.blogspot.com/2013/04/data-mining.html", null);
+        blogpostDao.setUser_id(userDbController.checkCredentials(USERNAME, PASSWORD));
+        Blogpost added = blogpostDao.create(blogpost);
+
+        UserController.setUserId(1);
+        assertTrue(userDbController.userOwnsBookmarkWithId(added.getId()));
+
+        UserController.setUserId(2);
+        assertFalse(userDbController.userOwnsBookmarkWithId(added.getId()));
+    }
 
 }
