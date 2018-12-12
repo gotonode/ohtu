@@ -16,13 +16,20 @@ import org.junit.rules.TemporaryFolder;
  * An abstract class including methods of initialisation before each scenario
  * and some other methods that are commonly used in cucumber tests
  */
-public abstract class AbstractStepdefs{
-    
+public abstract class AbstractStepdefs {
+
     private TemporaryFolder tempFolder;
     protected static StubIO io;
     protected static Database db = null;
     protected static List<String> inputs;
 
+    /**
+     * Creates a temporary folder where the database which will be used in tests
+     * is located, also initialise database here. This method will be used
+     * before every scenario
+     *
+     * @throws IOException
+     */
     protected void initialize() throws IOException {
 
         if (tempFolder == null) {
@@ -42,5 +49,4 @@ public abstract class AbstractStepdefs{
         app.run();
     }
 
-    
 }
