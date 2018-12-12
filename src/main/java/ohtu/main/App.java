@@ -9,7 +9,7 @@ import ohtu.dao.VideoDao;
 import ohtu.database.Database;
 import ohtu.enums.Commands;
 import ohtu.io.IO;
-import ohtu.ui.Color;
+import ohtu.enums.Color;
 import ohtu.ui.UiController;
 import ohtu.user.UserController;
 

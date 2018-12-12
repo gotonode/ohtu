@@ -1,5 +1,6 @@
 package ohtu.ui;
 
+import ohtu.enums.Color;
 import ohtu.enums.Keys;
 import ohtu.io.IO;
 import ohtu.tools.Validator;
@@ -7,7 +8,7 @@ import ohtu.tools.Validator;
 import java.util.Arrays;
 import java.util.HashMap;
 
-import static ohtu.ui.Color.commandText;
+import static ohtu.enums.Color.commandText;
 
 /**
  * This class handles the UI-facing aspects of the app. It asks

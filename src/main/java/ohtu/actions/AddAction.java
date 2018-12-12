@@ -9,7 +9,7 @@ import ohtu.domain.Video;
 import ohtu.io.IO;
 import ohtu.main.Main;
 import ohtu.tools.BookmarkBuilder;
-import ohtu.ui.Color;
+import ohtu.enums.Color;
 import ohtu.ui.UiController;
 
 import java.util.Date;

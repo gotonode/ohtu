@@ -8,7 +8,7 @@ import ohtu.domain.Video;
 import ohtu.enums.Keys;
 import ohtu.io.IO;
 import ohtu.main.Main;
-import ohtu.ui.Color;
+import ohtu.enums.Color;
 import ohtu.ui.UiController;
 
 import java.util.HashMap;
