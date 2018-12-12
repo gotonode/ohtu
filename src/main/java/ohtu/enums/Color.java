@@ -1,4 +1,4 @@
-package ohtu.ui;
+package ohtu.enums;
 
 public enum Color {
 	Green("\u001b[32m"),
@@ -23,6 +23,6 @@ public enum Color {
 	}
 
 	public static String commandText(char command) {
-		return stringWithColor(String.valueOf(command), Color.Blue);
+		return stringWithColor(String.valueOf(command), Color.Magenta);
 	}
 }
