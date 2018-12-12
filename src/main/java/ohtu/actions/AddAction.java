@@ -6,13 +6,14 @@ import ohtu.dao.VideoDao;
 import ohtu.domain.Blogpost;
 import ohtu.domain.Book;
 import ohtu.domain.Video;
+import ohtu.enums.Keys;
 import ohtu.io.IO;
 import ohtu.main.Main;
 import ohtu.tools.BookmarkBuilder;
 import ohtu.enums.Color;
 import ohtu.ui.UiController;
 
-import java.util.Date;
+import java.util.HashMap;
 
 public class AddAction extends Action {
 
@@ -61,14 +62,12 @@ public class AddAction extends Action {
 	}
 
 	private void createVideo() {
-		String[] values = uiController.askVideoData();
-		String title = values[0];
-		String url = values[1].replaceAll("\\s","");
 
-		Date date = null;
-		int id = -1;
+		HashMap<Keys, String> values = uiController.askVideoData();
+		String title = values.get(Keys.Title);
+		String url = removeWhitespaceFromString(values.get(Keys.URL));
 
-		Video newVideo = BookmarkBuilder.buildVideo(id, title, url, date);
+		Video newVideo = BookmarkBuilder.buildVideoNonDatabase(title, url);
 		try {
 			final Video success = videoDao.create(newVideo);
 			if (success != null) {
@@ -82,15 +81,13 @@ public class AddAction extends Action {
 	}
 
 	private void createBlogpost() {
-		String[] values = uiController.askBlogpostData();
-		String title = values[0];
-		String author = values[1];
-		String url = values[2].replaceAll("\\s", "");
 
-		Date date = null;
-		int id = -1;
+		HashMap<Keys, String> values = uiController.askBlogpostData();
+		String title = values.get(Keys.Title);
+		String author = values.get(Keys.Author);
+		String url = removeWhitespaceFromString(values.get(Keys.URL));
 
-		Blogpost newBlogpost = BookmarkBuilder.buildBlogpost(id, title, author, url, date);
+		Blogpost newBlogpost = BookmarkBuilder.buildBlogpostNonDatabase(title, author, url);
 		try {
 			final Blogpost success = blogpostDao.create(newBlogpost);
 			if (success != null) {
@@ -104,15 +101,13 @@ public class AddAction extends Action {
 	}
 
 	private void createBook() {
-		String[] values = uiController.askBookData();
-		String title = values[0];
-		String author = values[1];
-		String isbn = values[2];
 
-		Date date = null;
-		int id = -1;
+		HashMap<Keys, String> values = uiController.askBookData();
+		String title = values.get(Keys.Title);
+		String author = values.get(Keys.Author);
+		String isbn = removeWhitespaceFromString(values.get(Keys.ISBN));
 
-		Book newBook = BookmarkBuilder.buildBook(id, title, author, isbn, date);
+		Book newBook = BookmarkBuilder.buildBookNonDatabase(title, author, isbn);
 		try {
 			final Book success = bookDao.create(newBook);
 			if (success != null) {
@@ -123,5 +118,10 @@ public class AddAction extends Action {
 		} catch (Exception e) {
 			Main.LOG.warning(e.getMessage());
 		}
+	}
+
+	private String removeWhitespaceFromString(String input) {
+		String output = input.replaceAll("\\s","");
+		return output;
 	}
 }
