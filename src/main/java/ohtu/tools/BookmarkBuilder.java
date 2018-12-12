@@ -36,7 +36,7 @@ public class BookmarkBuilder {
 	 * @return The new Blogpost.
 	 */
 	public static Blogpost buildBlogpostNonDatabase(String title, String author, String url) {
-		return buildBlogpost(-1, title, url, author, null);
+		return buildBlogpost(-1, title, author, url, null);
 	}
 
 	/**
