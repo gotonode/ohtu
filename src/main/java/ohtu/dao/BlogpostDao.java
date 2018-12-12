@@ -24,52 +24,67 @@ public class BlogpostDao extends ObjectDaoTemplate<Blogpost> {
 
     @Override
     public Blogpost create(Blogpost blogpost) throws SQLException, ParseException {
+        Blogpost added = null;
         Connection conn = database.getConnection();
-        PreparedStatement stmt1 = conn.prepareStatement("INSERT INTO bookmark (title, type, user_id) VALUES (?, 'B', ?)");
-        stmt1.setString(1, blogpost.getTitle());
-        stmt1.setInt(2, user_id);
-        stmt1.execute();
+        PreparedStatement stmt = conn.prepareStatement("INSERT INTO bookmark (title, type, user_id) VALUES (?, 'B', ?)");
+        stmt.setString(1, blogpost.getTitle());
+        stmt.setInt(2, user_id);
+        stmt.execute();
 
         int id = getLatestId();
-        if (id == -1) {
-            database.close(stmt1, conn, null);
-            return null; // Something went wrong when adding the new Bookmark.
+        if (id != -1) { // Something went wrong when adding the new Bookmark.
+            added = createBlogpost(blogpost, id);
         }
-
-        PreparedStatement stmt2 = conn.prepareStatement("INSERT INTO blogpost (id, author, url) VALUES (?, ?, ?)");
-        stmt2.setInt(1, id);
-        stmt2.setString(2, blogpost.getAuthor());
-        stmt2.setString(3, blogpost.getUrl());
-        stmt2.execute();
-
-        Blogpost added = findById(id);
-        if (added.equals(blogpost)) {
-            return added;
+        
+        database.close(stmt, conn, null);
+        return added;
+    }
+    
+    private Blogpost createBlogpost(Blogpost blogpost, int id) throws SQLException, ParseException {
+        Blogpost added = null;
+        Connection conn = database.getConnection();
+        PreparedStatement stmt = conn.prepareStatement("INSERT INTO blogpost (id, author, url) VALUES (?, ?, ?)");
+        stmt.setInt(1, id);
+        stmt.setString(2, blogpost.getAuthor());
+        stmt.setString(3, blogpost.getUrl());
+        stmt.execute();
+        
+        Blogpost newBlogpost = findById(id);
+        if (newBlogpost.equals(blogpost)) {
+            added = newBlogpost;
         }
-
-        return null;
+        
+        database.close(stmt, conn, null);
+        return added;
     }
 
     @Override
     public boolean update(Blogpost blogpost) throws SQLException {
+        boolean updated = false;
         Connection conn = database.getConnection();
-        PreparedStatement stmt1 = conn.prepareStatement("UPDATE bookmark SET title = ? WHERE id = ?");
-        PreparedStatement stmt2 = conn.prepareStatement("UPDATE blogpost SET author=?, url = ? WHERE id = ?");
-        stmt1.setString(1, blogpost.getTitle());
-        stmt1.setInt(2, blogpost.getId());
-        stmt2.setString(1, blogpost.getAuthor());
-        stmt2.setString(2, blogpost.getUrl());
-        stmt2.setInt(3, blogpost.getId());
+        PreparedStatement stmt = conn.prepareStatement("UPDATE bookmark SET title = ? WHERE id = ?");
+        stmt.setString(1, blogpost.getTitle());
+        stmt.setInt(2, blogpost.getId());
 
-        int updated = 0;
-        if (stmt1.executeUpdate() == 1) {
-            /* Blogposy is updated only if the Bookmark was successfully updated */
-            updated = stmt2.executeUpdate();
-            stmt2.close();
+        if (stmt.executeUpdate() == 1) { /* Blogpost is updated only if the Bookmark was successfully updated */
+            updated = updateBlogpost(blogpost);
         }
 
-        database.close(stmt1, conn, null);
-        return updated == 1;
+        database.close(stmt, conn, null);
+        return updated;
+    }
+    
+    private boolean updateBlogpost(Blogpost blogpost) throws SQLException {
+        Connection conn = database.getConnection();
+        PreparedStatement stmt = conn.prepareStatement("UPDATE blogpost SET author=?, url = ? WHERE id = ?");
+        stmt.setString(1, blogpost.getAuthor());
+        stmt.setString(2, blogpost.getUrl());
+        stmt.setInt(3, blogpost.getId());
+        
+        boolean updated = stmt.executeUpdate() == 1;
+        
+        database.close(stmt, conn, null);
+        return updated;
     }
 
     @Override

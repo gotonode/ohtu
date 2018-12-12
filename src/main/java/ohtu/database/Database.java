@@ -83,30 +83,27 @@ public class Database {
      * @param lines the list containing the SQL-statements to be executed
      */
     private void executeSQLStatements(List<String> lines) throws SQLException {
+        Connection conn = getConnection();
+        Statement stmt = conn.createStatement();
+        conn.setAutoCommit(false);
 
-        try (Connection connection = getConnection()) {
+        StringBuilder stringBuilder = new StringBuilder();
 
-            Statement statement = connection.createStatement();
-            connection.setAutoCommit(false);
-
-            StringBuilder stringBuilder = new StringBuilder();
-
-            for (String line : lines) {
-                if (line.equals(("")) || line.startsWith("/*") || line.startsWith("//")) {
-                    continue;
-                }
-                stringBuilder.append(line);
-
-                if (line.endsWith(";")) {
-                    statement.addBatch(stringBuilder.toString());
-                    stringBuilder = new StringBuilder();
-                }
+        for (String line : lines) {
+            if (line.equals(("")) || line.startsWith("/*") || line.startsWith("//")) {
+                continue;
             }
+            stringBuilder.append(line);
 
-            statement.executeBatch();
-            connection.commit();
-
-            statement.close();
+            if (line.endsWith(";")) {
+                stmt.addBatch(stringBuilder.toString());
+                stringBuilder = new StringBuilder();
+            }
         }
+
+        stmt.executeBatch();
+        conn.commit();
+
+        close(stmt, conn, null);
     }
 }

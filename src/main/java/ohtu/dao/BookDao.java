@@ -15,54 +15,67 @@ public class BookDao extends ObjectDaoTemplate<Book> {
 
     @Override
     public Book create(Book book) throws SQLException, ParseException {
-        String s1 = "INSERT INTO bookmark (title, type, user_id) VALUES (?, 'K', ?)";
-        String s2 = "INSERT INTO book (id, author, isbn) VALUES (?, ?, ?)";
+        Book added = null;
+        Connection conn = database.getConnection(); 
+        PreparedStatement stmt = conn.prepareStatement("INSERT INTO bookmark (title, type, user_id) VALUES (?, 'K', ?)");
+        stmt.setString(1, book.getTitle());
+        stmt.setInt(2, user_id);
+        stmt.execute();
 
-        try (Connection conn = database.getConnection(); PreparedStatement stmt1 = conn.prepareStatement(s1);
-                PreparedStatement stmt2 = conn.prepareStatement(s2)) {
-            stmt1.setString(1, book.getTitle());
-            stmt1.setInt(2, user_id);
-            stmt1.execute();
-
-            int id = getLatestId();
-            if (id == -1) {
-                return null; // Something went wrong when adding the new Bookmark.
-            }
-
-            stmt2.setInt(1, id);
-            stmt2.setString(2, book.getAuthor());
-            stmt2.setString(3, book.getIsbn());
-            stmt2.execute();
-
-            Book added = findById(id);
-            if (added.equals(book)) {
-                return added;
-            }
+        int id = getLatestId();
+        if (id != -1) { // Something went wrong when adding the new Bookmark.
+            added = createBook(book, id);
         }
+        
+        database.close(stmt, conn, null);
+        return added;
+    }
+    
+    private Book createBook(Book book, int id) throws SQLException, ParseException {
+        Book added = null;
+        Connection conn = database.getConnection();
+        PreparedStatement stmt = conn.prepareStatement("INSERT INTO book (id, author, isbn) VALUES (?, ?, ?)");
+        stmt.setInt(1, id);
+        stmt.setString(2, book.getAuthor());
+        stmt.setString(3, book.getIsbn());
+        stmt.execute();
 
-        return null;
+        Book newBook = findById(id);
+        if (newBook.equals(book)) {
+            added = newBook;
+        }
+        
+        database.close(stmt, conn, null);
+        return added;
     }
 
     @Override
     public boolean update(Book book) throws SQLException {
-        String s1 = "UPDATE bookmark SET title = ? WHERE id = ?";
-        String s2 = "UPDATE book SET author = ?, isbn = ? WHERE id = ?";
-
-        try (Connection conn = database.getConnection(); PreparedStatement stmt1 = conn.prepareStatement(s1);
-                PreparedStatement stmt2 = conn.prepareStatement(s2)) {
-            stmt1.setString(1, book.getTitle());
-            stmt1.setInt(2, book.getId());
-            stmt2.setString(1, book.getAuthor());
-            stmt2.setString(2, book.getIsbn());
-            stmt2.setInt(3, book.getId());
-
-            /* Book is updated only if the Bookmark was successfully updated */
-            if (stmt1.executeUpdate() == 1) {
-                return stmt2.executeUpdate() == 1;
-            }
+        boolean updated = false;
+        Connection conn = database.getConnection();
+        PreparedStatement stmt = conn.prepareStatement("UPDATE bookmark SET title = ? WHERE id = ?");
+        stmt.setString(1, book.getTitle());
+        stmt.setInt(2, book.getId());
+        
+        /* Book is updated only if the Bookmark was successfully updated */
+        if (stmt.executeUpdate() == 1) {
+            updated = updateBook(book);
         }
-
-        return false;
+        
+        database.close(stmt, conn, null);
+        return updated;
+    }
+    
+    private boolean updateBook(Book book) throws SQLException {
+        Connection conn = database.getConnection();
+        PreparedStatement stmt = conn.prepareStatement("UPDATE book SET author = ?, isbn = ? WHERE id = ?");
+        stmt.setString(1, book.getAuthor());
+        stmt.setString(2, book.getIsbn());
+        stmt.setInt(3, book.getId());
+        boolean updated = stmt.executeUpdate() == 1;
+        
+        database.close(stmt, conn, null);
+        return updated;
     }
 
     @Override

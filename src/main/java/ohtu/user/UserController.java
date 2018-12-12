@@ -95,7 +95,6 @@ public class UserController {
         // Return -1 if the registration fails, otherwise the user's ID.
         int newUserId = userDbController.registerUser(username, hashedPassword);
 
-        // I'll hash the password here later. For now, you can use plaintext.
         if (newUserId != -1) {
             io.println("Your new account was created and you have been logged in! Your user ID is " + newUserId + ".");
             loggedIn = true;
