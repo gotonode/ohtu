@@ -21,6 +21,7 @@ public class BookDaoTest extends AbstractDaoTest {
 
     private static BookDao bookDao;
     private static Book k1, k2, k3;
+    private static final String KEY_TITLE = "introduction";
 
     @BeforeClass
     public static void setUpClass() throws IOException {
@@ -43,6 +44,9 @@ public class BookDaoTest extends AbstractDaoTest {
         k1 = BookmarkBuilder.buildBook(-1, "Introduction to Algorithms", "Thomas H. Cormen", "9-780-262-0338-48", null);
         k2 = BookmarkBuilder.buildBook(-1, "Introduction to Java Programming", "Y. Daniel Liang", "9-780-134-6709-42", null);
         k3 = BookmarkBuilder.buildBook(-1, "Learning Python", "Mark Lutz", "9-781-593-2760-34", null);
+
+        ObjectDaoTemplate.setUser_id(1);
+
         bookDao.create(k1);
         bookDao.create(k2);
         bookDao.create(k3);
@@ -62,8 +66,7 @@ public class BookDaoTest extends AbstractDaoTest {
 
     @Test
     public void canListBooksWithSimilarTitle() throws SQLException, ParseException {
-        String keyword = "introduction";
-        List<Book> books = bookDao.findByTitle(keyword);
+        List<Book> books = bookDao.findByTitle(KEY_TITLE);
         assertEquals(2, books.size());
     }
 
@@ -124,6 +127,25 @@ public class BookDaoTest extends AbstractDaoTest {
         assertEquals(k1.getTitle(), allBooks.get(0).getTitle());
         assertEquals(k2.getTitle(), allBooks.get(1).getTitle());
         assertEquals(k3.getTitle(), allBooks.get(2).getTitle());
+    }
+
+    @Test
+    public void cannotListbookWhichBelongsToDifferentUser() throws SQLException, ParseException {
+        ObjectDaoTemplate.setUser_id(3);
+        assertEquals(0, bookDao.findAll().size());
+        assertEquals(0, bookDao.findAllOrderByTitle().size());
+    }
+
+    @Test
+    public void cannotFindByIdWhenBookBelongsToDifferentUSer() throws SQLException, ParseException {
+        ObjectDaoTemplate.setUser_id(3);
+        assertNull(bookDao.findById(1));
+    }
+
+    @Test
+    public void cannotFindByTitleWhenBookBelongsToDifferentUSer() throws SQLException, ParseException {
+        ObjectDaoTemplate.setUser_id(3);
+        assertEquals(0, bookDao.findByTitle(KEY_TITLE).size());
     }
 
 }

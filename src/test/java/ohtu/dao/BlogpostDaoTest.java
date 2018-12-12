@@ -22,6 +22,8 @@ public class BlogpostDaoTest extends AbstractDaoTest {
 
     private static BlogpostDao blogpostDao;
     private static Blogpost b1, b2, b3;
+    private final String KEY_TITLE = "data mining";
+    private final String KEY_URL = "notescompsci";
 
     @BeforeClass
     public static void setUpClass() throws IOException {
@@ -48,6 +50,8 @@ public class BlogpostDaoTest extends AbstractDaoTest {
         b2 = BookmarkBuilder.buildBlogpost(-1, "Data Mining For Beginners", "P.Fournier-Viger", "http://data-mining.philippe-fournier-viger.com/introduction-data-mining", null);
         b3 = BookmarkBuilder.buildBlogpost(-1, "Java TWO marks", "navamani saravanan", "http://notescompsci.blogspot.com/2013/04/java-two-marks.html", null);
 
+        ObjectDaoTemplate.setUser_id(1);
+
         blogpostDao.create(b1);
         blogpostDao.create(b2);
         blogpostDao.create(b3);
@@ -67,15 +71,13 @@ public class BlogpostDaoTest extends AbstractDaoTest {
 
     @Test
     public void canListBlogpostsWithSimilarTitle() throws SQLException, ParseException {
-        String keyword = "data mining";
-        List<Blogpost> blogposts = blogpostDao.findByTitle(keyword);
+        List<Blogpost> blogposts = blogpostDao.findByTitle(KEY_TITLE);
         assertEquals(2, blogposts.size());
     }
 
     @Test
     public void canListBlogpostsWithSimilarUrl() throws SQLException, ParseException {
-        String keyword = "notescompsci";
-        List<Blogpost> blogposts = blogpostDao.findByURL(keyword);
+        List<Blogpost> blogposts = blogpostDao.findByURL(KEY_URL);
         assertEquals(2, blogposts.size());
     }
 
@@ -136,6 +138,31 @@ public class BlogpostDaoTest extends AbstractDaoTest {
         assertEquals(b1.getTitle(), allBlogposts.get(0).getTitle());
         assertEquals(b2.getTitle(), allBlogposts.get(1).getTitle());
         assertEquals(b3.getTitle(), allBlogposts.get(2).getTitle());
+    }
+
+    @Test
+    public void cannotListBlogpostsWhichBelongsToDifferentUser() throws SQLException, ParseException {
+        ObjectDaoTemplate.setUser_id(2);
+        assertEquals(0, blogpostDao.findAll().size());
+        assertEquals(0, blogpostDao.findAllOrderByTitle().size());
+    }
+
+    @Test
+    public void cannotFindByIdWhenBlogpostBelongsToDifferentUSer() throws SQLException, ParseException {
+        ObjectDaoTemplate.setUser_id(2);
+        assertNull(blogpostDao.findById(1));
+    }
+
+    @Test
+    public void cannotFindByTitleWhenBlogpostBelongsToDifferentUSer() throws SQLException, ParseException {
+        ObjectDaoTemplate.setUser_id(2);
+        assertEquals(0, blogpostDao.findByTitle(KEY_TITLE).size());
+    }
+
+    @Test
+    public void cannotFindByUrlWhenBlogpostBelongsToDifferentUSer() throws SQLException, ParseException {
+        ObjectDaoTemplate.setUser_id(2);
+        assertEquals(0, blogpostDao.findByTitle(KEY_URL).size());
     }
 
 }

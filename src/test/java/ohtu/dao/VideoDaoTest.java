@@ -21,6 +21,8 @@ public class VideoDaoTest extends AbstractDaoTest {
 
     private static VideoDao videoDao;
     private static Video v1, v2, v3;
+    private final String KEY_TITLE = "computer science";
+    private final String KEY_URL = "youtube";
 
     public VideoDaoTest() {
     }
@@ -44,6 +46,9 @@ public class VideoDaoTest extends AbstractDaoTest {
         v1 = BookmarkBuilder.buildVideo(-1, "Map of computer science", "https://www.youtube.com/watch?v=SzJ46YA_RaA", null);
         v2 = BookmarkBuilder.buildVideo(-1, "Computer science for intermediate learner", "https://www.youtube.com/watch?v=ohyai6GIRZg", null);
         v3 = BookmarkBuilder.buildVideo(-1, "Java programming", "https://www.youtube.com/watch?v=WPvGqX-TXP0", null);
+
+        ObjectDaoTemplate.setUser_id(1);
+
         videoDao.create(v1);
         videoDao.create(v2);
         videoDao.create(v3);
@@ -63,15 +68,13 @@ public class VideoDaoTest extends AbstractDaoTest {
 
     @Test
     public void canListVideosWithSimilarTitle() throws SQLException, ParseException {
-        String keyword = "computer science";
-        List<Video> videos = videoDao.findByTitle(keyword);
+        List<Video> videos = videoDao.findByTitle(KEY_TITLE);
         assertEquals(2, videos.size());
     }
 
     @Test
     public void canListVideosWithSimilarUrl() throws SQLException, ParseException {
-        String keyword = "youtube";
-        List<Video> videos = videoDao.findByURL(keyword);
+        List<Video> videos = videoDao.findByURL(KEY_URL);
         assertEquals(3, videos.size());
     }
 
@@ -132,6 +135,31 @@ public class VideoDaoTest extends AbstractDaoTest {
         assertEquals(v2.getTitle(), allVideos.get(0).getTitle());
         assertEquals(v3.getTitle(), allVideos.get(1).getTitle());
         assertEquals(v1.getTitle(), allVideos.get(2).getTitle());
+    }
+
+    @Test
+    public void cannotListVideoWhichBelongsToDifferentUser() throws SQLException, ParseException {
+        ObjectDaoTemplate.setUser_id(3);
+        assertEquals(0, videoDao.findAll().size());
+        assertEquals(0, videoDao.findAllOrderByTitle().size());
+    }
+
+    @Test
+    public void cannotFindByIdWhenVideoBelongsToDifferentUSer() throws SQLException, ParseException {
+        ObjectDaoTemplate.setUser_id(3);
+        assertNull(videoDao.findById(1));
+    }
+
+    @Test
+    public void cannotFindByTitleWhenVideoBelongsToDifferentUSer() throws SQLException, ParseException {
+        ObjectDaoTemplate.setUser_id(3);
+        assertEquals(0, videoDao.findByTitle(KEY_TITLE).size());
+    }
+
+    @Test
+    public void cannotFindByUrlWhenVideoBelongsToDifferentUSer() throws SQLException, ParseException {
+        ObjectDaoTemplate.setUser_id(3);
+        assertEquals(0, videoDao.findByTitle(KEY_URL).size());
     }
 
 }
