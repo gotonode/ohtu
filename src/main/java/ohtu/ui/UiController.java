@@ -147,8 +147,6 @@ public class UiController {
 		printEmptyLine();
 	}
 
-
-
 	/**
 	 * Prints the Bookmark's data into console.
 	 *
@@ -219,8 +217,6 @@ public class UiController {
 	public void printUrlNotValid() {
 		io.println("The URL is not valid. Please remember to add 'http://' at the beginning of it.");
 	}
-
-
 
 	public void printLoginInstructions() {
 		io.println("Please either log in (command '" + commandText('L') + "'), "

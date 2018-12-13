@@ -49,7 +49,6 @@ public class ListAction extends Action {
 		}
 
 		try {
-
 			List<Bookmark> bookmarks = null;
 			if (orderBy == OrderBy.ID) {
 				bookmarks = bookmarkDao.findAll();
@@ -89,7 +88,6 @@ public class ListAction extends Action {
 		}
 
 		try {
-
 			List<Bookmark> bookmarks;
 			if (c == 'T') {
 				bookmarks = bookmarkDao.findByTitle(searchTerm);
@@ -102,6 +100,8 @@ public class ListAction extends Action {
 				uiController.printEmptyLine();
 				return;
 			}
+
+			uiController.printEmptyLine();
 
 			// Loop through all of the Bookmarks and ask them to be printed to the console.
 			assert bookmarks != null;
