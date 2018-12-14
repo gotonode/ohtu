@@ -33,6 +33,9 @@ Once the app starts, you'll either need to log in or register. After you have lo
 
 ### Links
 
+Tests:
+* [Cucumber features](https://github.com/gotonode/ohtu/tree/master/src/test/resources/ohtu)
+
 From our wiki:
 * [Definition of Done](https://github.com/gotonode/ohtu/wiki/Definition-of-Done)
 * [Code Style](https://github.com/gotonode/ohtu/wiki/Code-Style)
